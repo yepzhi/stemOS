@@ -9716,267 +9716,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elHours) elHours.textContent = `${hours.toFixed(1)} Horas de Práctica Guiada • Referencia MCER`;
 
         const elName = document.getElementById('vc-modal-student-name');
-        if (elName) elName.textContent = studentName;
-
-        const elFolio = document.getElementById('vc-modal-folio');
-        if (elFolio) elFolio.textContent = folio;
-
-        const elIssuer = document.getElementById('vc-modal-issuer');
-        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'stemOS™ Technical English Platform';
-
-        const elDate = document.getElementById('vc-modal-date');
-        if (elDate) {
-            const now = new Date();
-            elDate.textContent = now.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
-
-        const elFingerprint = document.getElementById('vc-modal-sha-fingerprint');
-        const proofVal = (cred && cred.proof && cred.proof.proofValue) || `ob30-vc-${folio.toLowerCase()}`;
-        if (elFingerprint) elFingerprint.textContent = proofVal;
-
-        const elJsonLd = document.getElementById('vc-modal-json-ld');
-        if (elJsonLd && cred) {
-            elJsonLd.textContent = JSON.stringify(cred, null, 2);
-        }
-
-        const btnCopyJson = document.getElementById('btn-vc-copy-json');
-        if (btnCopyJson && cred) {
-            btnCopyJson.onclick = () => {
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(JSON.stringify(cred, null, 2));
-                    btnCopyJson.innerHTML = '<i class="fa-solid fa-check"></i> JSON Copiado';
-                    setTimeout(() => { btnCopyJson.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar JSON-LD'; }, 2000);
-                }
-            };
-        }
-
-        const btnCopyLink = document.getElementById('btn-vc-copy-link');
-        if (btnCopyLink) {
-            btnCopyLink.onclick = () => {
-                const verifyUrl = `${window.location.origin}/verify?folio=${encodeURIComponent(folio)}&name=${encodeURIComponent(studentName)}&matricula=${encodeURIComponent(matricula)}&level=${encodeURIComponent(level)}&hours=${encodeURIComponent(hours)}&sig=${encodeURIComponent(proofVal)}`;
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(verifyUrl);
-                    btnCopyLink.innerHTML = '<i class="fa-solid fa-check"></i> Enlace Copiado';
-                    setTimeout(() => { btnCopyLink.innerHTML = '<i class="fa-solid fa-link"></i> Enlace de Validación'; }, 2000);
-                }
-            };
-        }
-
-        modal.showModal();
-    }
-    window.openVerifiableCredentialModal = openVerifiableCredentialModal;
-
-    function renderExamStepperPills() {
-        const container = document.getElementById('mcer-exam-stepper-pills');
-        if (!container || !activeMcerExam) return;
-
-        container.innerHTML = '';
-        activeMcerExam.questions.forEach((q, idx) => {
-            const pill = document.createElement('button');
-            pill.type = 'button';
-            pill.className = 'mcer-exam-pill';
-            pill.id = `exam-pill-${idx}`;
-            pill.textContent = String(idx + 1);
-            pill.style.width = '30px';
-            pill.style.height = '30px';
-            pill.style.borderRadius = '50%';
-            pill.style.border = '1px solid #cbd5e1';
-            pill.style.background = '#f8fafc';
-            pill.style.color = '#475569';
-            pill.style.fontWeight = '800';
-            pill.style.fontSize = '0.75rem';
-            pill.style.cursor = 'pointer';
-            pill.onclick = () => renderExamQuestion(idx);
-            container.appendChild(pill);
-        });
-        updateExamStepperState();
-    }
-
-    function updateExamStepperState() {
-        if (!activeMcerExam) return;
-        activeMcerExam.questions.forEach((q, idx) => {
-            const pill = document.getElementById(`exam-pill-${idx}`);
-            if (!pill) return;
-
-            const isCurrent = (idx === activeExamQuestionIdx);
-            const isAnswered = (activeExamAnswers[idx] !== null);
-
-            if (isCurrent) {
-                pill.style.border = '2px solid #0284c7';
-                pill.style.background = '#0284c7';
-                pill.style.color = '#ffffff';
-            } else if (isAnswered) {
-                pill.style.border = '1px solid #10b981';
-                pill.style.background = '#dcfce7';
-                pill.style.color = '#15803d';
-            } else {
-                pill.style.border = '1px solid #cbd5e1';
-                pill.style.background = '#f8fafc';
-                pill.style.color = '#475569';
-            }
-        });
-
-        const counter = document.getElementById('mcer-exam-answered-counter');
-        if (counter) {
-            const answeredCount = activeExamAnswers.filter(a => a !== null).length;
-            counter.textContent = `${answeredCount} de ${activeMcerExam.questions.length} respondidos`;
-        }
-    }
-
-    function renderExamQuestion(idx) {
-        if (!activeMcerExam || !activeMcerExam.questions[idx]) return;
-        activeExamQuestionIdx = idx;
-        const q = activeMcerExam.questions[idx];
-
-        updateExamStepperState();
-
-        // Section badge text
-        const secBadge = document.getElementById('mcer-exam-section-badge');
-        if (secBadge) {
-            if (idx < 5) secBadge.textContent = 'SECCIÓN 1/4: LISTENING COMPREHENSION (Reactivos 1–5)';
-            else if (idx < 10) secBadge.textContent = 'SECCIÓN 2/4: GRAMMAR & SYNTAX STRUCTURE (Reactivos 6–10)';
-            else if (idx < 15) secBadge.textContent = 'SECCIÓN 3/4: TECHNICAL SOP READING & DIAGRAMS (Reactivos 11–15)';
-            else secBadge.textContent = 'SECCIÓN 4/4: WORKPLACE PRAGMATICS & NEARSHORING (Reactivos 16–20)';
-        }
-
-        // Listening Audio Box
-        const audioBox = document.getElementById('mcer-exam-audio-box');
-        const audioPlayBtn = document.getElementById('btn-mcer-exam-audio-play');
-        if (audioBox) {
-            if (q.audioScript || idx < 5) {
-                audioBox.style.display = 'flex';
-                if (audioPlayBtn) {
-                    audioPlayBtn.onclick = () => {
-                        const script = q.audioScript || q.q;
-                        if (window.speakText) {
-                            window.speakText(script);
-                        } else if ('speechSynthesis' in window) {
-                            window.speechSynthesis.cancel();
-                            const utter = new SpeechSynthesisUtterance(script);
-                            utter.lang = 'en-US';
-                            utter.rate = 0.95;
-                            window.speechSynthesis.speak(utter);
-                        }
-                    };
-                }
-            } else {
-                audioBox.style.display = 'none';
-            }
-        }
-
-        // Reading Passage Box
-        const passageBox = document.getElementById('mcer-exam-passage-box');
-        if (passageBox) {
-            if (q.passage || (idx >= 10 && idx < 15)) {
-                passageBox.style.display = 'block';
-                passageBox.innerHTML = `<strong><i class="fa-solid fa-file-lines" style="color:#0284c7;"></i> Procedimiento Técnico / SOP:</strong><br>${q.passage || 'Read the operational technical procedure above to verify compliance.'}`;
-            } else {
-                passageBox.style.display = 'none';
-            }
-        }
-
-        // Prompt
-        const promptEl = document.getElementById('mcer-exam-prompt-text');
-        if (promptEl) {
-            promptEl.innerHTML = `<span style="color:#0284c7; font-weight:900;">Item ${idx + 1}.</span> ${q.q}`;
-        }
-
-        // 4 Options
-        const optsContainer = document.getElementById('mcer-exam-options-container');
-        if (optsContainer) {
-            optsContainer.innerHTML = '';
-            const opts = q.opts || q.options || [];
-            opts.forEach((optText, optIdx) => {
-                const optBtn = document.createElement('button');
-                optBtn.type = 'button';
-                optBtn.className = 'mcer-exam-opt-btn';
-                const isSelected = (activeExamAnswers[idx] === optIdx);
-
-                optBtn.style.textAlign = 'left';
-                optBtn.style.padding = '12px 16px';
-                optBtn.style.borderRadius = '10px';
-                optBtn.style.border = isSelected ? '2px solid #0284c7' : '1px solid #cbd5e1';
-                optBtn.style.background = isSelected ? 'rgba(2,132,199,0.1)' : '#ffffff';
-                optBtn.style.color = '#0f172a';
-                optBtn.style.fontWeight = isSelected ? '800' : '600';
-                optBtn.style.cursor = 'pointer';
-                optBtn.style.fontSize = '0.9rem';
-                optBtn.style.display = 'flex';
-                optBtn.style.alignItems = 'center';
-                optBtn.style.gap = '10px';
-
-                const letter = ['A', 'B', 'C', 'D'][optIdx] || String(optIdx);
-                optBtn.innerHTML = `<span style="width:24px; height:24px; border-radius:50%; background:${isSelected ? '#0284c7' : '#f1f5f9'}; color:${isSelected ? '#fff' : '#64748b'}; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800;">${letter}</span> <span>${optText}</span>`;
-
-                optBtn.onclick = () => {
-                    activeExamAnswers[idx] = optIdx;
-                    renderExamQuestion(idx);
-                };
-                optsContainer.appendChild(optBtn);
-            });
-        }
-
-        // Update Prev / Next buttons
-        const btnPrev = document.getElementById('btn-mcer-exam-prev');
-        const btnNext = document.getElementById('btn-mcer-exam-next');
-        if (btnPrev) btnPrev.disabled = (idx === 0);
-        if (btnNext) btnNext.disabled = (idx === activeMcerExam.questions.length - 1);
-    }
-
-    function startExamCountdownTimer() {
-        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
-        const timerDisplay = document.getElementById('mcer-exam-timer-display');
-
-        function updateDisplay() {
-            const mins = Math.floor(mcerExamRemainingSeconds / 60);
-            const secs = mcerExamRemainingSeconds % 60;
-            if (timerDisplay) {
-                timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            }
-            if (mcerExamRemainingSeconds <= 0) {
-                clearInterval(mcerExamTimerInterval);
-                alert('El tiempo límite de 40 minutos ha concluido. El examen se calificará automáticamente.');
-                submitMcerLevelExam();
-            }
-        }
-
-        updateDisplay();
-        mcerExamTimerInterval = setInterval(() => {
-            mcerExamRemainingSeconds--;
-            updateDisplay();
-        }, 1000);
-    }
-
-    function submitMcerLevelExam() {
-        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
-        if (!activeMcerExam) return;
-
-        let correct = 0;
-        let secListening = 0;
-        let secGrammar = 0;
-        let secReading = 0;
-        let secPragmatics = 0;
-
-        activeMcerExam.questions.forEach((q, idx) => {
-            const userAns = activeExamAnswers[idx];
-            const correctAns = (q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : q.correct));
-            const isRight = (userAns === correctAns);
-
-            if (isRight) {
-                correct++;
-                if (idx < 5) secListening++;
-                else if (idx < 10) secGrammar++;
-                else if (idx < 15) secReading++;
-                else secPragmatics++;
-            }
-        });
-
-        const totalQ = activeMcerExam.questions.length;
-        const scorePct = Math.round((correct / totalQ) * 100);
-        const isPassed = (correct >= 15); // 75% threshold
-
-        // Switch to Results View
-        const qView = document.getElementById('mcer-exam-question-view');
         const resView = document.getElementById('mcer-exam-results-view');
         if (qView) qView.style.display = 'none';
         if (resView) resView.style.display = 'block';
@@ -11939,471 +11678,842 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
     }
 
-    // 5. Dynamic Interactive Lesson Challenge Builder
+    // 5. Dynamic Interactive Lesson Challenge Builder (8–10 Non-Repetitive Tech/CEFR Activities per Section)
+    const STEMOS_TECH_RESERVOIR_EXERCISES = [
+        {
+            type: 'mcq_gap',
+            category: 'Engineering English Precision',
+            heading: 'Select the accurate technical statement',
+            subtext: 'Choose the sentence that follows Standard American workplace grammar:',
+            prompt: 'All metrology gauges ___ calibrated against traceable standards before shift startup.',
+            options: ['must be', 'must to be', 'are been', 'has be'],
+            correctIdx: 0,
+            hint: 'Modal passive structure: modal (must) + be + Past Participle (calibrated).'
+        },
+        {
+            type: 'mcq_gap',
+            category: 'Workplace Communication Radar',
+            heading: 'Pick the clear shift-handoff sentence',
+            subtext: 'Avoid word-for-word Spanish translation in engineering updates:',
+            prompt: 'Which status update is accurate and natural?',
+            options: ['The firmware patch reduced latency by 30%.', 'The patch of firmware make latency less 30%.', 'Did reduced the firmware latency 30%.', 'Was reduce latency patch firmware.'],
+            correctIdx: 0,
+            hint: 'Keep Subject + Verb + Direct Object order with natural engineering collocations.'
+        },
+        {
+            type: 'sentence_builder',
+            category: 'Operational Syntax Assembly',
+            heading: 'Assemble the engineering protocol instruction',
+            subtext: 'Organiza los bloques para formar una instrucción técnica clara:',
+            targetSentence: 'Verify pressure readings before opening the main valve',
+            distractors: ['yesterday', 'unless', 'broken']
+        },
+        {
+            type: 'sentence_builder',
+            category: 'Telemetry & Quality Output',
+            heading: 'Build the quality assurance report line',
+            subtext: 'Construye el reporte breve de aseguramiento de calidad:',
+            targetSentence: 'All sensor logs are stored inside the cloud database',
+            distractors: ['never', 'whom', 'manual']
+        },
+        {
+            type: 'mcq_gap',
+            category: 'Technical Protocol Logic',
+            heading: 'Complete the conditional safety check',
+            subtext: 'Apply cause-and-effect conditional accuracy:',
+            prompt: 'If cleanroom differential pressure ___ below threshold, the alarm triggers automatically.',
+            options: ['drops', 'will dropped', 'dropping', 'were drop'],
+            correctIdx: 0,
+            hint: 'Zero Conditional (scientific/PLC cause-effect) uses Simple Present in the If-clause.'
+        },
+        {
+            type: 'mcq_gap',
+            category: 'Industrial Writing Clarity',
+            heading: 'Choose the best escalation closing',
+            subtext: 'Use professional deadlines in engineering emails:',
+            prompt: 'Please submit the revised BOM tolerances ___ 4:00 PM Friday.',
+            options: ['by', 'during', 'along', 'under'],
+            correctIdx: 0,
+            hint: 'Use "by + time/date" to express a clear submission deadline.'
+        },
+        {
+            type: 'sentence_builder',
+            category: 'Executive Traceability',
+            heading: 'Arrange the root-cause documentation sentence',
+            subtext: 'Ordena la oración de trazabilidad técnica:',
+            targetSentence: 'Engineers documented the root cause within twenty four hours',
+            distractors: ['neither', 'albeit', 'ignore']
+        },
+        {
+            type: 'mcq_gap',
+            category: 'Standard Operating Compliance',
+            heading: 'Validate OSHA / ISO compliance English',
+            subtext: 'Select the accurate modal of strict prohibition:',
+            prompt: 'Technicians ___ bypass machine safety interlocks during live operation.',
+            options: ['must not', 'do not have to', 'might to', 'ought not of'],
+            correctIdx: 0,
+            hint: 'Prohibition = must not / mustn\'t; optional = don\'t have to.'
+        }
+    ];
+
     function buildDuoLessonExercises(unit, stepMeta) {
         const exercises = [];
-        let vocabList = (unit.vocabulary && unit.vocabulary.length > 0) ? [...unit.vocabulary] : [];
-        let drillsList = (unit.grammarDrills && unit.grammarDrills.length > 0) ? [...unit.grammarDrills] : [];
-        let quizList = (unit.unitQuiz && unit.unitQuiz.length > 0) ? [...unit.unitQuiz] : (unit.quiz || []);
-        let dialogueTurns = (unit.dialogue && unit.dialogue.lines) ? unit.dialogue.lines : (Array.isArray(unit.dialogue) ? unit.dialogue : []);
+        const unitIdNorm = String(unit.id || '').toLowerCase();
+        const normTxt = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        const cleanSentenceWords = (s) => String(s || '').replace(/[.!?;:"()]/g, ' ').replace(/\s+/g, ' ').trim();
+        const stripTags = (s) => String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-        if (vocabList.length < 2) {
-            vocabList = [
-                { en: 'Lockout / Tagout (LOTO)', es: 'Bloqueo y etiquetado', example: 'Always apply Lockout Tagout protocols before maintenance.', exampleES: 'Siempre aplica protocolos de bloqueo y etiquetado antes del mantenimiento.' },
-                { en: 'Pressure Gauge', es: 'Manómetro de presión', example: 'Check the pressure gauge before opening valves.', exampleES: 'Verifica el manómetro antes de abrir válvulas.' },
-                { en: 'Root Cause Analysis', es: 'Análisis de causa raíz', example: 'The engineering team completed the 8D root cause report.', exampleES: 'El equipo de ingeniería completó el reporte 8D de causa raíz.' },
-                { en: 'Quality Assurance', es: 'Aseguramiento de calidad', example: 'Perform strict quality assurance checks at each station.', exampleES: 'Realiza controles rigurosos de calidad en cada estación.' }
-            ];
-        }
-        if (drillsList.length === 0) {
-            drillsList = [
-                { q: 'The technician ___ the emergency stop button.', opts: ['presses', 'pressing', 'pressed'], ans: 0, socraticHint: 'Usa el presente simple para protocolos estandarizados.' },
-                { q: 'Engineers ___ inspect all safety interlocks.', opts: ['must', 'can to', 'ought'], ans: 0, socraticHint: 'Usa verbos modales de obligación técnica.' }
-            ];
-        }
-        if (dialogueTurns.length === 0) {
-            dialogueTurns = [
-                { en: 'Please verify the safety interlocks on station two.', es: 'Por favor verifica los enclavamientos de seguridad en la estación dos.' },
-                { en: 'All sensors are calibrated and operating normally.', es: 'Todos los sensores están calibrados y funcionando normalmente.' }
-            ];
-        }
-        if (quizList.length === 0) {
-            quizList = [
-                { q: 'What is the required protocol before repairing energized machinery?', opts: ['Disconnect power and apply LOTO', 'Work while running', 'Ignore warning labels'], ans: 0, exp: 'OSHA 1910.147 requires isolating energy sources with lock and tag.' }
-            ];
+        // Merge in sibling 50m class items if a canonical unit (like a1-u1) is launched directly
+        let vocabList = Array.isArray(unit.vocabulary) ? [...unit.vocabulary] : (Array.isArray(unit.vocab) ? [...unit.vocab] : []);
+        let drillsList = Array.isArray(unit.grammarDrills) ? [...unit.grammarDrills] : (Array.isArray(unit.drills) ? [...unit.drills] : []);
+        let quizList = Array.isArray(unit.unitQuiz) ? [...unit.unitQuiz] : (Array.isArray(unit.quiz) ? [...unit.quiz] : []);
+        let dialogueTurns = (unit.dialogue && Array.isArray(unit.dialogue.lines)) ? [...unit.dialogue.lines] : (Array.isArray(unit.dialogue) ? [...unit.dialogue] : []);
+        let vocabExList = Array.isArray(unit.vocabularyExercises) ? [...unit.vocabularyExercises] : [];
+        let readingQList = Array.isArray(unit.readingQuestions)
+            ? [...unit.readingQuestions]
+            : (unit.reading && Array.isArray(unit.reading.questions) ? [...unit.reading.questions] : []);
+        const listeningQList = (unit.listeningLab && Array.isArray(unit.listeningLab.questions)) ? [...unit.listeningLab.questions] : [];
+
+        if (window.STEMOS_MCER_CLASSES && !unit.isModularClass && typeof window.STEMOS_MCER_CLASSES.getClassesByUnit === 'function') {
+            const childClasses = window.STEMOS_MCER_CLASSES.getClassesByUnit(unit.id);
+            childClasses.forEach((cls) => {
+                if (Array.isArray(cls.vocab)) vocabList.push(...cls.vocab);
+                if (Array.isArray(cls.drills)) drillsList.push(...cls.drills);
+                if (Array.isArray(cls.dialogue)) dialogueTurns.push(...cls.dialogue);
+            });
         }
 
+        // Fallback high-tech baseline pools when custom/minimal units lack sufficient items
+        const defaultVocab = [
+            { en: 'Lockout / Tagout (LOTO)', es: 'Bloqueo y etiquetado', ipa: '/ˈlɑkˌaʊt ˈtæɡˌaʊt/', example: 'Always apply Lockout Tagout protocols before maintenance.', exampleES: 'Siempre aplica protocolos de bloqueo y etiquetado antes del mantenimiento.' },
+            { en: 'Pressure Gauge', es: 'Manómetro de presión', ipa: '/ˈprɛʃər ɡeɪdʒ/', example: 'Check the pressure gauge before opening main valves.', exampleES: 'Verifica el manómetro antes de abrir válvulas principales.' },
+            { en: 'Root Cause Analysis', es: 'Análisis de causa raíz', ipa: '/rut kɔz əˈnælɪsɪs/', example: 'The engineering team completed the 8D root cause report.', exampleES: 'El equipo de ingeniería completó el reporte 8D de causa raíz.' },
+            { en: 'Quality Assurance', es: 'Aseguramiento de calidad', ipa: '/ˈkwɑləti əˈʃʊrəns/', example: 'Perform strict quality assurance checks at each station.', exampleES: 'Realiza controles rigurosos de calidad en cada estación.' },
+            { en: 'Telemetry Baseline', es: 'Línea base de telemetría', ipa: '/təˈlɛmətri ˈbeɪsˌlaɪn/', example: 'Compare live thermal logs against the telemetry baseline.', exampleES: 'Compara registros térmicos en vivo contra la línea base.' },
+            { en: 'Tolerance Spec', es: 'Especificación de tolerancia', ipa: '/ˈtɑlərəns spɛk/', example: 'Confirm millimeter tolerance specs on every bracket.', exampleES: 'Confirma las especificaciones milimétricas en cada soporte.' },
+            { en: 'Firmware Verification', es: 'Verificación de firmware', ipa: '/ˈfɜrmˌwɛr ˌvɛrəfəˈkeɪʃən/', example: 'Run automated firmware verification prior to shipping.', exampleES: 'Ejecuta verificación automatizada de firmware antes de embarcar.' },
+            { en: 'Shift Handoff', es: 'Entrega de turno', ipa: '/ʃɪft ˈhændɔf/', example: 'Document open alerts clearly in the shift handoff log.', exampleES: 'Documenta las alertas abiertas claramente en la entrega de turno.' }
+        ];
+        const vSeen = new Set();
+        vocabList = [...vocabList, ...defaultVocab].filter((v) => {
+            const key = normTxt(v && (v.en || v.term));
+            if (!key || vSeen.has(key)) return false;
+            vSeen.add(key);
+            return true;
+        });
+
+        const defaultDrills = [
+            { q: 'The technician ___ the emergency stop button immediately when alarms sound.', opts: ['presses', 'pressing', 'are press', 'press to'], ans: 0, socraticHint: 'Usa el presente simple (3ª persona -s) para protocolos estandarizados.' },
+            { q: 'Engineers ___ inspect all safety interlocks before energizing Line 2.', opts: ['must', 'can to', 'ought', 'having to'], ans: 0, socraticHint: 'Usa verbos modales de obligación técnica sin "to".' },
+            { q: 'Every production log ___ verified during the weekly QA audit.', opts: ['is', 'are being do', 'have', 'were'], ans: 0, socraticHint: 'Voz pasiva presente con sujeto singular ("Every production log").' },
+            { q: 'If cell voltage ___ below threshold, the BMS isolates the pack.', opts: ['drops', 'will drop', 'dropped was', 'dropping'], ans: 0, socraticHint: 'Zero Conditional técnico: If + Presente Simple.' }
+        ];
+        const dSeen = new Set();
+        drillsList = [...drillsList, ...defaultDrills].filter((d) => {
+            const key = normTxt(d && (d.q || d.question));
+            if (!key || !Array.isArray(d.opts || d.options) || (d.opts || d.options).length < 2 || dSeen.has(key)) return false;
+            dSeen.add(key);
+            return true;
+        });
+
+        const defaultDlg = [
+            { speaker: 'Safety Lead', en: 'Please verify the safety interlocks on station two before startup.', es: 'Por favor verifica los enclavamientos de seguridad en la estación dos antes de arrancar.' },
+            { speaker: 'Technician', en: 'All sensors are calibrated and streaming normal telemetry right now.', es: 'Todos los sensores están calibrados y transmitiendo telemetría normal ahora.' },
+            { speaker: 'QA Engineer', en: 'Have you uploaded the morning inspection log to the cloud portal?', es: '¿Ya subiste la bitácora matutina de inspección al portal en la nube?' },
+            { speaker: 'Technician', en: 'Yes, I logged the pressure readings and tagged the approved batch.', es: 'Sí, registré las lecturas de presión y etiqueté el lote aprobado.' },
+            { speaker: 'Supervisor', en: 'Keep me updated if conveyor speed deviates by more than two percent.', es: 'Mantenme informado si la velocidad del transportador se desvía más de dos por ciento.' },
+            { speaker: 'Operator', en: 'Understood, we will monitor live metrics closely throughout the shift.', es: 'Entendido, vigilaremos las métricas en vivo durante todo el turno.' },
+            { speaker: 'Plant Eng', en: 'Let us review the Power Sheet deliverables before the four PM handoff.', es: 'Revisemos los entregables del Power Sheet antes del relevo de las cuatro PM.' },
+            { speaker: 'Technician', en: 'Everything is verified and ready for shift sign-off.', es: 'Todo está verificado y listo para firma de turno.' }
+        ];
+        const dlgSeen = new Set();
+        dialogueTurns = [...dialogueTurns, ...defaultDlg].filter((t) => {
+            const txt = t && (t.en || t.text || t.line);
+            const key = normTxt(txt);
+            if (!key || dlgSeen.has(key)) return false;
+            dlgSeen.add(key);
+            return true;
+        });
+
+        const qSeen = new Set();
+        quizList = [...quizList, ...drillsList].filter((q) => {
+            const key = normTxt(q && (q.q || q.question));
+            const opts = q && (q.opts || q.options);
+            if (!key || !Array.isArray(opts) || opts.length < 2 || qSeen.has(key)) return false;
+            qSeen.add(key);
+            return true;
+        });
+
+        // Helper utilities to build distinct, valid exercises without duplication
+        const seedOffset = unitIdNorm.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+
+        const buildShuffledOptions = (correctStr, candidateDistractors, seed) => {
+            const cleanCorrect = String(correctStr || '').trim();
+            const unique = [cleanCorrect];
+            (candidateDistractors || []).forEach((d) => {
+                const s = String(d || '').trim();
+                if (s && !unique.some((u) => u.toLowerCase() === s.toLowerCase())) unique.push(s);
+            });
+            const fallbackPool = [
+                'Skip quality verification to save shift time.',
+                'Shut down main server breakers without notice.',
+                'Store uncalibrated gauges in the cafeteria.',
+                'Leave equipment logs blank until next quarter.'
+            ];
+            for (let i = 0; i < fallbackPool.length && unique.length < 4; i++) {
+                const cand = fallbackPool[(i + seed) % fallbackPool.length];
+                if (!unique.some((u) => u.toLowerCase() === cand.toLowerCase())) unique.push(cand);
+            }
+            const opts = unique.slice(0, 4);
+            const ranked = opts.map((opt, idx) => ({
+                opt,
+                score: ((idx + 1) * 31 + seed * 19 + opt.length * 7) % 97
+            }));
+            ranked.sort((a, b) => a.score - b.score);
+            const shuffled = ranked.map((r) => r.opt);
+            return { options: shuffled, correctIdx: Math.max(0, shuffled.indexOf(cleanCorrect)) };
+        };
+
+        const makeDistractorsForSentence = (sentence) => {
+            const wordsInSentence = new Set(cleanSentenceWords(sentence).toLowerCase().split(/\s+/));
+            const bank = ['always', 'voltage', 'before', 'system', 'must', 'calibrated', 'never', 'while', 'sensor', 'unless', 'torque', 'cloud'];
+            return bank.filter((w) => !wordsInSentence.has(w)).slice(0, 3);
+        };
+
+        const exSigs = new Set();
+        const getExerciseSignature = (ex) => {
+            if (!ex) return '';
+            if (ex.type === 'tap_pair') {
+                return 'tap_pair:' + (ex.pairs || []).map((p) => normTxt(p.term)).sort().join('|');
+            }
+            if (ex.type === 'sentence_builder') {
+                return 'sentence:' + normTxt(ex.targetSentence);
+            }
+            if (ex.type === 'audio_listen') {
+                return 'audio:' + normTxt(ex.audioText);
+            }
+            if (ex.type === 'voice_crucible') {
+                return 'voice:' + normTxt(ex.targetText);
+            }
+            return 'mcq:' + normTxt((ex.prompt || '') + ' ' + ((ex.options || [])[ex.correctIdx] || ''));
+        };
+
+        const pushEx = (ex) => {
+            if (!ex) return false;
+            if (ex.type === 'mcq_gap') {
+                if (!ex.prompt || !Array.isArray(ex.options) || ex.options.length < 2) return false;
+                if (typeof ex.correctIdx !== 'number' || ex.correctIdx < 0 || ex.correctIdx >= ex.options.length) ex.correctIdx = 0;
+            } else if (ex.type === 'sentence_builder') {
+                const cleaned = cleanSentenceWords(ex.targetSentence);
+                const tokens = cleaned.split(/\s+/).filter(Boolean);
+                if (tokens.length < 3) return false;
+                // Cap overly long sentences cleanly so tap-building remains crisp on mobile
+                ex.targetSentence = tokens.length > 15 ? tokens.slice(0, 14).join(' ') : cleaned;
+                if (!ex.distractors || ex.distractors.length === 0) ex.distractors = makeDistractorsForSentence(ex.targetSentence);
+            } else if (ex.type === 'tap_pair') {
+                if (!Array.isArray(ex.pairs) || ex.pairs.length < 3) return false;
+            } else if (ex.type === 'audio_listen') {
+                if (!ex.audioText || !Array.isArray(ex.options) || ex.options.length < 2) return false;
+            } else if (ex.type === 'voice_crucible') {
+                if (!ex.targetText) return false;
+            }
+            const sig = getExerciseSignature(ex);
+            if (!sig || exSigs.has(sig)) return false;
+            exSigs.add(sig);
+            exercises.push(ex);
+            return true;
+        };
+
+        const addDrillAsMcq = (drillObj, cat, heading, subtext, extraFields = {}) => {
+            if (!drillObj) return false;
+            const opts = drillObj.opts || drillObj.options || [];
+            if (opts.length < 2) return false;
+            const cIdx = (typeof drillObj.ans === 'number') ? drillObj.ans : (typeof drillObj.answer === 'number' ? drillObj.answer : 0);
+            return pushEx(Object.assign({
+                type: 'mcq_gap',
+                category: cat,
+                heading: heading,
+                subtext: drillObj.socraticHint || subtext,
+                prompt: drillObj.q || drillObj.question,
+                options: opts,
+                correctIdx: cIdx,
+                hint: drillObj.exp || drillObj.explanation || ''
+            }, extraFields));
+        };
+
+        const addPairBoardFromRange = (startIdx, title, subtext) => {
+            const slice = [];
+            for (let i = 0; i < 4; i++) {
+                const item = vocabList[(startIdx + i) % vocabList.length];
+                if (item && (item.en || item.term) && (item.es || item.translation)) {
+                    slice.push({ term: item.en || item.term, meaning: item.es || item.translation });
+                }
+            }
+            if (slice.length >= 3) {
+                return pushEx({
+                    type: 'tap_pair',
+                    category: title || 'Léxico Técnico & Colocaciones',
+                    heading: 'Match the English technical terms',
+                    subtext: subtext || 'Tap a technical term in English and connect it to its Spanish meaning.',
+                    pairs: slice
+                });
+            }
+            return false;
+        };
+
+        const addAudioFromSentence = (targetText, idx, category, heading, subtext) => {
+            if (!targetText) return false;
+            const distractorPool = [
+                ...dialogueTurns.map((t) => t.en || t.text),
+                ...vocabList.map((v) => v.example),
+                'All safety interlocks passed commissioning telemetry checks.',
+                'Please verify torque calibration logs prior to assembly.',
+                'Backup cloud servers switched to low-latency edge mode.'
+            ].filter((s) => s && normTxt(s) !== normTxt(targetText));
+            const built = buildShuffledOptions(targetText, distractorPool.slice(idx, idx + 6), seedOffset + idx * 7);
+            return pushEx({
+                type: 'audio_listen',
+                category: category || 'Industrial Audio Recognition',
+                heading: heading || 'Listen carefully and select the exact phrase',
+                subtext: subtext || 'Press Play to hear Standard American workplace speech (Piper Neural).',
+                audioText: targetText,
+                correct: targetText,
+                options: built.options
+            });
+        };
+
+        const addSentenceBuilderFromDrill = (drillObj, cat, heading) => {
+            if (!drillObj || !drillObj.q || !/_{2,}/.test(drillObj.q)) return false;
+            const opts = drillObj.opts || drillObj.options || [];
+            const cIdx = (typeof drillObj.ans === 'number') ? drillObj.ans : (drillObj.answer || 0);
+            const correctOpt = opts[cIdx];
+            if (!correctOpt) return false;
+            const solved = cleanSentenceWords(drillObj.q.replace(/_{2,}/, correctOpt));
+            return pushEx({
+                type: 'sentence_builder',
+                category: cat || 'Formula Assembly',
+                heading: heading || 'Assemble the accurate engineering sentence',
+                subtext: drillObj.socraticHint || 'Ordena los bloques aplicando la regla gramatical:',
+                targetSentence: solved,
+                distractors: makeDistractorsForSentence(solved)
+            });
+        };
+
+        const cm = (unit.grammarBox && unit.grammarBox.commonMistake)
+            || unit.commonMistake
+            || (Array.isArray(unit.commonMistakes) && unit.commonMistakes[0]);
+        const fc = unit.falseCognate || (Array.isArray(unit.falseCognates) && unit.falseCognates[0]);
+        const ps = unit.powerSheet || {};
+
+        const addCommonMistakeRadar = (cat) => {
+            if (!cm || !cm.bad || !cm.good) return false;
+            const goodChoice = String(cm.good).split('/')[0].trim();
+            const badChoice = String(cm.bad).split('/')[0].trim();
+            if (!goodChoice || !badChoice || goodChoice.toLowerCase() === badChoice.toLowerCase()) return false;
+            const extraWrong = 'Is missing technical calibration completely tomorrow.';
+            const extraWrong2 = 'No logs was record during yesterday assembly shift.';
+            const built = buildShuffledOptions(goodChoice, [badChoice, extraWrong, extraWrong2], seedOffset + 41);
+            return pushEx({
+                type: 'mcq_gap',
+                category: cat || 'Anti-Trap Radar (ES -> EN)',
+                heading: 'Which sentence is free of Spanish-transfer errors?',
+                subtext: 'Spot typical word-for-word interference and select natural English:',
+                prompt: 'Select the grammatically sound sentence:',
+                options: built.options,
+                correctIdx: built.correctIdx,
+                hint: cm.exp || 'Avoid literal translation from Spanish.'
+            });
+        };
+
+        const addFalseCognateCheck = (cat) => {
+            if (!fc || !fc.term || !fc.correct || !fc.mistake) return false;
+            const built = buildShuffledOptions(fc.correct, [
+                fc.mistake,
+                'Omitir registros de auditoría en turno nocturno',
+                'Reemplazar piezas sin verificación dimensional'
+            ], seedOffset + 53);
+            return pushEx({
+                type: 'mcq_gap',
+                category: cat || 'False-Cognate & Precision Alert',
+                heading: `What does "${fc.term}" mean in technical English?`,
+                subtext: 'Avoid false friends between Spanish and US engineering terminology:',
+                prompt: `Choose the accurate meaning of "${fc.term}":`,
+                options: built.options,
+                correctIdx: built.correctIdx,
+                hint: fc.tip || `Watch out: "${fc.term}" does NOT mean "${fc.mistake}".`
+            });
+        };
+
+        // Parse reading passage + Power Sheet fillBlanks dynamically
+        const readingBody = (unit.grammarBox && (unit.grammarBox.goldenRule || unit.grammarBox.explanationES))
+            ? stripTags(unit.grammarBox.goldenRule || unit.grammarBox.explanationES)
+            : (unit.reading && (unit.reading.text || unit.reading.passage))
+                || (unit.canDo || 'Apply the grammatical structure in authentic STEM operational contexts.');
+        const akMap = {};
+        if (ps.answerKey) {
+            for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
+                akMap[m[1]] = m[2].trim();
+            }
+        }
+        const parsedPsFillDrills = [];
+        (Array.isArray(ps.fillBlanks) ? ps.fillBlanks : []).forEach((rawLine, fIdx) => {
+            const match = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
+            if (!match || !akMap[match[1]]) return;
+            const rawOpts = match[3].split('/').map((s) => s.trim()).filter(Boolean);
+            const ansTxt = akMap[match[1]];
+            if (!rawOpts.some((o) => o.toLowerCase() === ansTxt.toLowerCase())) rawOpts.unshift(ansTxt);
+            const built = buildShuffledOptions(ansTxt, rawOpts.filter((o) => o.toLowerCase() !== ansTxt.toLowerCase()), seedOffset + fIdx * 11 + 5);
+            parsedPsFillDrills.push({
+                q: match[2].trim(),
+                opts: built.options,
+                ans: built.correctIdx,
+                exp: (unit.grammarBox && unit.grammarBox.goldenRule) ? stripTags(unit.grammarBox.goldenRule) : '',
+                socraticHint: 'Aplica el patrón gramatical dentro del contexto técnico:'
+            });
+        });
+
+        // Ensure vocabularyExercises has plenty of dynamic cloze/definition items if < 6
+        const builtVocabClozes = [];
+        vocabList.forEach((v, idx) => {
+            const term = String(v.en || v.term || '').trim();
+            const meaning = String(v.es || v.translation || '').trim();
+            const ex = String(v.example || '').trim();
+            if (!term || !meaning) return;
+            const distractors = vocabList.filter((_, i) => i !== idx).map((o) => o.en || o.term).filter((t) => t && t.toLowerCase() !== term.toLowerCase());
+            const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const re = new RegExp(`\\b${esc}\\b`, 'i');
+            if (ex && re.test(ex) && distractors.length >= 2) {
+                const built = buildShuffledOptions(term, distractors.slice(0, 3), seedOffset + idx * 13);
+                builtVocabClozes.push({
+                    q: `Complete the technical context sentence: "${ex.replace(re, '_____')}"`,
+                    opts: built.options,
+                    ans: built.correctIdx,
+                    exp: `"${term}" (${meaning}) fits accurately: ${ex}`,
+                    socraticHint: v.exampleES || `Relaciona el enunciado con "${meaning}".`
+                });
+            } else if (distractors.length >= 2) {
+                const built = buildShuffledOptions(term, distractors.slice(0, 3), seedOffset + idx * 17);
+                builtVocabClozes.push({
+                    q: `Select the English STEM term that translates as "${meaning}":`,
+                    opts: built.options,
+                    ans: built.correctIdx,
+                    exp: `${term} = ${meaning}.${ex ? ' Example: ' + ex : ''}`,
+                    socraticHint: v.pinkStress ? `Word Stress: ${v.pinkStress}` : `Término clave para "${meaning}".`
+                });
+            }
+        });
+        vocabExList = [...vocabExList, ...builtVocabClozes];
+
+        // ── SECTION BUILDERS (Target: 8–10 Unique Non-Repetitive Activities Each) ──
         if (stepMeta.type === 'vocab_sprint') {
-            // Ex 1: Tap-to-Pair (4 Technical Pairs)
-            const pairs = [];
-            const count = Math.min(4, vocabList.length);
-            for (let i = 0; i < count; i++) {
-                const item = vocabList[i];
-                pairs.push({
-                    term: item.en || item.term || 'Safety Eyewear',
-                    meaning: item.es || item.translation || 'Gafas de seguridad'
-                });
-            }
-            if (pairs.length >= 2) {
-                exercises.push({
-                    type: 'tap_pair',
-                    category: 'Léxico Técnico & Colocaciones',
-                    heading: 'Relaciona las parejas técnicas',
-                    subtext: 'Toca un término en inglés y conéctalo con su significado industrial en español.',
-                    pairs: pairs
-                });
-            }
+            // 1-2: Two distinct 4-pair matching boards (8 terms total)
+            addPairBoardFromRange(0, 'Technical Lexicon · Set A', 'Match the first 4 core technical terms with their meaning.');
+            addPairBoardFromRange(4, 'Technical Lexicon · Set B', 'Match the next 4 engineering terms with their meaning.');
 
-            // Ex 2: Sentence Builder with Vocab
-            if (vocabList[0] && vocabList[0].example) {
-                const cleanSentence = vocabList[0].example.replace(/[.!?]/g, '').trim();
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Constructor de Oraciones',
-                    heading: 'Ensambla la oración técnica en inglés',
-                    subtext: vocabList[0].exampleES || vocabList[0].es || 'Forma la estructura gramatical correcta:',
-                    targetSentence: cleanSentence,
-                    distractors: ['they', 'under', 'calibrate']
-                });
-            }
-
-            // Ex 3: Listen & Select
-            if (vocabList[1] && vocabList[1].example) {
-                const targetText = vocabList[1].example;
-                const dist1 = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'Please verify the pressure gauge before starting.';
-                const dist2 = (vocabList[2] && vocabList[2].example) ? vocabList[2].example : 'The technician is calibrating the temperature sensor.';
-                const dist3 = (dialogueTurns[0] && dialogueTurns[0].en) ? dialogueTurns[0].en : 'All technicians must verify their badge credentials.';
-                const opts = [targetText, dist1, dist2, dist3].sort(() => Math.random() - 0.5);
-                exercises.push({
-                    type: 'audio_listen',
-                    category: 'Audio en Planta Industrial',
-                    heading: 'Escucha con atención y selecciona la frase',
-                    subtext: 'Presiona el altavoz para reproducir la instrucción técnica con pronunciación Standard American (Piper Neural).',
-                    audioText: targetText,
-                    correct: targetText,
-                    options: opts
-                });
-            }
-
-            // Ex 4: Gap Fill MCQ
-            if (unit.vocabularyExercises && unit.vocabularyExercises[0]) {
-                const ex = unit.vocabularyExercises[0];
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Uso de Vocabulario Industrial',
-                    heading: 'Completa el enunciado técnico',
-                    subtext: 'Selecciona la opción que da sentido a la norma o instrucción operativa:',
-                    prompt: ex.q,
-                    options: ex.opts || ex.options,
-                    correctIdx: (typeof ex.ans === 'number') ? ex.ans : (ex.answer || 0),
-                    hint: ex.socraticHint || ex.exp || ''
-                });
-            }
-        } else if (stepMeta.type === 'sentence_builder') {
-            // Ex 1: Sentence Builder from Dialogue Turn
-            if (dialogueTurns[0]) {
-                const line = dialogueTurns[0].en || dialogueTurns[0].text || dialogueTurns[0].line || '';
-                const cleanSentence = line.replace(/[.!?]/g, '').trim();
-                if (cleanSentence.split(' ').length >= 3 && cleanSentence.split(' ').length <= 10) {
-                    exercises.push({
-                        type: 'sentence_builder',
-                        category: 'Sintaxis en Línea de Ensamble',
-                        heading: 'Construye la frase técnica en inglés',
-                        subtext: dialogueTurns[0].es || 'Ordena las palabras para comunicar la idea con precisión:',
-                        targetSentence: cleanSentence,
-                        distractors: ['always', 'pressure', 'switch']
-                    });
-                }
-            }
-
-            // Ex 2: Sentence Builder from Grammar Drill
-            if (drillsList[0]) {
-                const drill = drillsList[0];
-                const correctOpt = (drill.opts || drill.options)[drill.ans || drill.answer || 0];
-                const solvedSentence = drill.q.replace(/_{2,}/, correctOpt).replace(/[.!?]/g, '').trim();
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Constructor de Oraciones',
-                    heading: 'Ensambla la oración gramatical correcta',
-                    subtext: drill.socraticHint || 'Estructura la norma operativa en el orden correspondiente:',
-                    targetSentence: solvedSentence,
-                    distractors: ['not', 'where', 'before']
-                });
-            }
-
-            // Ex 3: Tap to Pair
-            if (vocabList.length >= 4) {
-                const pairs = vocabList.slice(0, 4).map(v => ({
-                    term: v.en || v.term,
-                    meaning: v.es || v.translation
-                }));
-                exercises.push({
-                    type: 'tap_pair',
-                    category: 'Vocabulario Operativo',
-                    heading: 'Relaciona las parejas técnicas',
-                    subtext: 'Conecta cada herramienta o concepto con su función:',
-                    pairs: pairs
-                });
-            }
-
-            // Ex 4: Second Sentence Builder
-            if (vocabList[2] && vocabList[2].example) {
-                const cleanSentence = vocabList[2].example.replace(/[.!?]/g, '').trim();
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Sintaxis de Taller & Cleanroom',
-                    heading: 'Ensambla la oración técnica en inglés',
-                    subtext: vocabList[2].exampleES || vocabList[2].es || 'Coloca los bloques léxicos en orden:',
-                    targetSentence: cleanSentence,
-                    distractors: ['will', 'over', 'tighten']
-                });
-            }
-        } else if (stepMeta.type === 'listening') {
-            // Ex 1: Listening Audio Listen & Select
-            if (dialogueTurns[0]) {
-                const audioSentence = dialogueTurns[0].en || dialogueTurns[0].text || 'Good morning! Welcome to the team. Are you Alex Rivera?';
-                const dist1 = dialogueTurns[1] ? (dialogueTurns[1].en || dialogueTurns[1].text) : 'Please verify the pressure gauge before starting.';
-                const dist2 = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'The technician is calibrating the temperature sensor.';
-                const dist3 = (vocabList[1] && vocabList[1].example) ? vocabList[1].example : 'Check the safety protocol at the main station.';
-                const opts = [audioSentence, dist1, dist2, dist3].sort(() => Math.random() - 0.5);
-                exercises.push({
-                    type: 'audio_listen',
-                    category: 'Comprensión Auditiva de Planta',
-                    heading: 'Escucha el audio y selecciona la opción exacta',
-                    subtext: 'Presiona el altavoz y entrena tu oído al habla estándar norteamericana en entornos industriales (Piper Neural).',
-                    audioText: audioSentence,
-                    correct: audioSentence,
-                    options: opts
-                });
-            }
-
-            // Ex 2: Audio Sentence Builder
-            if (vocabList[0] && vocabList[0].example) {
-                const cleanSentence = vocabList[0].example.replace(/[.!?]/g, '').trim();
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Dictado & Ensamble Auditivo',
-                    heading: 'Escucha y ensambla la oración con los bloques',
-                    subtext: `Audio: "${vocabList[0].example}"`,
-                    targetSentence: cleanSentence,
-                    distractors: ['fast', 'down', 'torque']
-                });
-            }
-
-            // Ex 3: Quiz Listening Check
-            if (quizList[0]) {
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Evaluación de Comprensión',
-                    heading: 'Selecciona la respuesta correcta al diálogo',
-                    subtext: quizList[0].socraticHint || 'Elige la alternativa que cumple con la regla de comunicación técnica:',
-                    prompt: quizList[0].q || quizList[0].question,
-                    options: quizList[0].opts || quizList[0].options,
-                    correctIdx: (typeof quizList[0].ans === 'number') ? quizList[0].ans : (quizList[0].answer || 0),
-                    hint: quizList[0].exp || quizList[0].explanation || ''
-                });
-            }
-        } else if (stepMeta.type === 'grammar_drills') {
-            // Ex 1: Grammar Drill 1
-            if (drillsList[0]) {
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Gramática Aplicada & Sintaxis',
-                    heading: 'Completa la regla gramatical técnica',
-                    subtext: drillsList[0].socraticHint || 'Observa la concordancia de sujeto y verbo:',
-                    prompt: drillsList[0].q,
-                    options: drillsList[0].opts || drillsList[0].options,
-                    correctIdx: (typeof drillsList[0].ans === 'number') ? drillsList[0].ans : (drillsList[0].answer || 0),
-                    hint: drillsList[0].exp || ''
-                });
-            }
-
-            // Ex 2: Grammar Drill 2
-            if (drillsList[1]) {
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Estructuras & Pronombres',
-                    heading: 'Elige la opción sintácticamente correcta',
-                    subtext: drillsList[1].socraticHint || 'Aplica la regla inductiva del Marco Común Europeo:',
-                    prompt: drillsList[1].q,
-                    options: drillsList[1].opts || drillsList[1].options,
-                    correctIdx: (typeof drillsList[1].ans === 'number') ? drillsList[1].ans : (drillsList[1].answer || 0),
-                    hint: drillsList[1].exp || ''
-                });
-            }
-
-            // Ex 3: Sentence Builder for Grammar
-            if (vocabList[1] && vocabList[1].example) {
-                const cleanSentence = vocabList[1].example.replace(/[.!?]/g, '').trim();
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Ensamblaje Gramatical Activo',
-                    heading: 'Construye la oración respetando la fórmula',
-                    subtext: vocabList[1].exampleES || 'Alinea sujeto + verbo auxiliar + complemento técnico:',
-                    targetSentence: cleanSentence,
-                    distractors: ['has', 'does', 'wrench']
-                });
-            }
-        } else if (stepMeta.type === 'dialogue_roleplay') {
-            // Ex 1: Partner A speaks -> pick Partner B's natural reply
-            const turnA = dialogueTurns[0];
-            const turnB = dialogueTurns[1] || { speaker: 'Partner', en: 'Understood. I will log the verification right away.', es: 'Entendido. Registraré la verificación de inmediato.' };
-            const lineA = turnA ? (turnA.en || turnA.text || turnA.line || '') : '';
-            const lineB = turnB ? (turnB.en || turnB.text || turnB.line || '') : '';
-            if (lineA && lineB) {
-                const candidatePool = [
-                    dialogueTurns[2] && (dialogueTurns[2].en || dialogueTurns[2].text),
-                    dialogueTurns[3] && (dialogueTurns[3].en || dialogueTurns[3].text),
-                    vocabList[0] && vocabList[0].example,
-                    vocabList[1] && vocabList[1].example,
-                    'No problem, I already ignored the safety alarm yesterday.',
-                    'Sorry, I forgot my password at the security gate.'
-                ].filter(opt => opt && opt.trim().toLowerCase() !== lineB.trim().toLowerCase());
-                const uniqueDist = [...new Set(candidatePool)].slice(0, 2);
-                const opts = [lineB, ...uniqueDist].sort(() => Math.random() - 0.5);
-                const correctIdx = opts.indexOf(lineB);
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Diálogo Activo · Roleplay en Planta',
-                    heading: 'Responde en el diálogo operativo',
-                    subtext: 'Escucha lo que dice tu compañero y elige la respuesta correcta en inglés:',
-                    contextDialogue: {
-                        speaker: turnA.speaker || 'Colleague',
-                        text: lineA,
-                        translation: turnA.es || turnA.translation || ''
-                    },
-                    prompt: `${turnB.speaker || 'Tú'} responde:`,
-                    options: opts,
-                    correctIdx: correctIdx,
-                    hint: turnB.es || turnB.translation || 'Mantén claridad y registro apropiado al turno.'
-                });
-            }
-
-            // Ex 2: Assemble Partner B reply as Sentence Builder
-            if (lineB) {
-                const cleanReply = lineB.replace(/[.!?]/g, '').trim();
-                const words = cleanReply.split(/\s+/);
-                if (words.length >= 2 && words.length <= 14) {
-                    exercises.push({
-                        type: 'sentence_builder',
-                        category: 'Construcción de Respuesta',
-                        heading: 'Arma tu intervención en la conversación',
-                        subtext: turnB.es || turnB.translation || 'Ordena los bloques para responder correctamente:',
-                        targetSentence: cleanReply,
-                        distractors: ['never', 'already', 'broken']
-                    });
-                }
-            }
-
-            // Ex 3: Turn C -> D follow-up when 4 turns exist
-            if (dialogueTurns.length >= 4) {
-                const turnC = dialogueTurns[2];
-                const turnD = dialogueTurns[3];
-                const lineC = turnC.en || turnC.text || '';
-                const lineD = turnD.en || turnD.text || '';
-                if (lineC && lineD) {
-                    const opts2 = [
-                        lineD,
-                        lineA,
-                        'Let us postpone this inspection until next month.'
-                    ].filter((v, i, a) => v && a.indexOf(v) === i).sort(() => Math.random() - 0.5);
-                    exercises.push({
-                        type: 'mcq_gap',
-                        category: 'Continuación de Diálogo',
-                        heading: 'Completa el cierre de la conversación',
-                        subtext: 'Selecciona la respuesta coherente al escenario:',
-                        contextDialogue: {
-                            speaker: turnC.speaker || 'Colleague',
-                            text: lineC,
-                            translation: turnC.es || turnC.translation || ''
-                        },
-                        prompt: `${turnD.speaker || 'Tú'} continúa:`,
-                        options: opts2,
-                        correctIdx: opts2.indexOf(lineD),
-                        hint: turnD.es || turnD.translation || ''
-                    });
-                }
-            }
-        } else if (stepMeta.type === 'reading_context') {
-            const stripHtml = (s) => String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-            const readingBody = (unit.grammarBox && (unit.grammarBox.goldenRule || unit.grammarBox.explanationES))
-                ? stripHtml(unit.grammarBox.goldenRule || unit.grammarBox.explanationES)
-                : (unit.canDo || 'Aplica la estructura gramatical en contexto operativo real.');
-
-            // Parse fillBlanks + answerKey cleanly when available
-            const ps = unit.powerSheet || {};
-            const akMap = {};
-            if (ps.answerKey) {
-                for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
-                    akMap[m[1]] = m[2].trim();
-                }
-            }
-            const fbItems = Array.isArray(ps.fillBlanks) ? ps.fillBlanks : [];
-            fbItems.slice(0, 2).forEach((rawLine, fIdx) => {
-                const match = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
-                if (match && akMap[match[1]]) {
-                    const promptTxt = match[2];
-                    const rawOpts = match[3].split('/').map(s => s.trim()).filter(Boolean);
-                    const ansTxt = akMap[match[1]];
-                    if (!rawOpts.some(o => o.toLowerCase() === ansTxt.toLowerCase())) {
-                        rawOpts.unshift(ansTxt);
-                    }
-                    const shuffled = [...new Set(rawOpts)].sort(() => Math.random() - 0.5);
-                    const cIdx = shuffled.findIndex(o => o.toLowerCase() === ansTxt.toLowerCase());
-                    if (cIdx >= 0 && shuffled.length >= 2) {
-                        exercises.push({
-                            type: 'mcq_gap',
-                            category: 'Lectura & Contexto Aplicado',
-                            heading: 'Lee la nota clave y completa el enunciado',
-                            subtext: 'Aplica el patrón gramatical dentro del contexto técnico:',
-                            contextReading: fIdx === 0 ? {
-                                badge: unit.industryContext || (unit.cefr ? `MCER ${unit.cefr}` : 'Contexto STEM'),
-                                title: unit.titleES || unit.title || 'Nota Rápida de Estudio',
-                                text: readingBody
-                            } : null,
-                            prompt: promptTxt,
-                            options: shuffled,
-                            correctIdx: cIdx,
-                            hint: (unit.grammarBox && unit.grammarBox.goldenRule) ? stripHtml(unit.grammarBox.goldenRule) : ''
-                        });
-                    }
+            // 3-5: Contextual vocab cloze & definition MCQs
+            vocabExList.slice(0, 6).forEach((vex) => {
+                if (exercises.length < 6) {
+                    addDrillAsMcq(vex, 'Industrial Vocabulary in Context', 'Complete or identify the technical term', 'Select the option that completes the engineering statement accurately:');
                 }
             });
 
-            // Spot-the-trap exercise from commonMistake (replaces passive wall-of-text warning!)
-            const cm = (unit.grammarBox && unit.grammarBox.commonMistake) || unit.commonMistake;
-            if (cm && cm.bad && cm.good) {
-                const goodChoice = String(cm.good).split('/')[0].trim();
-                const badChoice = String(cm.bad).split('/')[0].trim();
-                if (goodChoice && badChoice && goodChoice !== badChoice) {
-                    const trapOpts = [goodChoice, badChoice].sort(() => Math.random() - 0.5);
-                    exercises.push({
+            // 6: False-cognate precision alert
+            addFalseCognateCheck('Terminology Precision Radar');
+
+            // 7-8: Two distinct audio listen checks from vocab examples
+            let audioAdded = 0;
+            for (let i = 1; i < vocabList.length && audioAdded < 2; i += 2) {
+                if (vocabList[i] && vocabList[i].example) {
+                    if (addAudioFromSentence(vocabList[i].example, i + 10, 'Pronunciation & Listening · Vocab', 'Listen and identify the technical phrase', 'Use Standard American audio playback (Piper Neural) and choose the matching phrase:')) {
+                        audioAdded++;
+                    }
+                }
+            }
+
+            // 9-10: Two Sentence Builders deploying vocab terms in full clauses
+            let sbAdded = 0;
+            for (let i = 0; i < vocabList.length && sbAdded < 2; i++) {
+                const exSent = vocabList[i] && vocabList[i].example;
+                if (exSent && exercises.length < 10) {
+                    if (pushEx({
+                        type: 'sentence_builder',
+                        category: 'Collocation Builder',
+                        heading: 'Assemble the technical sentence using key vocabulary',
+                        subtext: vocabList[i].exampleES || vocabList[i].es || 'Forma la estructura gramatical correcta:',
+                        targetSentence: cleanSentenceWords(exSent),
+                        distractors: makeDistractorsForSentence(exSent)
+                    })) {
+                        sbAdded++;
+                    }
+                }
+            }
+        } else if (stepMeta.type === 'sentence_builder') {
+            // 1-3: Dialogue syntax builders
+            dialogueTurns.slice(0, 6).forEach((t, idx) => {
+                if (exercises.filter((e) => e.type === 'sentence_builder').length < 3) {
+                    const line = t.en || t.text || t.line || '';
+                    pushEx({
+                        type: 'sentence_builder',
+                        category: `Workplace Syntax · Turn ${idx + 1}`,
+                        heading: 'Build the authentic English engineering phrase',
+                        subtext: t.es || t.translation || 'Ordena los bloques para comunicar la idea con precisión:',
+                        targetSentence: cleanSentenceWords(line),
+                        distractors: makeDistractorsForSentence(line)
+                    });
+                }
+            });
+
+            // 4-5: Solved grammar formula assembly from drills
+            drillsList.slice(0, 5).forEach((dr) => {
+                if (exercises.filter((e) => e.type === 'sentence_builder').length < 5) {
+                    addSentenceBuilderFromDrill(dr, 'Grammar Structure Assembly', 'Assemble the grammatically correct rule');
+                }
+            });
+
+            // 6-7: Power Sheet reorder + Vocab sentence builders
+            if (ps.answerKey && ps.answerKey.includes('Orden:')) {
+                ps.answerKey.split('Orden:')[1].split('/').slice(0, 2).forEach((seg) => {
+                    const cleanSeg = cleanSentenceWords(seg);
+                    if (cleanSeg) {
+                        pushEx({
+                            type: 'sentence_builder',
+                            category: 'Power Sheet Word-Order Challenge',
+                            heading: 'Order the target sentence cleanly',
+                            subtext: 'Construye la oración respetando el orden sintáctico inglés:',
+                            targetSentence: cleanSeg,
+                            distractors: makeDistractorsForSentence(cleanSeg)
+                        });
+                    }
+                });
+            }
+            vocabList.forEach((v) => {
+                if (exercises.filter((e) => e.type === 'sentence_builder').length < 7 && v && v.example) {
+                    pushEx({
+                        type: 'sentence_builder',
+                        category: 'Workshop & Cleanroom Syntax',
+                        heading: 'Assemble the technical work statement',
+                        subtext: v.exampleES || v.es || 'Coloca las palabras en el orden correspondiente:',
+                        targetSentence: cleanSentenceWords(v.example),
+                        distractors: makeDistractorsForSentence(v.example)
+                    });
+                }
+            });
+
+            // 8: Syntax error detection radar
+            if (!addCommonMistakeRadar('Syntax Error Radar (ES -> EN)')) {
+                addDrillAsMcq(drillsList[2] || drillsList[0], 'Syntax Verification', 'Verify word order & agreement', 'Choose the accurately structured sentence:');
+            }
+
+            // 9: Supporting collocation pairing
+            addPairBoardFromRange(2, 'Key Blocks Pairing', 'Reinforce core nouns and technical verbs before continuing:');
+        } else if (stepMeta.type === 'listening') {
+            // 1-4: Four distinct audio recognition items (2 dialogue + 2 vocab examples)
+            let audioCount = 0;
+            for (let i = 0; i < dialogueTurns.length && audioCount < 2; i++) {
+                const line = dialogueTurns[i] && (dialogueTurns[i].en || dialogueTurns[i].text);
+                if (addAudioFromSentence(line, i + 1, `Plant Audio · Prompt ${audioCount + 1}`, 'Listen carefully and select the exact spoken sentence', 'Train your ear to Standard American industrial pronunciation:')) {
+                    audioCount++;
+                }
+            }
+            for (let i = 0; i < vocabList.length && audioCount < 4; i++) {
+                const exLine = vocabList[i] && vocabList[i].example;
+                if (addAudioFromSentence(exLine, i + 20, `Technical Example Audio · ${audioCount + 1}`, 'Listen to the engineering statement and match it', 'Play at 0.8x Slow or 1.0x Normal speed to verify every word:')) {
+                    audioCount++;
+                }
+            }
+
+            // 5-6: Audio dictation Sentence Builders
+            if (vocabList[0] && vocabList[0].example) {
+                pushEx({
+                    type: 'sentence_builder',
+                    category: 'Audio Dictation Assembly · 1',
+                    heading: 'Assemble the spoken technical sentence',
+                    subtext: `Reference Audio: "${vocabList[0].example}"`,
+                    targetSentence: cleanSentenceWords(vocabList[0].example),
+                    distractors: makeDistractorsForSentence(vocabList[0].example),
+                    contextDialogue: { speaker: 'Audio Prompt', text: vocabList[0].example, translation: vocabList[0].exampleES || '' }
+                });
+            }
+            if (dialogueTurns[1] && (dialogueTurns[1].en || dialogueTurns[1].text)) {
+                const line1 = dialogueTurns[1].en || dialogueTurns[1].text;
+                pushEx({
+                    type: 'sentence_builder',
+                    category: 'Audio Dictation Assembly · 2',
+                    heading: 'Reconstruct the dialogue line you hear',
+                    subtext: `Tap Speaker above to hear & assemble: "${dialogueTurns[1].es || ''}"`,
+                    targetSentence: cleanSentenceWords(line1),
+                    distractors: makeDistractorsForSentence(line1),
+                    contextDialogue: { speaker: dialogueTurns[1].speaker || 'Engineer', text: line1, translation: dialogueTurns[1].es || '' }
+                });
+            }
+
+            // 7-9: Three listening / dialogue comprehension MCQs
+            listeningQList.forEach((lq) => {
+                if (exercises.length < 9) {
+                    addDrillAsMcq(lq, 'Listening Comprehension Check', 'Answer based on workplace context', 'Verify accurate comprehension of the unit dialogue:');
+                }
+            });
+            quizList.forEach((qz) => {
+                if (exercises.length < 9) {
+                    addDrillAsMcq(qz, 'Audio Scenario Check', 'Select the accurate technical response', 'Apply what you heard to the operational scenario:');
+                }
+            });
+        } else if (stepMeta.type === 'grammar_drills') {
+            // 1-6: Six distinct CEFR + Tech grammar drills
+            drillsList.forEach((dr, idx) => {
+                if (exercises.filter((e) => e.type === 'mcq_gap').length < 6) {
+                    addDrillAsMcq(dr, `Applied Grammar · Drill ${idx + 1}`, 'Complete the CEFR engineering grammar rule', 'Observe subject, auxiliary, tense, and technical context:');
+                }
+            });
+
+            // Plus any Power Sheet drills not yet covered
+            parsedPsFillDrills.forEach((pd, idx) => {
+                if (exercises.filter((e) => e.type === 'mcq_gap').length < 7) {
+                    addDrillAsMcq(pd, `Power Sheet Grammar Check · ${idx + 1}`, 'Complete the structured blank', 'Select the exact CEFR form:');
+                }
+            });
+
+            // 7: ES -> EN Interference radar
+            addCommonMistakeRadar('Grammar Interference Radar (ES -> EN)');
+
+            // 8-9: Two Grammar Formula Sentence Builders
+            let gramSb = 0;
+            drillsList.forEach((dr) => {
+                if (gramSb < 1 && addSentenceBuilderFromDrill(dr, 'Active Grammar Construction', 'Build the complete grammatical formula')) {
+                    gramSb++;
+                }
+            });
+            for (let i = 1; i < vocabList.length && gramSb < 2; i++) {
+                if (vocabList[i] && vocabList[i].example) {
+                    if (pushEx({
+                        type: 'sentence_builder',
+                        category: 'Applied Syntax Output',
+                        heading: 'Construct the sentence following the grammar rule',
+                        subtext: vocabList[i].exampleES || 'Alinea sujeto + auxiliar + complemento técnico:',
+                        targetSentence: cleanSentenceWords(vocabList[i].example),
+                        distractors: makeDistractorsForSentence(vocabList[i].example)
+                    })) {
+                        gramSb++;
+                    }
+                }
+            }
+        } else if (stepMeta.type === 'dialogue_roleplay') {
+            // 1-3: Three interactive Partner-A -> Partner-B contextual roleplay turns (with audio bubble)
+            for (let pairIdx = 0; pairIdx + 1 < dialogueTurns.length && exercises.filter((e) => e.type === 'mcq_gap' && e.contextDialogue).length < 3; pairIdx += 2) {
+                const turnA = dialogueTurns[pairIdx];
+                const turnB = dialogueTurns[pairIdx + 1];
+                const lineA = turnA && (turnA.en || turnA.text || '');
+                const lineB = turnB && (turnB.en || turnB.text || '');
+                if (lineA && lineB) {
+                    const distractorPool = [
+                        dialogueTurns[(pairIdx + 3) % dialogueTurns.length] && (dialogueTurns[(pairIdx + 3) % dialogueTurns.length].en || dialogueTurns[(pairIdx + 3) % dialogueTurns.length].text),
+                        'No problem, we already ignored that sensor alert yesterday.',
+                        'Let us postpone all safety verifications until next month.',
+                        'Sorry, I forgot to log the shift telemetry before leaving.'
+                    ];
+                    const built = buildShuffledOptions(lineB, distractorPool, seedOffset + pairIdx * 9);
+                    pushEx({
                         type: 'mcq_gap',
-                        category: 'Radar Anti-Trampas (Español ➔ Inglés)',
-                        heading: '¿Cuál oración está libre de errores?',
-                        subtext: 'Detecta la interferencia típica del español y elige la forma natural correcta:',
-                        prompt: 'Elige la expresión correcta:',
-                        options: trapOpts,
-                        correctIdx: trapOpts.indexOf(goodChoice),
-                        hint: cm.exp || 'Evita traducir palabra por palabra desde el español.'
+                        category: `Active Roleplay · Turn ${Math.floor(pairIdx / 2) + 1}`,
+                        heading: 'Respond naturally inside the technical dialogue',
+                        subtext: 'Listen to your colleague above and select the coherent workplace reply:',
+                        contextDialogue: {
+                            speaker: turnA.speaker || 'Colleague',
+                            text: lineA,
+                            translation: turnA.es || turnA.translation || ''
+                        },
+                        prompt: `${turnB.speaker || 'Your'} reply:`,
+                        options: built.options,
+                        correctIdx: built.correctIdx,
+                        hint: turnB.es || turnB.translation || 'Maintain clear professional tone matching the turn.'
                     });
                 }
             }
 
-            // Active Writing Sentence Builder from Power Sheet reorder / answerKey
-            let writeSentence = '';
+            // 4-6: Three Conversation Reply Sentence Builders
+            let replyBuilt = 0;
+            for (let i = 1; i < dialogueTurns.length && replyBuilt < 3; i += 2) {
+                const t = dialogueTurns[i];
+                const line = t && (t.en || t.text);
+                if (line) {
+                    if (pushEx({
+                        type: 'sentence_builder',
+                        category: `Reply Assembly · Turn ${replyBuilt + 1}`,
+                        heading: 'Construct your spoken engineering response',
+                        subtext: t.es || t.translation || 'Ordena los bloques para responder en inglés natural:',
+                        targetSentence: cleanSentenceWords(line),
+                        distractors: makeDistractorsForSentence(line)
+                    })) {
+                        replyBuilt++;
+                    }
+                }
+            }
+
+            // 7: Audio Recognition of spoken conversation turn
+            const audioTurnLine = (dialogueTurns[2] && (dialogueTurns[2].en || dialogueTurns[2].text)) || (dialogueTurns[0] && (dialogueTurns[0].en || dialogueTurns[0].text));
+            addAudioFromSentence(audioTurnLine, 33, 'Dialogue Listening Verification', 'Recognize the spoken line from the shift conversation', 'Listen carefully without text clues first:');
+
+            // 8: Conversational / Workplace Vocabulary Pair Board
+            addPairBoardFromRange(1, 'Dialogue Lexicon Pairing', 'Connect core workplace terms used in this conversation:');
+
+            // 9: False Cognate / Pragmatic Register Check
+            if (!addFalseCognateCheck('Pragmatic Register & Nuance')) {
+                addDrillAsMcq(drillsList[0], 'Conversational Grammar Check', 'Choose the natural spoken structure', 'Apply conversational workplace grammar:');
+            }
+        } else if (stepMeta.type === 'reading_context') {
+            // 1-4: Reading comprehension + Power Sheet fillBlanks (first carries the rich contextReading card)
+            let readAdded = 0;
+            const firstContextCard = {
+                badge: unit.industryContext || (unit.cefr ? `MCER ${unit.cefr}` : 'STEM Context'),
+                title: unit.titleES || unit.title || 'Technical Brief & Study Rule',
+                text: readingBody
+            };
+            const allReadingPool = [...readingQList, ...parsedPsFillDrills];
+            allReadingPool.forEach((rq) => {
+                if (readAdded < 4) {
+                    const added = addDrillAsMcq(
+                        rq,
+                        `Reading & Applied Context · ${readAdded + 1}`,
+                        readAdded === 0 ? 'Read the technical brief and analyze' : 'Apply technical reading comprehension',
+                        'Evaluate the rule or scenario carefully:',
+                        readAdded === 0 ? { contextReading: firstContextCard } : {}
+                    );
+                    if (added) readAdded++;
+                }
+            });
+
+            // 5: Common Mistake ES -> EN trap check
+            addCommonMistakeRadar('Anti-Trap Radar (Español -> Inglés)');
+
+            // 6: False-Cognate technical precision check
+            addFalseCognateCheck('Technical Reading Precision');
+
+            // 7-8: Written Production Sentence Builders (Power Sheet reorder + vocab / writingLab)
+            let writeAdded = 0;
             if (ps.answerKey && ps.answerKey.includes('Orden:')) {
-                const seg = ps.answerKey.split('Orden:')[1].split('/')[0].replace(/[.!?]/g, '').trim();
-                if (seg.split(/\s+/).length >= 3) writeSentence = seg;
-            }
-            if (!writeSentence && vocabList[0] && vocabList[0].example) {
-                writeSentence = vocabList[0].example.replace(/[.!?]/g, '').trim();
-            }
-            if (writeSentence) {
-                exercises.push({
-                    type: 'sentence_builder',
-                    category: 'Producción Escrita Activa',
-                    heading: 'Construye la oración de salida',
-                    subtext: ps.writePrompt || (unit.writingLab && unit.writingLab.prompt) || 'Ordena los bloques para redactar la idea correctamente:',
-                    targetSentence: writeSentence,
-                    distractors: ['yesterday', 'not', 'only']
+                ps.answerKey.split('Orden:')[1].split('/').forEach((seg) => {
+                    if (writeAdded < 2 && seg) {
+                        if (pushEx({
+                            type: 'sentence_builder',
+                            category: 'Active Written Production · 1',
+                            heading: 'Assemble the written exit statement',
+                            subtext: ps.writePrompt || (unit.writingLab && unit.writingLab.prompt) || 'Ordena los bloques para redactar correctamente:',
+                            targetSentence: cleanSentenceWords(seg),
+                            distractors: makeDistractorsForSentence(seg)
+                        })) {
+                            writeAdded++;
+                        }
+                    }
                 });
             }
+            for (let i = 0; i < vocabList.length && writeAdded < 2; i++) {
+                const exSent = vocabList[i] && vocabList[i].example;
+                if (exSent && pushEx({
+                    type: 'sentence_builder',
+                    category: `Technical Documentation Output · ${writeAdded + 1}`,
+                    heading: 'Build the clean specification sentence',
+                    subtext: vocabList[i].exampleES || 'Ordena la oración técnica de salida:',
+                    targetSentence: cleanSentenceWords(exSent),
+                    distractors: makeDistractorsForSentence(exSent)
+                })) {
+                    writeAdded++;
+                }
+            }
+
+            // 9: Can-Do / Quiz synthesis check
+            quizList.forEach((qz) => {
+                if (exercises.length < 9) {
+                    addDrillAsMcq(qz, 'Technical Specification Validation', 'Confirm Can-Do comprehension', 'Select the option compliant with the unit objective:');
+                }
+            });
         } else if (stepMeta.type === 'voice_crucible') {
-            // Milestone Boss Level: Voice Crucible Challenge
-            const targetVoiceSentence = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'We must inspect the cleanroom pressure differential every hour.';
-            exercises.push({
+            // 1-2: Two Oral Voice Crucible Challenges (Standard American pronunciation + IPA)
+            const v0Sent = (vocabList[0] && vocabList[0].example) || 'We must inspect the cleanroom pressure differential every hour.';
+            pushEx({
                 type: 'voice_crucible',
-                category: '👑 Crisol de Voz · Milestone Boss',
-                heading: 'Pronuncia la instrucción técnica en voz alta',
-                subtext: 'Presiona el micrófono y habla con claridad hacia tu dispositivo para calibrar tu acento Standard American.',
-                targetText: targetVoiceSentence,
+                category: '👑 Voice Crucible · Pronunciation 1',
+                heading: 'Pronounce the primary technical instruction aloud',
+                subtext: 'Tap the microphone (or Practice Without Mic) to calibrate Standard American stress & clarity:',
+                targetText: v0Sent,
                 ipa: (vocabList[0] && vocabList[0].ipa) ? vocabList[0].ipa : '/wi mʌst ɪnˈspɛkt ðə ˈklinˌrum ˈprɛʃər/'
             });
 
-            // Ex 2: Final Synthesis Sentence Builder
-            if (vocabList[1] && vocabList[1].example) {
-                const cleanSentence = vocabList[1].example.replace(/[.!?]/g, '').trim();
-                exercises.push({
+            const secondVoiceSent = (dialogueTurns[0] && (dialogueTurns[0].en || dialogueTurns[0].text))
+                || (vocabList[2] && vocabList[2].example)
+                || 'All telemetry readings are documented according to quality protocols.';
+            pushEx({
+                type: 'voice_crucible',
+                category: '👑 Voice Crucible · Shift Handoff 2',
+                heading: 'Deliver the operational update aloud',
+                subtext: 'Practice crisp articulation for cross-border engineering meetings:',
+                targetText: secondVoiceSent,
+                ipa: (vocabList[2] && vocabList[2].ipa) || '/ˈstændərd əˈmɛrɪkən ˈwɜrkˌpleɪs ˈɪŋɡlɪʃ/'
+            });
+
+            // 3-4: Final Engineering Work-Order Sentence Builders
+            let bossSb = 0;
+            for (let i = 1; i < vocabList.length && bossSb < 2; i++) {
+                const exSent = vocabList[i] && vocabList[i].example;
+                if (exSent && pushEx({
                     type: 'sentence_builder',
-                    category: 'Consolidación de Unidad',
-                    heading: 'Ensambla la orden de trabajo de ingeniería',
-                    subtext: vocabList[1].exampleES || 'Ensambla con precisión técnica:',
-                    targetSentence: cleanSentence,
-                    distractors: ['during', 'never', 'voltage']
-                });
+                    category: `Unit Consolidation · Synthesis ${bossSb + 1}`,
+                    heading: 'Assemble the engineering work order',
+                    subtext: vocabList[i].exampleES || 'Ensambla con precisión técnica:',
+                    targetSentence: cleanSentenceWords(exSent),
+                    distractors: makeDistractorsForSentence(exSent)
+                })) {
+                    bossSb++;
+                }
             }
 
-            // Ex 3: Boss Knowledge Check
-            if (quizList[quizList.length - 1]) {
-                const lastQ = quizList[quizList.length - 1];
-                exercises.push({
-                    type: 'mcq_gap',
-                    category: 'Desafío Final de Unidad',
-                    heading: 'Validación de Competencia Can-Do',
-                    subtext: lastQ.socraticHint || 'Demuestra tu comprensión antes de sellar la acreditación:',
-                    prompt: lastQ.q || lastQ.question,
-                    options: lastQ.opts || lastQ.options,
-                    correctIdx: (typeof lastQ.ans === 'number') ? lastQ.ans : (lastQ.answer || 0),
-                    hint: lastQ.exp || lastQ.explanation || ''
-                });
+            // 5: Boss Audio Verification
+            const bossAudio = (vocabList[3] && vocabList[3].example) || (dialogueTurns[1] && (dialogueTurns[1].en || dialogueTurns[1].text));
+            addAudioFromSentence(bossAudio, 47, 'Boss Audio Verification', 'Verify you recognize the full technical briefing by ear', 'Play audio and match the exact briefing:');
+
+            // 6: Rapid Master Lexicon Review Board
+            addPairBoardFromRange(Math.min(4, Math.max(0, vocabList.length - 4)), 'Boss Lexicon Verification', 'Connect the core technical vocabulary cleanly:');
+
+            // 7-9: Three Boss Knowledge & Can-Do Competency Checks
+            let bossMcq = 0;
+            for (let i = quizList.length - 1; i >= 0 && bossMcq < 3; i--) {
+                if (addDrillAsMcq(quizList[i], `Final Can-Do Gate · ${bossMcq + 1}`, 'Validate unit mastery before sealing badge', 'Demonstrate complete command of the grammar and engineering standard:')) {
+                    bossMcq++;
+                }
             }
         }
 
-        // Fallback default exercise if needed
-        if (exercises.length === 0) {
-            exercises.push({
-                type: 'sentence_builder',
-                category: 'Práctica Técnica',
-                heading: 'Ensambla la oración técnica en inglés',
-                subtext: 'Organiza las palabras en el orden correcto:',
-                targetSentence: 'I am a robotics engineering technician',
-                distractors: ['is', 'are', 'cleanroom']
-            });
+        // Universal Safety Net: Deduplicated & Guaranteed >= 8 unique exercises per section
+        const fillerMcq = [...quizList, ...drillsList, ...vocabExList, ...readingQList, ...parsedPsFillDrills];
+        for (let i = 0; i < fillerMcq.length && exercises.length < 8; i++) {
+            addDrillAsMcq(fillerMcq[i], 'Technical Mastery Reinforcement', 'Verify accuracy before advancing', 'Select the option that satisfies CEFR & STEM precision:');
+        }
+        for (let i = 0; i < dialogueTurns.length && exercises.length < 8; i++) {
+            const line = dialogueTurns[i] && (dialogueTurns[i].en || dialogueTurns[i].text);
+            if (line) {
+                pushEx({
+                    type: 'sentence_builder',
+                    category: 'Syntax Reinforcement',
+                    heading: 'Assemble the engineering communication line',
+                    subtext: dialogueTurns[i].es || dialogueTurns[i].translation || 'Ordena los bloques en inglés:',
+                    targetSentence: cleanSentenceWords(line),
+                    distractors: makeDistractorsForSentence(line)
+                });
+            }
+        }
+        for (let i = 0; i < STEMOS_TECH_RESERVOIR_EXERCISES.length && exercises.length < 8; i++) {
+            const item = Object.assign({}, STEMOS_TECH_RESERVOIR_EXERCISES[(i + seedOffset) % STEMOS_TECH_RESERVOIR_EXERCISES.length]);
+            if (item.type === 'mcq_gap' && Array.isArray(item.options)) {
+                const correctVal = item.options[item.correctIdx || 0];
+                const built = buildShuffledOptions(correctVal, item.options.filter((_, idx) => idx !== (item.correctIdx || 0)), seedOffset + i * 7);
+                item.options = built.options;
+                item.correctIdx = built.correctIdx;
+            }
+            pushEx(item);
         }
 
         return exercises;
     }
+    window.buildDuoLessonExercises = buildDuoLessonExercises;
 
     // 6. Immersive Lesson Runner Engine (activeDuoSession declared before INITIAL RENDER)
     activeDuoSession = null;

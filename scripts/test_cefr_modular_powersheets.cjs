@@ -204,6 +204,29 @@ check('app.html & sw.js load all new 50m curriculum & powersheet modules',
   swSrc.includes('/content/mcer_classes_50m.js')
 );
 
+console.log('\n▶ 8. Hydrated Runnable Units (>= 10 Vocab, >= 8 VocabEx, >= 10 Drills, >= 8 Dialogue, >= 8 Reading across A1–C2 & ESP)');
+check('All 84 MCER runnable classes provide >=10 vocab, >=8 vocabEx, >=10 drills, >=8 dialogue, >=8 reading, >=10 quiz',
+  allClasses.every((c) => {
+    const r = mcerClasses.toRunnableUnit(c);
+    return r.vocabulary.length >= 10 &&
+      r.vocabularyExercises.length >= 8 &&
+      r.grammarDrills.length >= 10 &&
+      r.dialogue.lines.length >= 8 &&
+      r.readingQuestions.length >= 8 &&
+      r.unitQuiz.length >= 10;
+  })
+);
+const allCareerIds = careerPaths.getAllCareerIds();
+check('All ESP career modules across all careers hydrate >=10 vocab, >=8 dialogue turns & >=10 drills',
+  allCareerIds.every((cid) => {
+    const p = careerPaths.getPathForCareer(cid);
+    return p.modules.every((m) => {
+      const esp = espDesigns.buildEspClassPayload(cid, m, p);
+      return esp.vocab.length >= 10 && esp.dialogue.length >= 8 && esp.drills.length >= 10;
+    });
+  })
+);
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 RESULT: ${passed}/${passed + failed} CHECKS PASSED (${Math.round((passed / (passed + failed)) * 100)}%)`);
 console.log('═══════════════════════════════════════════════════════════════════');

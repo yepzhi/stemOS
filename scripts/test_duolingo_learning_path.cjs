@@ -308,6 +308,13 @@ test('app.js null-guards statPoints, adds processing spinner, persists wrong sco
   assert(appJs.includes('duo-card-sections-progress'), 'Missing outside section progress bar in renderDuoLearningPath');
 });
 
+console.log('\n▶ 12. Doubled Non-Repetitive Activities (>= 8 per Section across CEFR & ESP)');
+test('app.js exposes buildDuoLessonExercises and STEMOS_TECH_RESERVOIR_EXERCISES with >= 8 enforcement', () => {
+  assert(appJs.includes('window.buildDuoLessonExercises = buildDuoLessonExercises;'), 'Missing window.buildDuoLessonExercises');
+  assert(appJs.includes('STEMOS_TECH_RESERVOIR_EXERCISES'), 'Missing STEMOS_TECH_RESERVOIR_EXERCISES');
+  assert(appJs.includes('exercises.length < 8'), 'Missing minimum 8 exercises enforcement loop');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 RESULT: ${pass}/${pass} TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');

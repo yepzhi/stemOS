@@ -189,71 +189,264 @@
     return [];
   }
 
+  const ESP_STEM_SUPPLEMENT_VOCAB = [
+    { en: 'Lockout / Tagout (LOTO)', es: 'Bloqueo y etiquetado de energía cero', ipa: '/ˈlɑkˌaʊt ˈtæɡˌaʊt/', pinkStress: 'LOCK-out TAG-out', example: 'Always apply Lockout Tagout locks before servicing live drives.', exampleES: 'Aplica siempre candados de bloqueo y etiquetado antes de dar servicio a variadores.' },
+    { en: 'Root Cause Analysis', es: 'Análisis de causa raíz (8D)', ipa: '/rut kɔz əˈnælɪsɪs/', pinkStress: 'ROOT cause a-NA-ly-sis', example: 'Engineering documented the root cause analysis within twenty-four hours.', exampleES: 'Ingeniería documentó el análisis de causa raíz en veinticuatro horas.' },
+    { en: 'Shift Handoff Log', es: 'Bitácora de entrega de turno', ipa: '/ʃɪft ˈhændɔf lɔɡ/', pinkStress: 'SHIFT HAND-off log', example: 'Every technician signs the shift handoff log before leaving the bay.', exampleES: 'Cada técnico firma la bitácora de relevo de turno antes de salir de la bahía.' },
+    { en: 'Tolerance Stack-Up', es: 'Acumulación de tolerancias', ipa: '/ˈtɑlərəns ˈstækʌp/', pinkStress: 'TO-le-rance STACK-up', example: 'CAD reviewers verified zero destructive tolerance stack-up on the bracket.', exampleES: 'Los revisores CAD verificaron cero acumulación crítica de tolerancias en el soporte.' },
+    { en: 'Standard Operating Procedure', es: 'Procedimiento Estándar de Operación (SOP)', ipa: '/ˈstændərd ˈɑpəˌreɪtɪŋ prəˈsidʒər/', pinkStress: 'SOP', example: 'Line leads must follow the Standard Operating Procedure without shortcuts.', exampleES: 'Los líderes de línea deben seguir el SOP sin atajos.' },
+    { en: 'Preventive Maintenance', es: 'Mantenimiento preventivo programado', ipa: '/prɪˈvɛntɪv ˈmeɪntənəns/', pinkStress: 'pre-VEN-tive MAIN-te-nance', example: 'Preventive maintenance reduced unplanned motor downtime by forty percent.', exampleES: 'El mantenimiento preventivo redujo en 40% los paros no planeados de motor.' },
+    { en: 'Telemetry Baseline', es: 'Línea base de telemetría', ipa: '/təˈlɛmətri ˈbeɪsˌlaɪn/', pinkStress: 'te-LE-me-try BASE-line', example: 'Compare live thermal readings against the commissioning telemetry baseline.', exampleES: 'Compara lecturas térmicas en vivo contra la línea base de telemetría.' },
+    { en: 'Containment Protocol', es: 'Protocolo de contención inmediata', ipa: '/kənˈteɪnmənt ˈproʊtəˌkɑl/', pinkStress: 'con-TAIN-ment PRO-to-col', example: 'Quality initiated the containment protocol as soon as drift was flagged.', exampleES: 'Calidad inició el protocolo de contención apenas se detectó deriva.' },
+    { en: 'Compliance Audit', es: 'Auditoría de cumplimiento normativo', ipa: '/kəmˈplaɪəns ˈɔdɪt/', pinkStress: 'com-PLI-ance AU-dit', example: 'Cleanroom documentation passed the external ISO compliance audit.', exampleES: 'La documentación de cuarto limpio aprobó la auditoría externa ISO.' },
+    { en: 'Bill of Materials (BOM)', es: 'Lista estructurada de materiales', ipa: '/bɪl ʌv məˈtɪriəlz/', pinkStress: 'BOM', example: 'Update the Bill of Materials before releasing revision B to procurement.', exampleES: 'Actualiza la lista de materiales antes de liberar la revisión B a compras.' },
+    { en: 'Throughput Metric', es: 'Métrica de capacidad de salida', ipa: '/ˈθruˌpʊt ˈmɛtrɪk/', pinkStress: 'THROUGH-put ME-tric', example: 'Parallel test fixtures boosted hourly throughput metrics by eighteen units.', exampleES: 'Los herramentales paralelos aumentaron la capacidad por hora en dieciocho unidades.' },
+    { en: 'Corrective Action (CAPA)', es: 'Acción correctiva y preventiva', ipa: '/kəˈrɛktɪv ˈækʃən/', pinkStress: 'cor-REC-tive CAPA', example: 'Close out the CAPA verification checklist prior to Friday QBR.', exampleES: 'Cierra la lista de verificación CAPA antes de la QBR del viernes.' }
+  ];
+
+  const ESP_STEM_SUPPLEMENT_DRILLS = [
+    {
+      q: 'All critical subsystems ___ calibrated against NIST-traceable instruments prior to release.',
+      opts: ['are', 'is being do', 'has', 'does'],
+      ans: 0,
+      exp: 'El sujeto plural "All critical subsystems" requiere voz pasiva presente "are + Past Participle".',
+      socraticHint: 'Identifica sujeto plural en voz pasiva estándar de ingeniería.'
+    },
+    {
+      q: 'Technicians ___ bypass safety light curtains even during high-urgency production runs.',
+      opts: ["mustn't", "don't have to", 'might to', "haven't"],
+      ans: 0,
+      exp: '"mustn\'t" comunica prohibición estricta de seguridad (OSHA/ISO), distinta de ausencia de obligación.',
+      socraticHint: '¿Es prohibición estricta o algo opcional?'
+    },
+    {
+      q: 'If live vibration RMS ___ threshold limits, the PLC automatically triggers controlled shutdown.',
+      opts: ['exceeds', 'will exceed', 'exceeded was', 'exceeding'],
+      ans: 0,
+      exp: 'En Zero Conditional para lógica física/PLC ("If + Present Simple"), usamos "exceeds".',
+      socraticHint: 'Causa-efecto determinística en control automático.'
+    },
+    {
+      q: '___ we verified impedance stability in EVT, the board revision would already be in mass production.',
+      opts: ['Had', 'Did', 'Should to', 'Were to had'],
+      ans: 0,
+      exp: 'Conditional inversion ("Had we verified..." = "If we had verified...") en reportes técnicos.',
+      socraticHint: 'Inversión condicional de 3ª forma / Mixta sin "If".'
+    },
+    {
+      q: 'Before Shift A handed off Bay 2, the reliability team ___ replaced the fatigued bearing.',
+      opts: ['had already', 'have already', 'was already', 'did already'],
+      ans: 0,
+      exp: 'Past Perfect ("had already + V3") indica una acción terminada antes de otro evento pasado.',
+      socraticHint: 'Orden cronológico previo a la entrega de turno.'
+    },
+    {
+      q: 'Sensors are equipped with double shielding ___ prevent electromagnetic signal distortion.',
+      opts: ['to', 'for preventing', 'so that to', 'in order of'],
+      ans: 0,
+      exp: 'Infinitivo de propósito antes de verbo base ("to prevent").',
+      socraticHint: 'Expresa finalidad técnica ante verbo infinitivo.'
+    },
+    {
+      q: 'What triggered the CAN-bus fault ___ an intermittent ground loop at Connector J4.',
+      opts: ['was', 'were', 'it was', 'which did'],
+      ans: 0,
+      exp: 'En Wh-cleft ("What triggered..."), el foco singular toma "was".',
+      socraticHint: 'Enfatiza la causa raíz puntual en reportes 8D.'
+    },
+    {
+      q: 'Please forward the signed test sign-off ___ 4:00 PM Friday so logistics can schedule shipment.',
+      opts: ['by', 'until', 'during', 'along'],
+      ans: 0,
+      exp: '"by" marca el plazo límite máximo (deadline) para entrega de entregables.',
+      socraticHint: 'Preposición exacta para fecha/hora límite.'
+    },
+    {
+      q: 'Could you confirm whether the revised BOM ___ uploaded to PDM yet?',
+      opts: ['has been', 'is been', 'was did', 'has it been'],
+      ans: 0,
+      exp: 'Pregunta indirecta en voz pasiva Present Perfect ("whether the BOM has been uploaded").',
+      socraticHint: 'Recuerda: sin inversión auxiliar en preguntas indirectas.'
+    },
+    {
+      q: '___ strict raw-material shortages, engineering maintained 99.4% first-pass yield.',
+      opts: ['Despite', 'Although', 'However', 'Even though of'],
+      ans: 0,
+      exp: '"Despite" conecta una frase nominal de contraste sin verbo conjugado.',
+      socraticHint: 'Conector concesivo antes de grupo nominal.'
+    }
+  ];
+
+  function espNormKey(s) {
+    return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  function espShuffleDrill(drill, seed) {
+    if (!drill || !Array.isArray(drill.opts) || drill.opts.length < 2) return drill;
+    const correctIdx = (typeof drill.ans === 'number' && drill.ans >= 0 && drill.ans < drill.opts.length) ? drill.ans : 0;
+    const correctVal = drill.opts[correctIdx];
+    const ranked = drill.opts.map((opt, i) => ({
+      opt,
+      score: ((i + 1) * 41 + seed * 17 + String(opt).length * 11 + String(drill.q || '').length) % 101
+    }));
+    ranked.sort((a, b) => a.score - b.score);
+    const newOpts = ranked.map((r) => r.opt);
+    return Object.assign({}, drill, { opts: newOpts, ans: Math.max(0, newOpts.indexOf(correctVal)) });
+  }
+
   function buildEspClassPayload(trackOrCareerId, modObj, rawCourseObj) {
     const modType = (modObj && modObj.type) || 'theory';
     const tpl = getTemplate(modType);
-    const courseMod = (rawCourseObj && Array.isArray(rawCourseObj.modules))
-      ? rawCourseObj.modules.find((m) => m.id === (modObj && modObj.id)) || rawCourseObj.modules[0]
+    const modulesList = (rawCourseObj && Array.isArray(rawCourseObj.modules)) ? rawCourseObj.modules : [];
+    const courseMod = modulesList.length
+      ? modulesList.find((m) => m.id === (modObj && modObj.id)) || modulesList[0]
       : (modObj && (modObj.readings || modObj.quiz) ? modObj : null);
+    const modOrder = (modObj && (modObj.order || 1)) || 1;
+    const standard = (modObj && modObj.standard) || (rawCourseObj && rawCourseObj.standard) || 'ISO / IEEE / ABET';
+    const modTitle = (modObj && (modObj.shortTitle || modObj.title)) || 'Industrial Protocol';
 
-    let vocab = extractVocabFromCourseMod(courseMod);
-    if (!vocab.length && modObj) {
-      const words = String(modObj.title || '').split(/[:,&\-]+/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
-      vocab = words.map((w) => ({
-        en: w,
-        es: `Concepto clave (${modObj.standard || 'Normativa Industrial'})`,
-        ipa: '',
-        pinkStress: w.toUpperCase(),
-        example: modObj.competency || `Apply ${w} under ${modObj.standard || 'ISO/IEEE'} protocols.`,
-        exampleES: `Aplica ${w} conforme a ${modObj.standard || 'estándares industriales'}.`
-      }));
+    // 1. Expand Vocabulary (>= 12 unique STEM terms)
+    const vocabSeen = new Set();
+    const vocab = [];
+    const addVocab = (item) => {
+      if (!item || !item.en) return;
+      const k = espNormKey(item.en);
+      if (!k || vocabSeen.has(k)) return;
+      vocabSeen.add(k);
+      vocab.push(item);
+    };
+
+    extractVocabFromCourseMod(courseMod).forEach(addVocab);
+    if (modObj) {
+      String(modObj.title || '').split(/[:,&\-/+()]+/).map((s) => s.trim()).filter((s) => s.length >= 3).forEach((w) => {
+        addVocab({
+          en: w,
+          es: `Concepto técnico (${standard})`,
+          ipa: '',
+          pinkStress: w.toUpperCase(),
+          example: (modObj.competency && modObj.competency.length > 15)
+            ? `Verify ${w} to meet ${modTitle} requirements.`
+            : `Apply ${w} under ${standard} engineering protocols.`,
+          exampleES: `Verifica ${w} conforme a los requisitos de ${modTitle}.`
+        });
+      });
+    }
+    // Harvest terms from sibling career modules in rotated order
+    const siblingMods = modulesList.filter((m) => m && m.id !== (modObj && modObj.id));
+    const rotatedSibs = siblingMods.length ? siblingMods.slice(modOrder % siblingMods.length).concat(siblingMods.slice(0, modOrder % siblingMods.length)) : [];
+    rotatedSibs.forEach((sib) => {
+      if (vocab.length >= 14) return;
+      extractVocabFromCourseMod(sib).slice(0, 2).forEach(addVocab);
+      if (sib.shortTitle && vocab.length < 14) {
+        addVocab({
+          en: sib.shortTitle,
+          es: sib.competency ? sib.competency.slice(0, 58) : `Módulo ${sib.id} (${sib.standard || standard})`,
+          ipa: '',
+          pinkStress: String(sib.shortTitle).toUpperCase(),
+          example: `Coordinate ${sib.shortTitle} checks according to ${sib.standard || standard}.`,
+          exampleES: `Coordina verificaciones de ${sib.shortTitle} conforme a ${sib.standard || standard}.`
+        });
+      }
+    });
+    for (let i = 0; i < ESP_STEM_SUPPLEMENT_VOCAB.length && vocab.length < 12; i++) {
+      addVocab(ESP_STEM_SUPPLEMENT_VOCAB[(i + modOrder) % ESP_STEM_SUPPLEMENT_VOCAB.length]);
     }
 
-    const dialogue = (courseMod && Array.isArray(courseMod.dialogue) && courseMod.dialogue.length)
-      ? courseMod.dialogue.map((d) => ({
-          speaker: d.speaker || d.role || 'Engineer',
-          en: d.en || d.text || d.line || '',
-          es: d.es || d.translation || ''
-        }))
-      : [
-          {
-            speaker: 'Lead Engineer',
-            en: `Team, today's 50-minute focus is "${(modObj && modObj.title) || 'Industrial Protocol'}". Confirm ${(vocab[0] && vocab[0].en) || 'system baseline'} before deployment.`,
-            es: `Equipo, el enfoque de 50 min de hoy es "${(modObj && modObj.title) || 'Protocolo Industrial'}". Confirmen línea base antes del despliegue.`
-          },
-          {
-            speaker: 'Specialist',
-            en: `Confirmed. We aligned documentation with ${(modObj && modObj.standard) || 'ISO/IEC compliance'} and logged all telemetry checkpoints.`,
-            es: `Confirmado. Alineamos documentación con ${(modObj && modObj.standard) || 'cumplimiento ISO/IEC'} y registramos puntos de control.`
-          }
-        ];
+    const v0 = (vocab[0] && vocab[0].en) || 'protocol';
+    const v1 = (vocab[1] && vocab[1].en) || 'compliance';
+    const v2 = (vocab[2] && vocab[2].en) || 'baseline telemetry';
 
-    const drills = (courseMod && Array.isArray(courseMod.quiz) && courseMod.quiz.length)
-      ? courseMod.quiz.slice(0, 4).map((q) => ({
+    // 2. Expand Dialogue (>= 8 unique realistic engineering turns)
+    const dlgSeen = new Set();
+    const dialogue = [];
+    const addTurn = (speaker, en, es) => {
+      const k = espNormKey(en);
+      if (!k || dlgSeen.has(k)) return;
+      dlgSeen.add(k);
+      dialogue.push({ speaker, en, es, text: en, translation: es });
+    };
+    if (courseMod && Array.isArray(courseMod.dialogue)) {
+      courseMod.dialogue.forEach((d) => addTurn(d.speaker || d.role || 'Engineer', d.en || d.text || d.line || '', d.es || d.translation || ''));
+    }
+    const synthesizedTurns = [
+      ['Lead Engineer', `Team, today's 50-minute focus is ${modTitle}. Confirm ${v0} before deployment.`, `Equipo, el enfoque de 50 min de hoy es ${modTitle}. Confirmen ${v0} antes del despliegue.`],
+      ['Specialist', `Confirmed. We aligned documentation with ${standard} compliance and logged telemetry.`, `Confirmado. Alineamos documentación con ${standard} y registramos la telemetría.`],
+      ['QA Auditor', `Have you already cross-checked ${v1} against the master acceptance matrix?`, `¿Ya cotejaron ${v1} contra la matriz maestra de aceptación?`],
+      ['Specialist', `Yes, all parameters stay within nominal tolerances and zero deviations were detected.`, `Sí, todos los parámetros siguen dentro de tolerancias nominales sin desviaciones.`],
+      ['Shift Supervisor', `If ambient drift affects ${v2}, trigger containment immediately and notify engineering.`, `Si la deriva ambiental afecta ${v2}, activen contención de inmediato y notifiquen a ingeniería.`],
+      ['Reliability Eng', `Understood. Lockout tags are attached and the digital handoff report is live in PDM.`, `Entendido. Las etiquetas LOTO están colocadas y el reporte digital ya está activo en PDM.`],
+      ['Program Manager', `Provide a concise BLUF summary by four PM so the US plant lead can sign off.`, `Envíen un resumen BLUF conciso a las cuatro PM para que el líder en EE. UU. firme aprobación.`],
+      ['Lead Engineer', `We will upload the verified checklist and Power Sheet sign-off before shift changeover.`, `Subiremos la lista verificada y firma de Power Sheet antes del relevo de turno.`]
+    ];
+    synthesizedTurns.forEach(([spk, en, es]) => addTurn(spk, en, es));
+
+    // 3. Expand Technical & CEFR Drills (>= 10 unique 4-option checks)
+    const drillSeen = new Set();
+    const drills = [];
+    const addDrill = (d, seed) => {
+      if (!d || !d.q || !Array.isArray(d.opts) || d.opts.length < 2) return;
+      const k = espNormKey(d.q);
+      if (!k || drillSeen.has(k)) return;
+      drillSeen.add(k);
+      drills.push(espShuffleDrill(d, seed));
+    };
+
+    if (courseMod && Array.isArray(courseMod.quiz)) {
+      courseMod.quiz.forEach((q, qi) => {
+        addDrill({
           q: q.question || q.q || '',
           opts: q.options || q.opts || [],
           ans: typeof q.correct === 'number' ? q.correct : (q.ans || 0),
           exp: q.explanation || q.exp || 'Alineado a normativa técnica del módulo.',
-          socraticHint: q.socraticHint || `Relaciona con ${modObj && modObj.standard ? modObj.standard : 'la competencia técnica'}.`
-        }))
-      : [
-          {
-            q: `Which deliverable demonstrates mastery of "${(modObj && (modObj.shortTitle || modObj.title)) || 'this ESP module'}"?`,
-            opts: [
-              (modObj && modObj.competency) || 'Verified technical compliance & English operational handoff',
-              'Skipping standard verification under schedule pressure',
-              'Unlogged ad-hoc changes without cross-shift communication',
-              'Translating technical acronyms word-for-word into Spanish'
-            ],
-            ans: 0,
-            exp: 'La competencia exige evidencia técnica verificable conforme al estándar y comunicación precisa en inglés.',
-            socraticHint: 'Revisa el estándar normativo del módulo.'
-          }
-        ];
+          socraticHint: q.socraticHint || `Relaciona con ${standard}.`
+        }, modOrder + qi);
+      });
+    }
 
-    const v0 = (vocab[0] && vocab[0].en) || 'protocol';
-    const v1 = (vocab[1] && vocab[1].en) || 'compliance';
-    const standard = (modObj && modObj.standard) || (rawCourseObj && rawCourseObj.standard) || 'ISO / IEEE / ABET';
+    addDrill({
+      q: `Which deliverable demonstrates mastery of "${modTitle}"?`,
+      opts: [
+        (modObj && modObj.competency) || 'Verified technical compliance & English operational handoff',
+        'Skipping standard verification under schedule pressure',
+        'Unlogged ad-hoc changes without cross-shift communication',
+        'Translating technical acronyms word-for-word into Spanish'
+      ],
+      ans: 0,
+      exp: 'La competencia exige evidencia técnica verificable conforme al estándar y comunicación precisa en inglés.',
+      socraticHint: `Revisa el estándar normativo (${standard}).`
+    }, modOrder + 3);
+
+    addDrill({
+      q: `Under ${standard}, what must engineers verify first when validating "${v0}"?`,
+      opts: [
+        `Documented baseline conformance and calibrated telemetry`,
+        'Estimating tolerances visually without instrumentation',
+        'Deferring logbook entry until next month',
+        'Disabling interlock sensors during peak run'
+      ],
+      ans: 0,
+      exp: `Todo protocolo bajo ${standard} exige línea base documentada y telemetría calibrada.`,
+      socraticHint: 'Aplica trazabilidad y calibración normativa.'
+    }, modOrder + 5);
+
+    addDrill({
+      q: `Which English phrase professionally communicates a deviation in "${modTitle}" to a US engineering team?`,
+      opts: [
+        `"BLUF: ${v1} deviated 2% below spec; containment is active under ${standard}."`,
+        '"Maybe it broke a little, we ignore today."',
+        '"Is problem big, please fix unknown."',
+        '"No need to log because line is running."'
+      ],
+      ans: 0,
+      exp: 'El estándar ejecutivo EE. UU. exige datos cuantificados, acción de contención y referencia normativa.',
+      socraticHint: 'Busca precisión técnica, datos y formato BLUF.'
+    }, modOrder + 7);
+
+    // Add curated CEFR + Engineering drills until >= 12
+    for (let i = 0; i < ESP_STEM_SUPPLEMENT_DRILLS.length && drills.length < 12; i++) {
+      const idx = (i + modOrder) % ESP_STEM_SUPPLEMENT_DRILLS.length;
+      addDrill(ESP_STEM_SUPPLEMENT_DRILLS[idx], modOrder + idx + 11);
+    }
 
     return {
       id: `esp:${trackOrCareerId}:${(modObj && modObj.id) || 'M01'}`,

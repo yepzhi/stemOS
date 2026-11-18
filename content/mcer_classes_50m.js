@@ -3995,6 +3995,647 @@
     CLASSES_BY_ID[cls.id.toUpperCase()] = cls;
   });
 
+  // ---------------------------------------------------------------------------
+  // Curated CEFR + Tech/Engineering Supplemental Bank (Zero-Repetition Pool)
+  // Covers A1, A2, B1, B2, C1-C2 across every cluster & ensures 8+ activities
+  // per Duolingo section while aligning strictly with CEFR descriptors & STEM.
+  // ---------------------------------------------------------------------------
+  const CEFR_TECH_SUPPLEMENT_BANK = {
+    'a1-u1': {
+      vocab: [
+        { en: 'Access Card', es: 'Tarjeta de acceso RFID', ipa: '/ˈækˌsɛs kɑrd/', pinkStress: 'AC-cess card', example: 'Tap your access card at the lab gate.', exampleES: 'Acerca tu tarjeta de acceso en la puerta del laboratorio.' },
+        { en: 'Helpdesk Extension', es: 'Extensión de soporte TI', ipa: '/ˈhɛlpˌdɛsk ɪkˈstɛnʃən/', pinkStress: 'HELP-desk ex-TEN-sion', example: 'The IT helpdesk extension is four-five-one-oh.', exampleES: 'La extensión de soporte TI es cuatro-cinco-uno-cero.' },
+        { en: 'Cleanroom Locker', es: 'Casillero de cuarto limpio', ipa: '/ˈklinˌrum ˈlɑkər/', pinkStress: 'CLEAN-room LOC-ker', example: 'My lab coat is in locker twelve.', exampleES: 'Mi bata de laboratorio está en el casillero doce.' },
+        { en: 'Floor Plan', es: 'Plano de planta', ipa: '/flɔr plæn/', pinkStress: 'FLOOR plan', example: 'This floor plan shows Building B.', exampleES: 'Este plano de planta muestra el Edificio B.' }
+      ],
+      drills: [
+        { q: 'What ___ your employee ID number?', opts: ['is', 'are', 'am', 'be'], ans: 0, exp: '"ID number" es singular (it), por lo que requiere "is".', socraticHint: 'Identifica si "employee ID number" es singular o plural.' },
+        { q: 'We ___ software engineers at the Mexicali tech hub.', opts: ["'re", "'s", "'m", 'be'], ans: 0, exp: '"We" siempre usa "are" ("We\'re").', socraticHint: 'Conjuga "to be" para el pronombre plural "We".' },
+        { q: 'Excuse me, is ___ badge active today?', opts: ['your', 'you', 'they', 'we'], ans: 0, exp: 'Antes del sustantivo "badge" usamos el adjetivo posesivo "your".', socraticHint: 'Necesitas el adjetivo posesivo para "tu credencial".' },
+        { q: 'The robotics server room is ___ Floor 3, Room 304.', opts: ['on', 'at', 'under', 'from'], ans: 0, exp: 'Para pisos específicos dentro de un edificio se utiliza la preposición "on".', socraticHint: 'En inglés los pisos usan la preposición "on" (on Floor 3).' }
+      ],
+      dialogue: [
+        { speaker: 'Security', en: 'Good afternoon. What is your badge code, please?', es: 'Buenas tardes. ¿Cuál es su código de credencial, por favor?' },
+        { speaker: 'Engineer', en: "It's B-four-seven-zero. I am in Robotics Lab two.", es: 'Es B-cuatro-siete-cero. Estoy en el Laboratorio de Robótica dos.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "All visitors sign in at Gate A before 8:30 AM and wear a green pass." Where do visitors sign in?', opts: ['At Gate A', 'In Lab B', 'On the third floor', 'After 5:00 PM'], ans: 0, exp: 'El aviso indica literalmente "sign in at Gate A".', socraticHint: 'Ubica la puerta mencionada en el aviso.' }
+      ]
+    },
+    'a1-u2': {
+      vocab: [
+        { en: 'Server Rack', es: 'Rack de servidores', ipa: '/ˈsɜrvər ræk/', pinkStress: 'SER-ver rack', example: 'The main server rack is across from the CAD lab.', exampleES: 'El rack principal está frente al laboratorio CAD.' },
+        { en: 'Daily Standup', es: 'Junta diaria de arranque', ipa: '/ˈdeɪli ˈstændʌp/', pinkStress: 'DAI-ly STAND-up', example: 'Our engineering standup starts at eight thirty.', exampleES: 'Nuestra junta diaria de ingeniería empieza a las ocho y media.' },
+        { en: 'Debug Console', es: 'Consola de depuración', ipa: '/ˈdibʌɡ ˈkɑnsoʊl/', pinkStress: 'DE-bug CON-sole', example: 'Marco checks the debug console every morning.', exampleES: 'Marco revisa la consola de depuración cada mañana.' },
+        { en: 'Turn Left', es: 'Gira a la izquierda', ipa: '/tɜrn lɛft/', pinkStress: 'turn LEFT', example: 'Turn left after the CNC zone.', exampleES: 'Gira a la izquierda después de la zona CNC.' }
+      ],
+      drills: [
+        { q: 'The QA tester ___ every sensor log before lunch.', opts: ['checks', 'check', 'checking', 'are check'], ans: 0, exp: 'En Presente Simple, 3ª persona singular (The QA tester = he/she) agrega -s: "checks".', socraticHint: 'Recuerda la regla -s en Present Simple para he/she/it.' },
+        { q: '___ the firmware team start their shift at 7:00 AM?', opts: ['Does', 'Do', 'Is', 'Are'], ans: 0, exp: '"The firmware team" (it/singular) forma preguntas en Presente Simple con "Does".', socraticHint: 'Usa el auxiliar Does para sujetos singulares.' },
+        { q: 'Go straight down the hall and turn right ___ the printer hub.', opts: ['at', 'between', 'from', 'to'], ans: 0, exp: 'Para indicar un punto exacto de referencia en direcciones usamos "at".', socraticHint: 'Indica el punto exacto donde dar vuelta.' },
+        { q: 'We always run unit tests ___ Monday mornings.', opts: ['on', 'in', 'at', 'by'], ans: 0, exp: 'Los días de la semana y combinaciones como "Monday mornings" llevan "on".', socraticHint: 'Recuerda: on + días, at + horas, in + meses/años.' }
+      ],
+      dialogue: [
+        { speaker: 'Developer', en: 'Excuse me, how do I get to the IoT Testbench?', es: 'Disculpa, ¿cómo llego al Banco de Pruebas IoT?' },
+        { speaker: 'Lead', en: 'Walk straight past the CNC bay and turn left next to Lab 4.', es: 'Camina derecho pasando la bahía CNC y gira a la izquierda junto al Lab 4.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Shift A runs a automated backup at 6:00 PM on Fridays." When does the backup happen?', opts: ['Every Friday at 6:00 PM', 'Monday at 8:00 AM', 'Only on Sundays', 'Twice per hour'], ans: 0, exp: 'El texto señala horario fijo: "at 6:00 PM on Fridays".', socraticHint: 'Verifica día y hora exacta.' }
+      ]
+    },
+    'a1-u3': {
+      vocab: [
+        { en: 'Multimeter', es: 'Multímetro digital', ipa: '/ˌmʌltiˈmitər/', pinkStress: 'MUL-ti-me-ter', example: 'There is a calibrated multimeter in drawer two.', exampleES: 'Hay un multímetro calibrado en el cajón dos.' },
+        { en: 'Circuit Board', es: 'Tarjeta electrónica (PCB)', ipa: '/ˈsɜrkɪt bɔrd/', pinkStress: 'CIR-cuit board', example: 'These circuit boards are ready for optical check.', exampleES: 'Estas tarjetas electrónicas están listas para revisión óptica.' },
+        { en: 'ESD Wrist Strap', es: 'Pulsera antiestática', ipa: '/ˌiːˌɛsˈdi rɪst stræp/', pinkStress: 'wrist STRAP', example: 'Put on your ESD wrist strap before handling chips.', exampleES: 'Ponte tu pulsera antiestática antes de tocar chips.' },
+        { en: 'USB Drive', es: 'Memoria USB', ipa: '/ˌjuːˌɛsˈbi draɪv/', pinkStress: 'USB drive', example: 'Whose orange USB drive is this? It is mine.', exampleES: '¿De quién es esta memoria USB naranja? Es mía.' }
+      ],
+      drills: [
+        { q: '___ four logic analyzers on the workbench.', opts: ['There are', 'There is', 'They are', 'Is there'], ans: 0, exp: 'Para indicar existencia en plural ("four logic analyzers") se usa "There are".', socraticHint: 'Son 4 equipos en plural.' },
+        { q: 'Look at ___ tiny microchips over there across the hall.', opts: ['those', 'these', 'this', 'that'], ans: 0, exp: '"microchips" es plural y está lejos ("over there"), así que corresponde "those".', socraticHint: 'Plural + lejanía = those.' },
+        { q: 'How ___ thermal paste tubes do we have left?', opts: ['many', 'much', 'a little', 'is'], ans: 0, exp: '"tubes" es sustantivo contable en plural, por lo que pregunta con "How many".', socraticHint: 'Los tubos se pueden contar por pieza.' },
+        { q: "I'd like ___ small ESD glove box for Station 5, please.", opts: ['a', 'an', 'those', 'many'], ans: 0, exp: '"small" empieza con sonido consonante y es singular → artículo "a".', socraticHint: 'Observa el sonido inicial de "small".' }
+      ],
+      dialogue: [
+        { speaker: 'Tech A', en: 'Are there any spare HDMI cables in that cabinet?', es: '¿Hay cables HDMI de repuesto en ese gabinete?' },
+        { speaker: 'Tech B', en: 'Yes, there are three yellow cables under the router.', es: 'Sí, hay tres cables amarillos debajo del router.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Station 1 holds a torque wrench and five M4 screws. There is no solder wire in Drawer 1." What is missing?', opts: ['Solder wire', 'Torque wrench', 'M4 screws', 'Workbench'], ans: 0, exp: 'El inventario dice "There is no solder wire".', socraticHint: 'Busca el artículo con cantidad cero ("no").' }
+      ]
+    },
+    'a1-u4': {
+      vocab: [
+        { en: 'Emergency Stop', es: 'Paro de emergencia', ipa: '/ɪˈmɜrdʒənsi stɑp/', pinkStress: 'e-MER-gen-cy stop', example: 'Do not block the red emergency stop button.', exampleES: 'No bloquees el botón rojo de paro de emergencia.' },
+        { en: 'Live Telemetry', es: 'Telemetría en vivo', ipa: '/laɪv təˈlɛmətri/', pinkStress: 'te-LE-me-try', example: 'The PLC node is streaming live telemetry now.', exampleES: 'El nodo PLC está transmitiendo telemetría en vivo ahora.' },
+        { en: 'Network Patch', es: 'Parche de red / software', ipa: '/ˈnɛtˌwɜrk pætʃ/', pinkStress: 'NET-work patch', example: 'We are going to install the network patch tomorrow.', exampleES: 'Vamos a instalar el parche de red mañana.' },
+        { en: 'Solder Station', es: 'Estación de soldadura', ipa: '/ˈsɑdər ˈsteɪʃən/', pinkStress: 'SO-lder STA-tion', example: 'Yesterday, the solder station was hotter than Station B.', exampleES: 'Ayer, la estación de soldadura estuvo más caliente que la Estación B.' }
+      ],
+      drills: [
+        { q: '___ touch exposed high-voltage busbars without PPE.', opts: ["Don't", "Doesn't", 'Not to', "Aren't"], ans: 0, exp: 'El imperativo negativo de seguridad siempre empieza con "Don\'t + verbo base".', socraticHint: 'Prohibición directa en señales de seguridad.' },
+        { q: 'Look at the dashboard: the robot arm ___ calibrating right now.', opts: ['is', 'does', 'was', 'be'], ans: 0, exp: 'Present Continuous para "right now" usa "am/is/are + V-ing".', socraticHint: '"Right now" indica acción en progreso.' },
+        { q: '___ the cloud server offline for five minutes yesterday?', opts: ['Was', 'Did', 'Is', 'Were'], ans: 0, exp: 'Sin otro verbo principal y sujeto singular ("the cloud server") en pasado → "Was".', socraticHint: '¿Pasado de "to be" para "server" singular?' },
+        { q: 'Server Model X is ___ than the older rack unit.', opts: ['faster', 'more fast', 'fastest', 'fast'], ans: 0, exp: 'Comparativo de adjetivo corto (fast + -er) acompañado de "than".', socraticHint: 'Adjetivo de 1 sílaba en comparación directa.' }
+      ],
+      dialogue: [
+        { speaker: 'Supervisor', en: 'What are the technicians testing on Line 1 right now?', es: '¿Qué están probando los técnicos en la Línea 1 ahora mismo?' },
+        { speaker: 'Lead', en: 'They are scanning QR tags and going to log the cycle times next.', es: 'Están escaneando códigos QR y después van a registrar los tiempos de ciclo.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Alert: Can you run Python scripts? Technicians with Badge Level 2 can access the test script folder today." Who can access the scripts?', opts: ['Technicians with Badge Level 2', 'All external guests', 'Level 0 interns', 'No one on weekends'], ans: 0, exp: 'El permiso aplica únicamente a "Badge Level 2".', socraticHint: 'Revisa el requisito de credencial indicado.' }
+      ]
+    },
+    A1: {
+      vocab: [
+        { en: 'Logbook', es: 'Bitácora de registro', ipa: '/ˈlɔɡˌbʊk/', pinkStress: 'LOG-book', example: 'Write your shift start time in the digital logbook.', exampleES: 'Escribe tu hora de inicio de turno en la bitácora digital.' },
+        { en: 'Firmware Check', es: 'Revisión de firmware', ipa: '/ˈfɜrmˌwɛr tʃɛk/', pinkStress: 'FIRM-ware check', example: 'We check firmware versions on every tablet.', exampleES: 'Revisamos versiones de firmware en cada tableta.' }
+      ],
+      drills: [
+        { q: '___ your CAD workstation running smoothly right now?', opts: ['Is', 'Does', 'Do', 'Are'], ans: 0, exp: 'Con el participio "running" (Present Continuous) usamos "Is".', socraticHint: 'Verbo auxiliar para acción continua en progreso.' },
+        { q: 'My coding partner and I ___ from Tijuana.', opts: ['are', 'is', 'am', 'has'], ans: 0, exp: '"My coding partner and I" equivale a "we" → "are".', socraticHint: 'Son dos personas = nosotros.' }
+      ],
+      dialogue: [
+        { speaker: 'Trainer', en: 'Can you read the digital gauge pressure clearly?', es: '¿Puedes leer con claridad el manómetro digital de presión?' },
+        { speaker: 'Trainee', en: 'Yes, I can. It displays twenty-four PSI.', es: 'Sí, puedo. Muestra veinticuatro PSI.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Keep aisles clear. Place spare power cords inside Box 3." Where do spare power cords go?', opts: ['Inside Box 3', 'On the floor', 'Under the door', 'On the desk'], ans: 0, exp: 'Instrucción directa: "Place spare power cords inside Box 3".', socraticHint: 'Busca el contenedor exacto mencionado.' }
+      ]
+    },
+    'a2-u1': {
+      vocab: [
+        { en: 'Sensor Drift', es: 'Desviación de sensor', ipa: '/ˈsɛnsər drɪft/', pinkStress: 'SEN-sor drift', example: 'The laser sensor drifted while the conveyor ran.', exampleES: 'El sensor láser se desvió mientras corría el transportador.' },
+        { en: 'Hotfix Patch', es: 'Parche correctivo urgente', ipa: '/ˈhɑtfɪks pætʃ/', pinkStress: 'HOT-fix patch', example: 'DevOps deployed a hotfix patch last night.', exampleES: 'DevOps desplegó un parche correctivo anoche.' },
+        { en: 'Analog Log', es: 'Bitácora en papel (histórica)', ipa: '/ˈænəlɔɡ lɔɡ/', pinkStress: 'A-na-log log', example: 'We used to record cycle counts on paper forms.', exampleES: 'Solíamos registrar conteos de ciclo en formatos de papel.' },
+        { en: 'Downtime Event', es: 'Evento de paro técnico', ipa: '/ˈdaʊnˌtaɪm ɪˈvɛnt/', pinkStress: 'DOWN-time e-VENT', example: 'The downtime event was confusing for new operators.', exampleES: 'El evento de paro fue confuso para operadores nuevos.' }
+      ],
+      drills: [
+        { q: 'The PLC ___ an overload error while the cooling fan was spinning slowly.', opts: ['logged', 'was log', 'logs', 'logging'], ans: 0, exp: 'Acción puntual que interrumpe una acción continua en progreso usa Simple Past ("logged").', socraticHint: 'Contrasta acción larga (was spinning) vs evento puntual.' },
+        { q: 'When ___ the maintenance squad replace that faulty relay?', opts: ['did', 'was', 'were', 'had to do'], ans: 0, exp: 'En Simple Past las preguntas con verbo normal ("replace") usan el auxiliar "did + verbo base".', socraticHint: '¿Qué auxiliar acompaña a "replace" en pasado?' },
+        { q: 'We ___ use USB sticks for machine transfers; now everything syncs via Ethernet.', opts: ['used to', 'use to', 'were used', 'didn\'t used to'], ans: 0, exp: 'Hábito pasado descontinuado usa "used to + verbo base".', socraticHint: 'Expresa una costumbre técnica del pasado que cambió.' },
+        { q: 'Operators felt ___ because the old oscilloscope menu was ___.', opts: ['confused / confusing', 'confusing / confused', 'confuse / confused', 'confusing / confuse'], ans: 0, exp: 'Sentimiento humano usa -ed (confused); la característica del equipo usa -ing (confusing).', socraticHint: 'Persona siente (-ed) vs cosa provoca (-ing).' }
+      ],
+      dialogue: [
+        { speaker: 'Maint. Lead', en: 'What were you checking when the circuit breaker tripped?', es: '¿Qué estabas revisando cuando se botó el interruptor?' },
+        { speaker: 'Tech', en: 'First I disconnected Drive 2, then I tested voltage across Phase B.', es: 'Primero desconecté el Variador 2 y luego medí el voltaje en la Fase B.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Shift B found a cracked coolant hose at 2:10 AM after a vibration alarm triggered." Why did Shift B inspect the machine?', opts: ['Because a vibration alarm triggered', 'For annual cleaning', 'To paint the guard', 'To change shifts'], ans: 0, exp: 'El detonante inmediato fue la alarma de vibración.', socraticHint: 'Identifica la causa que disparó la revisión.' }
+      ]
+    },
+    'a2-u2': {
+      vocab: [
+        { en: 'Aluminum Chassis', es: 'Chasis de aluminio', ipa: '/əˈlumɪnəm ˈtʃæsi/', pinkStress: 'a-LU-mi-num CHAS-sis', example: 'This controller housing is made of brushed aluminum.', exampleES: 'Esta carcasa de controlador está hecha de aluminio cepillado.' },
+        { en: 'Cycle Latency', es: 'Latencia de ciclo', ipa: '/ˈsaɪkəl ˈleɪtənsi/', pinkStress: 'CY-cle LA-ten-cy', example: 'Fiber optics have lower latency than copper lines.', exampleES: 'La fibra óptica tiene menor latencia que las líneas de cobre.' },
+        { en: 'Heat Sink', es: 'Disipador térmico', ipa: '/hit sɪŋk/', pinkStress: 'HEAT sink', example: 'A heat sink is used for cooling power MOSFETs.', exampleES: 'Un disipador térmico se usa para enfriar MOSFETs de potencia.' },
+        { en: 'Torque Spec', es: 'Especificación de torque', ipa: '/tɔrk spɛk/', pinkStress: 'TORQUE spec', example: 'Model Z is the most compact actuator in our catalog.', exampleES: 'El Modelo Z es el actuador más compacto de nuestro catálogo.' }
+      ],
+      drills: [
+        { q: 'Edge Node B processes telemetry ___ than the legacy gateway.', opts: ['faster', 'more fast', 'the fastest', 'as fast'], ans: 0, exp: 'Con "than" y adjetivo corto ("fast") usamos el comparativo "-er": "faster".', socraticHint: 'Observa la palabra clave "than".' },
+        { q: 'That LiPo battery pack isn\'t compact ___ for the micro-drone frame.', opts: ['enough', 'too', 'a few', 'most'], ans: 0, exp: '"enough" siempre va DESPUÉS del adjetivo ("compact enough").', socraticHint: 'Recuerda: too + adj vs adj + enough.' },
+        { q: 'An optical encoder is used ___ angular motor position accurately.', opts: ['for measuring', 'for measure', 'to measuring', 'measure'], ans: 0, exp: 'Para propósito funcional de un objeto se usa "used for + V-ing" (o "used to + V_base").', socraticHint: 'Después de la preposición "for", el verbo lleva -ing.' },
+        { q: 'Only ___ calibration weights remain inside the metrology kit.', opts: ['a few', 'a little', 'too much', 'enough of'], ans: 0, exp: '"weights" es contable plural → "a few" (no "a little").', socraticHint: '¿Se pueden contar las pesas patrón?' }
+      ],
+      dialogue: [
+        { speaker: 'Buyer', en: 'Is the stainless steel enclosure as lightweight as the carbon one?', es: '¿El gabinete de acero inoxidable es tan ligero como el de fibra de carbono?' },
+        { speaker: 'Engineer', en: 'No, it is heavier, but it is far more durable in washdown zones.', es: 'No, es más pesado, pero mucho más durable en zonas de lavado.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Gateway V3 weighs 220g, costs $140, and draws 3W. Gateway V1 weighs 450g, costs $190, and draws 8W." Which statement is true?', opts: ['Gateway V3 is lighter and less expensive than V1', 'Gateway V1 is faster and cheaper', 'Both weigh over 500g', 'V3 uses more power'], ans: 0, exp: 'V3 pesa 220g (más ligero) y cuesta $140 (más económico).', socraticHint: 'Compara peso y costo entre V1 y V3.' }
+      ]
+    },
+    'a2-u3': {
+      vocab: [
+        { en: 'Sprint Backlog', es: 'Pendientes del sprint', ipa: '/sprɪnt ˈbæklɔɡ/', pinkStress: 'sprint BACK-log', example: 'We are going to review the sprint backlog tomorrow.', exampleES: 'Vamos a revisar los pendientes del sprint mañana.' },
+        { en: 'Load Balancer', es: 'Balanceador de carga', ipa: '/loʊd ˈbælənsər/', pinkStress: 'LOAD BA-lan-cer', example: 'I will restart the backup load balancer right away.', exampleES: 'Reiniciaré el balanceador de respaldo de inmediato.' },
+        { en: 'Deployment Window', es: 'Ventana de despliegue', ipa: '/dɪˈplɔɪmənt ˈwɪndoʊ/', pinkStress: 'de-PLOY-ment WIN-dow', example: 'Submit all API pull requests by Friday at noon.', exampleES: 'Envía todos los pull requests de API a más tardar el viernes al mediodía.' },
+        { en: 'Reset Button', es: 'Botón de reinicio', ipa: '/ˈrisɛt ˈbʌtən/', pinkStress: 'RE-set BUT-ton', example: 'Hold this recessed pin to reset the Wi-Fi module.', exampleES: 'Presiona este pin oculto para reiniciar el módulo Wi-Fi.' }
+      ],
+      drills: [
+        { q: 'Alert just popped up on Screen 2! — Okay, I ___ run diagnostics immediately.', opts: ["'ll", "'m going to", 'am run', 'will to'], ans: 0, exp: 'Decisión espontánea en el momento de hablar u ofrecer ayuda usa "will" ("I\'ll").', socraticHint: '¿Es un plan previo o una reacción inmediata a la alerta?' },
+        { q: 'We calibrated the LiDAR sensor ___ detect obstacles within 40 meters.', opts: ['to', 'for', 'so to', 'for to'], ans: 0, exp: 'Infinitivo de propósito antes de verbo base usa "to" ("to detect"), nunca "for detect".', socraticHint: 'Propósito antes de verbo base en inglés.' },
+        { q: 'Our DevOps lead avoids ___ unreviewed hotfixes before a holiday.', opts: ['pushing', 'to push', 'push', 'pushed'], ans: 0, exp: 'El verbo "avoid" siempre va seguido de gerundio (V-ing): "avoids pushing".', socraticHint: 'Patron verbal de avoid/enjoy/finish + -ing.' },
+        { q: 'Please upload the CAD BOM ___ 4:00 PM today so procurement can order.', opts: ['by', 'until', 'during', 'along'], ans: 0, exp: 'Para fecha o hora límite exacta (deadline) se usa "by".', socraticHint: 'Significa "a más tardar a las 4:00 PM".' }
+      ],
+      dialogue: [
+        { speaker: 'QA Lead', en: 'We are meeting the Texas automation supplier at 10 AM tomorrow.', es: 'Nos reunimos con el proveedor de automatización de Texas mañana a las 10 AM.' },
+        { speaker: 'Planner', en: 'Great! How about sending them our test logs before noon?', es: '¡Excelente! ¿Qué tal si les enviamos nuestros registros de prueba antes del mediodía?' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Memo: We are going to upgrade the ERP server on Saturday night. Please export open tickets by 5 PM Friday." What is already planned?', opts: ['Upgrading the ERP server on Saturday night', 'Buying new desks', 'Closing the plant', 'Canceling Friday shift'], ans: 0, exp: 'La migración ERP está confirmada con "going to upgrade".', socraticHint: 'Identifica la acción futura planeada.' }
+      ]
+    },
+    'a2-u4': {
+      vocab: [
+        { en: 'Safety Interlock', es: 'Enclavamiento de seguridad', ipa: '/ˈseɪfti ˈɪntərlɑk/', pinkStress: 'SAFE-ty IN-ter-lock', example: 'You mustn\'t bypass the laser safety interlock.', exampleES: 'No debes puentear el enclavamiento de seguridad láser.' },
+        { en: 'Firmware Update', es: 'Actualización de firmware', ipa: '/ˈfɜrmˌwɛr ˈʌpdeɪt/', pinkStress: 'FIRM-ware UP-date', example: 'Have you flashed the new firmware update yet?', exampleES: '¿Ya cargaste la nueva actualización de firmware?' },
+        { en: 'Voltage Regulator', es: 'Regulador de voltaje', ipa: '/ˈvoʊltɪdʒ ˈrɛɡjəˌleɪtər/', pinkStress: 'VOL-tage RE-gu-la-tor', example: 'The voltage regulator might overheat under peak load.', exampleES: 'El regulador de voltaje podría sobrecalentarse bajo carga pico.' },
+        { en: 'Work Order Ticket', es: 'Ticket de orden de trabajo', ipa: '/wɜrk ˈɔrdər ˈtɪkɪt/', pinkStress: 'WORK OR-der TIC-ket', example: 'If the pressure drops below 40 PSI, the valve closes.', exampleES: 'Si la presión cae debajo de 40 PSI, la válvula se cierra.' }
+      ],
+      drills: [
+        { q: 'Operators ___ remove machine light curtains while power is active.', opts: ["mustn't", "don't have to", 'might to', "doesn't must"], ans: 0, exp: '"mustn\'t" expresa prohibición estricta; "don\'t have to" significa opcional.', socraticHint: '¿Está prohibido o solo es opcional?' },
+        { q: 'Have you backed up the PLC ladder logic ___?', opts: ['yet', 'already', 'ever', 'since'], ans: 0, exp: 'Al final de preguntas y negaciones en Present Perfect usamos "yet".', socraticHint: 'Preguntas tipo "¿ya hiciste...?" terminan en "yet".' },
+        { q: 'If the optical sensor ___ a jam, the line stops automatically.', opts: ['detects', 'will detect', 'detected', 'detect'], ans: 0, exp: 'En Zero Conditional (causa-efecto física), la cláusula "If" va en Presente Simple ("detects").', socraticHint: 'Regla científica/física siempre cierta = Zero Conditional.' },
+        { q: 'Plug ___ the USB-C probe before launching the oscilloscope app.', opts: ['in', 'out', 'off', 'up'], ans: 0, exp: 'El phrasal verb para conectar a corriente/puerto es "plug in".', socraticHint: 'Conectar un dispositivo eléctrico o cable.' }
+      ],
+      dialogue: [
+        { speaker: 'Technician', en: 'I have already filled out the LOTO permit, but I haven\'t tagged Breaker 4 yet.', es: 'Ya llené el permiso LOTO, pero aún no etiqueto el Interruptor 4.' },
+        { speaker: 'Safety Audit', en: 'Good catch. Remember, you must attach your lock before opening any panel.', es: 'Buen detalle. Recuerda, debes colocar tu candado antes de abrir cualquier panel.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Zero-Downtime Rule: If CPU temperature exceeds 85°C, the fan controller will trigger Turbo Cooling." What happens above 85°C?', opts: ['Turbo Cooling activates automatically', 'The building power shuts off', 'Operators must open the roof', 'Nothing happens'], ans: 0, exp: 'First Conditional describe el resultado automático: "will trigger Turbo Cooling".', socraticHint: 'Revisa la consecuencia de la cláusula If.' }
+      ]
+    },
+    A2: {
+      vocab: [
+        { en: 'Root Ticket', es: 'Ticket principal de falla', ipa: '/rut ˈtɪkɪt/', pinkStress: 'ROOT tic-ket', example: 'We have just closed the cooling-tower root ticket.', exampleES: 'Acabamos de cerrar el ticket principal de la torre de enfriamiento.' },
+        { en: 'Payload Spec', es: 'Especificación de carga útil', ipa: '/ˈpeɪˌloʊd spɛk/', pinkStress: 'PAY-load spec', example: 'This cobot arm is built for light assembly payloads.', exampleES: 'Este brazo cobot está diseñado para cargas ligeras de ensamble.' }
+      ],
+      drills: [
+        { q: 'You ___ wear a hard hat in the office lobby, only inside the foundry.', opts: ["don't have to", "mustn't", 'shouldn\'t to', 'haven\'t to'], ans: 0, exp: '"don\'t have to" indica que no es obligatorio.', socraticHint: 'Ausencia de obligación = don\'t have to.' },
+        { q: 'If we optimize this SQL query tomorrow, latency ___ by 40%.', opts: ['will drop', 'drops to', 'dropped', 'would dropping'], ans: 0, exp: 'First Conditional (If + Present, will + V_base) para predicción técnica probable.', socraticHint: 'Resultado futuro probable = will + verbo.' }
+      ],
+      dialogue: [
+        { speaker: 'Dev', en: 'Did the backup script run faster than yesterday?', es: '¿Corrió el script de respaldo más rápido que ayer?' },
+        { speaker: 'Ops', en: 'Yes, it finished in four minutes instead of nine.', es: 'Sí, terminó en cuatro minutos en lugar de nueve.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Engineers should test calibration gauges before each shift, even when logs look green." What is advised?', opts: ['Testing gauges before every shift', 'Ignoring gauges if green', 'Replacing gauges daily', 'Working without gauges'], ans: 0, exp: '"should test" indica buena práctica recomendada.', socraticHint: 'Busca el verbo modal "should".' }
+      ]
+    },
+    'b1-u1': {
+      vocab: [
+        { en: 'Automated Pipeline', es: 'Flujo automatizado CI/CD', ipa: '/ˈɔtəˌmeɪtɪd ˈpaɪpˌlaɪn/', pinkStress: 'AU-to-ma-ted PIPE-line', example: 'Every firmware build is validated by our automated pipeline.', exampleES: 'Cada compilación de firmware es validada por nuestro flujo automatizado.' },
+        { en: 'Quality Audit', es: 'Auditoría de calidad', ipa: '/ˈkwɑləti ˈɔdɪt/', pinkStress: 'QUA-li-ty AU-dit', example: 'Two batches were quarantined due to thermal drift.', exampleES: 'Dos lotes fueron puestos en cuarentena debido a deriva térmica.' },
+        { en: 'Cleanroom Gowning', es: 'Vestimenta de cuarto limpio', ipa: '/ˈklinˌrum ˈɡaʊnɪŋ/', pinkStress: 'GOWN-ing', example: 'Once anti-static boots are worn, step onto the tacky mat.', exampleES: 'Una vez puestas las botas antiestáticas, pisa el tapete adherente.' },
+        { en: 'Legacy System', es: 'Sistema heredado antiguo', ipa: '/ˈlɛɡəsi ˈsɪstəm/', pinkStress: 'LE-ga-cy SYS-tem', example: 'Engineers would manually upload CSV logs every evening.', exampleES: 'Los ingenieros solían subir registros CSV manualmente cada tarde.' }
+      ],
+      drills: [
+        { q: 'All PCB assemblies ___ optically inspected before conformal coating.', opts: ['are', 'have', 'is being do', 'was'], ans: 0, exp: 'Voz pasiva presente plural: "assemblies" + "are" + Past Participle ("inspected").', socraticHint: 'El sujeto "assemblies" es plural y recibe la acción.' },
+        { q: 'Line 2 slowed down ___ a calibration mismatch on Valve 7.', opts: ['due to', 'because of that', 'although', 'however'], ans: 0, exp: '"due to" conecta una causa en forma de frase nominal ("a calibration mismatch").', socraticHint: 'Conector causal seguido de sustantivo.' },
+        { q: 'Before cloud telemetry, our plant ___ have analog pressure charts.', opts: ['used to', 'would', 'was using to', 'did used to'], ans: 0, exp: 'Con verbos de estado como "have/be/live" solo usamos "used to", nunca "would".', socraticHint: '"have" expresa estado pasado, no acción repetida.' },
+        { q: 'First, power is isolated; ___, the technician verifies zero energy.', opts: ['subsequently', 'despite', 'whereas', 'due to'], ans: 0, exp: '"subsequently" marca claramente el paso secuencial siguiente en un SOP.', socraticHint: 'Conector de secuencia formal en procedimientos.' }
+      ],
+      dialogue: [
+        { speaker: 'Auditor', en: 'How are non-conforming aluminum parts handled under ISO 9001?', es: '¿Cómo se manejan las piezas de aluminio no conformes bajo ISO 9001?' },
+        { speaker: 'QA Lead', en: 'They are tagged red immediately and moved to the quarantine cage.', es: 'Se etiquetan de rojo de inmediato y se trasladan a la jaula de cuarentena.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "SOP-402: Once wafers are etched, they are rinsed in deionized water; therefore, particle counts stay below Class 100." Why do particle counts stay low?', opts: ['Because etched wafers are rinsed in deionized water', 'Because wafers are skipped', 'Because water is heated to 200C', 'Due to manual wiping'], ans: 0, exp: '"therefore" señala el efecto de realizar el enjuague con agua desionizada.', socraticHint: 'Observa la relación causa-efecto con "therefore".' }
+      ]
+    },
+    'b1-u2': {
+      vocab: [
+        { en: 'Request for Quote (RFQ)', es: 'Solicitud de cotización', ipa: '/rɪˈkwɛst fɔr kwoʊt/', pinkStress: 'RFQ', example: 'We have worked with this PCB vendor since 2021.', exampleES: 'Hemos trabajado con este proveedor de PCB desde 2021.' },
+        { en: 'Fault Chronology', es: 'Cronología de la falla', ipa: '/fɔlt krəˈnɑlədʒi/', pinkStress: 'chro-NO-lo-gy', example: 'When QA inspected Unit 9, Ops had already replaced the fuse.', exampleES: 'Cuando Calidad inspeccionó la Unidad 9, Ops ya había reemplazado el fusible.' },
+        { en: 'Cost Optimization', es: 'Optimización de costos', ipa: '/kɔst ˌɑptəməˈzeɪʃən/', pinkStress: 'op-ti-mi-ZA-tion', example: 'I would appreciate it if you could confirm lead times.', exampleES: 'Le agradecería mucho si pudiera confirmar tiempos de entrega.' },
+        { en: 'Batch Variance', es: 'Variación de lote', ipa: '/bætʃ ˈvɛriəns/', pinkStress: 'VA-ri-ance', example: 'Neither of the test servers showed packet loss.', exampleES: 'Ninguno de los servidores de prueba mostró pérdida de paquetes.' }
+      ],
+      drills: [
+        { q: 'By the time maintenance reached Bay 3, the operator ___ already hit E-Stop.', opts: ['had', 'has', 'did', 'was'], ans: 0, exp: 'Past Perfect ("had + V3") indica una acción previa ocurrida antes de otro evento pasado ("reached").', socraticHint: 'La parada ocurrió ANTES de que llegara mantenimiento.' },
+        { q: 'We have maintained 99.8% uptime ___ eighteen consecutive months.', opts: ['for', 'since', 'ago', 'during of'], ans: 0, exp: 'Duración total ("18 months") exige "for"; un punto inicial usa "since".', socraticHint: '¿Es duración o punto de inicio en el calendario?' },
+        { q: '___ you please forward the revised BOM before 3:00 PM?', opts: ['Could', 'Do mind', 'Must to', 'Shall to'], ans: 0, exp: '"Could you please..." es el estándar profesional cordial en correos corporativos EE. UU.', socraticHint: 'Petición formal en un correo técnico.' },
+        { q: '___ of the two redundant power supplies failed during stress testing.', opts: ['Neither', 'Both no', 'None of both', 'Every'], ans: 0, exp: 'Para cero de exactamente dos elementos usamos "Neither".', socraticHint: 'Se trata de exactamente dos fuentes.' }
+      ],
+      dialogue: [
+        { speaker: 'Procurement', en: 'I would appreciate it if you could send an updated lead-time estimate for Q3.', es: 'Agradecería mucho si pudiera enviar un estimado actualizado de entrega para Q3.' },
+        { speaker: 'Supplier', en: 'Certainly. We have held pricing steady since January and can ship by Tuesday.', es: 'Por supuesto. Hemos mantenido el precio desde enero y podemos embarcar el martes.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Before the firmware patch rolled out at 04:00, three gateway routers had dropped offline." What happened first?', opts: ['Three gateway routers dropped offline', 'The firmware patch rolled out', 'The office opened', 'New routers arrived'], ans: 0, exp: '"had dropped" en Past Perfect ocurrió antes del despliegue a las 04:00.', socraticHint: 'El tiempo Past Perfect marca el evento anterior.' }
+      ]
+    },
+    'b1-u3': {
+      vocab: [
+        { en: 'Sprint Retrospective', es: 'Retrospectiva de sprint', ipa: '/sprɪnt ˌrɛtrəˈspɛktɪv/', pinkStress: 're-tro-SPEC-tive', example: 'Do you know when the staging environment will be back up?', exampleES: '¿Sabes cuándo volverá a estar en línea el ambiente staging?' },
+        { en: 'Incident Escalation', es: 'Escalamiento de incidente', ipa: '/ˈɪnsɪdənt ˌɛskəˈleɪʃən/', pinkStress: 'es-ca-LA-tion', example: 'You validated the CAN bus frames, didn\'t you?', exampleES: 'Validaste las tramas del bus CAN, ¿no es así?' },
+        { en: 'Release Freeze', es: 'Congelamiento de entregas', ipa: '/rɪˈlis friz/', pinkStress: 're-LEASE freeze', example: 'At 2 PM tomorrow, our team will be running load tests.', exampleES: 'Mañana a las 2 PM nuestro equipo estará corriendo pruebas de carga.' },
+        { en: 'Stakeholder Sync', es: 'Alineación con interesados', ipa: '/ˈsteɪkˌhoʊldər sɪŋk/', pinkStress: 'STAKE-hol-der sync', example: 'The PM said that the client needed zero-downtime deployment.', exampleES: 'El PM dijo que el cliente necesitaba despliegue sin tiempos muertos.' }
+      ],
+      drills: [
+        { q: 'Could you tell me where the backup CAD files ___?', opts: ['are stored', 'are they stored', 'do they store', 'stored are'], ans: 0, exp: 'En preguntas indirectas ("Could you tell me where...") el orden es Sujeto + Verbo (sin inversión).', socraticHint: 'Las preguntas indirectas no invierten auxiliar antes del sujeto.' },
+        { q: "You've already merged the sensor calibration PR, ___?", opts: ["haven't you", "didn't you", "isn't it", "don't you"], ans: 0, exp: 'La oración usa "have" (Present Perfect); su question tag negativa es "haven\'t you".', socraticHint: 'Usa el mismo auxiliar del enunciado ("You have").' },
+        { q: 'The lead architect said they ___ migrating to Kubernetes the next week.', opts: ['were', 'are', 'have been to', 'was'], ans: 0, exp: 'Reported Speech tras "said" retrocede el tiempo verbal ("are migrating" → "were migrating").', socraticHint: 'Aplica backshift al reporte en pasado.' },
+        { q: 'We ran into an urgent spec issue, so let\'s bring ___ up during the standup.', opts: ['it', 'them', 'him', 'that those'], ans: 0, exp: 'Los pronombres ("it") en phrasal verbs separables ("bring up") siempre van EN MEDIO ("bring it up").', socraticHint: 'Pronombre siempre entre verbo y partícula.' }
+      ],
+      dialogue: [
+        { speaker: 'Scrum Master', en: 'Could you confirm whether the thermal camera driver passed QA?', es: '¿Podrías confirmar si el controlador de la cámara térmica pasó QA?' },
+        { speaker: 'Eng Lead', en: 'It passed on Linux, right? Anyway, at 3 PM we will be benchmarking Windows drivers.', es: 'Pasó en Linux, ¿cierto? De hecho, a las 3 PM estaremos midiendo drivers en Windows.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "The Detroit plant manager told our team that she needed root-cause confirmation before Friday." What did the manager request?', opts: ['Root-cause confirmation before Friday', 'New laptops', 'Weekend overtime only', 'Hardware cancellation'], ans: 0, exp: 'Reported speech resume literalmente su exigencia: "root-cause confirmation before Friday".', socraticHint: 'Revisa el contenido de la cláusula con "that".' }
+      ]
+    },
+    'b1-u4': {
+      vocab: [
+        { en: 'Containment Action', es: 'Acción de contención (8D)', ipa: '/kənˈteɪnmənt ˈækʃən/', pinkStress: 'con-TAIN-ment AC-tion', example: 'The valve that regulates coolant flow is stuck open.', exampleES: 'La válvula que regula el flujo de refrigerante está atascada abierta.' },
+        { en: 'Preventive CAPA', es: 'Acción correctiva y preventiva', ipa: '/prɪˈvɛntɪv ˈkæpə/', pinkStress: 'pre-VEN-tive CA-pa', example: 'If we had verified tolerance earlier, scrap would not have spiked.', exampleES: 'Si hubiéramos verificado tolerancia antes, el scrap no habría subido.' },
+        { en: 'Thermal Runaway', es: 'Fuga térmica de batería', ipa: '/ˈθɜrməl ˈrʌnəˌweɪ/', pinkStress: 'THER-mal RUN-a-way', example: 'Cell voltage dropped to zero, so the fuse must have blown.', exampleES: 'El voltaje cayó a cero, así que el fusible debió haberse fundido.' },
+        { en: 'Trade-off Analysis', es: 'Análisis de balance técnico', ipa: '/treɪd ɔf əˈnælɪsɪs/', pinkStress: 'TRADE-off a-NA-ly-sis', example: 'I see your point; however, cycle time would suffer.', exampleES: 'Entiendo tu punto; sin embargo, el tiempo de ciclo sufriría.' }
+      ],
+      drills: [
+        { q: 'The telemetry broker ___ distributes CAN messages runs on Rust.', opts: ['which', 'who', 'where', 'whose'], ans: 0, exp: 'Para cosas o software ("broker") usamos el pronombre relativo "which" (o "that").', socraticHint: 'Se refiere a un módulo de software.' },
+        { q: 'If the team ___ automated boundary tests earlier, the bug wouldn\'t have reached prod.', opts: ['had run', 'ran', 'would run', 'runs'], ans: 0, exp: 'Third Conditional (prevención/arrepentimiento pasado) exige "If + had + V3".', socraticHint: 'Condicional 3º sobre prevención pasada.' },
+        { q: 'The PSU LED is off and output is 0V; the main breaker ___ tripped.', opts: ['must have', "can't have", 'should to have', 'might not must'], ans: 0, exp: '95% de certeza lógica sobre una causa pasada usa "must have + V3".', socraticHint: 'Evidencia física contundente de causa.' },
+        { q: 'CNC Spindle B cuts titanium 20% ___ than our older milling unit.', opts: ['more accurately', 'accurately', 'most accurate', 'accurater'], ans: 0, exp: 'Comparativo de adverbios terminados en -ly utiliza "more + adverbio + than".', socraticHint: 'Modifica al verbo "cuts", necesita adverbio comparativo.' }
+      ],
+      dialogue: [
+        { speaker: 'Quality Eng', en: 'I see your point on shipping today; however, we should have audited torque logs first.', es: 'Entiendo tu punto sobre embarcar hoy; sin embargo, debimos auditar los registros de torque primero.' },
+        { speaker: 'Plant Dir.', en: 'Agreed. If we add an inline vision camera now, future defects would drop near zero.', es: 'De acuerdo. Si agregamos una cámara de visión en línea ahora, los defectos futuros caerían casi a cero.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "8D-D4: Unless the O-ring vendor proves thermal resilience at 180°C, our team will switch to fluorocarbon seals." Under what condition will they keep the vendor?', opts: ['Only if they prove thermal resilience at 180°C', 'Never under any condition', 'If price drops 5%', 'If shipping is free'], ans: 0, exp: '"Unless" equivale a "if not": solo se conserva al proveedor si demuestra la resistencia a 180°C.', socraticHint: 'Evalúa el significado de "Unless".' }
+      ]
+    },
+    B1: {
+      vocab: [
+        { en: 'Service-Level Agreement', es: 'Acuerdo de nivel de servicio (SLA)', ipa: '/ˈsɜrvɪs ˈlɛvəl əˈɡrimənt/', pinkStress: 'SER-vice LE-vel', example: 'Latency stayed within our service-level agreement.', exampleES: 'La latencia se mantuvo dentro de nuestro acuerdo de nivel de servicio.' },
+        { en: 'Changeover Time', es: 'Tiempo de cambio de modelo', ipa: '/ˈtʃeɪndʒˌoʊvər taɪm/', pinkStress: 'CHANGE-o-ver time', example: 'Quick-release fixtures cut changeover time in half.', exampleES: 'Los herramentales de liberación rápida redujeron a la mitad el cambio de modelo.' }
+      ],
+      drills: [
+        { q: 'That sensor ___ calibrated by metrology last Friday morning.', opts: ['was', 'were', 'has', 'did'], ans: 0, exp: 'Tiempo definido en el pasado ("last Friday") + sujeto singular en voz pasiva → "was".', socraticHint: 'Combina voz pasiva y pasado simple.' },
+        { q: 'Do you know ___ the API authentication token expires tonight?', opts: ['if', 'does', 'that is', 'what does'], ans: 0, exp: 'Pregunta indirecta de Sí/No usa "if" o "whether" sin inversión.', socraticHint: 'Usa "if/whether" para dudas de sí/no.' }
+      ],
+      dialogue: [
+        { speaker: 'PM', en: 'Have you coordinated the BOM revision with suppliers yet?', es: '¿Ya coordinaste la revisión del BOM con los proveedores?' },
+        { speaker: 'Lead', en: 'Yes, an email was sent yesterday so they could review updated tolerances.', es: 'Sí, se envió un correo ayer para que revisaran las tolerancias actualizadas.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Although prototype cycle times looked slow, software tuning reduced latency by 35%." What improved latency?', opts: ['Software tuning', 'Adding extra weight', 'Slowing motors', 'Skipping QA'], ans: 0, exp: 'El párrafo contrasta el arranque lento con la mejora por "software tuning".', socraticHint: 'Identifica qué acción causó la reducción.' }
+      ]
+    },
+    'b2-u1': {
+      vocab: [
+        { en: 'Engineering Change Order', es: 'Orden de Cambio de Ingeniería (ECO)', ipa: '/ˌɛndʒəˈnɪrɪŋ tʃeɪndʒ ˈɔrdər/', pinkStress: 'ECO', example: 'The thermal pad ECO is currently being reviewed by AS9100 auditors.', exampleES: 'La ECO de almohadilla térmica está siendo revisada por auditores AS9100.' },
+        { en: 'Traceability Matrix', es: 'Matriz de trazabilidad', ipa: '/ˌtreɪsəˈbɪləti ˈmeɪtrɪks/', pinkStress: 'tra-cea-BI-li-ty MA-trix', example: 'Firmware hashes are thought to have resolved the boot race condition.', exampleES: 'Se cree que los hashes de firmware resolvieron la condición de carrera en arranque.' },
+        { en: 'Tolerance Stack-Up', es: 'Acumulación de tolerancias', ipa: '/ˈtɑlərəns ˈstækʌp/', pinkStress: 'TO-le-rance STACK-up', example: 'Had we caught that stack-up error in CAD, Line 4 would not be idle now.', exampleES: 'Si hubiéramos detectado ese error en CAD, la Línea 4 no estaría detenida ahora.' },
+        { en: 'Deviation Waiver', es: 'Permiso de desviación temporal', ipa: '/ˌdiviˈeɪʃən ˈweɪvər/', pinkStress: 'de-vi-A-tion WAI-ver', example: 'The supplier housing, which arrived slightly anodized matte, passed salt-spray tests.', exampleES: 'La carcasa del proveedor, que llegó con anodizado mate, pasó pruebas salinas.' }
+      ],
+      drills: [
+        { q: 'Micro-cracks on Batch 19 must ___ during thermal shock cycling.', opts: ['have formed', 'forming', 'formed be', 'have forming'], ans: 0, exp: 'Modal pasivo/activo perfecto de deducción: "must have + V3".', socraticHint: 'Deducción lógica pasada con modal.' },
+        { q: 'The new IGBT inverter, ___ weighs 18% less than Gen-2, raises efficiency to 97.4%.', opts: ['which', 'that', 'whom', 'what'], ans: 0, exp: 'Cláusula relativa explicativa (después de coma) NUNCA usa "that"; usa "which".', socraticHint: 'Observa la coma antes del pronombre relativo.' },
+        { q: 'If our verification script had validated boundary limits last month, Prod ___ crashing today.', opts: ["wouldn't be", "wouldn't have been", "isn't", "won't be"], ans: 0, exp: 'Mixed Conditional (Causa pasada → Resultado presente hoy): "wouldn\'t be + V-ing".', socraticHint: 'Mezcla pasado irreal ("last month") con efecto hoy ("today").' },
+        { q: 'New PCB impedance standards are currently ___ implemented across Fab 2.', opts: ['being', 'been', 'be', 'to be'], ans: 0, exp: 'Voz pasiva continua presente ("are currently being + V3").', socraticHint: 'Acción pasiva en curso ahora mismo.' }
+      ],
+      dialogue: [
+        { speaker: 'Chief Eng', en: 'What is the status of the ECO for the stainless cooling manifold?', es: '¿Cuál es el estatus de la ECO para el múltiple de enfriamiento?' },
+        { speaker: 'Lead', en: 'Drawings are being finalized today; had tolerances loosened earlier, yield would be higher now.', es: 'Los planos están siendo finalizados hoy; si hubiéramos ampliado tolerancias antes, el rendimiento sería mayor ahora.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Approved under Deviation DW-88, the anodized brackets, which exhibited minor color variation, passed 1,000-hour corrosion qualification." Why were brackets accepted?', opts: ['They passed 1,000-hour corrosion qualification under a formal deviation', 'They were repainted manually', 'Color variation failed safety', 'Corrosion tests were skipped'], ans: 0, exp: 'Pasaron la calificación de 1,000h y quedaron respaldados bajo la desviación DW-88.', socraticHint: 'Confirma qué prueba técnica superaron.' }
+      ]
+    },
+    'b2-u2': {
+      vocab: [
+        { en: 'Quarterly Business Review', es: 'Revisión trimestral de negocio (QBR)', ipa: '/ˈkwɔrtərli ˈbɪznəs rɪˈvju/', pinkStress: 'QBR', example: 'Let\'s kick off the QBR and circle back to telemetry latency.', exampleES: 'Arranquemos la QBR y retomemos luego la latencia de telemetría.' },
+        { en: 'Milestone Slippage', es: 'Deslizamiento de hito', ipa: '/ˈmaɪlˌstoʊn ˈslɪpɪdʒ/', pinkStress: 'MILE-stone SLIP-page', example: 'Provided that silicon wafers clear customs Friday, Q4 targets hold.', exampleES: 'Siempre y cuando las obleas liberen aduana el viernes, las metas Q4 se mantienen.' },
+        { en: 'Sustained Load', es: 'Carga sostenida continua', ipa: '/səˈsteɪnd loʊd/', pinkStress: 'sus-TAINED load', example: 'The edge cluster had been running at 98% load for six hours before failover.', exampleES: 'El clúster llevaba corriendo al 98% de carga seis horas antes de la conmutación.' },
+        { en: 'Rollout Completion', es: 'Culminación de despliegue', ipa: '/ˈroʊˌlaʊt kəmˈpliʃən/', pinkStress: 'ROLL-out com-PLE-tion', example: 'By November 30, we will have migrated 42 factories to edge MQTT.', exampleES: 'Para el 30 de noviembre habremos migrado 42 plantas a MQTT edge.' }
+      ],
+      drills: [
+        { q: '___ that our supplier confirms raw-die volume by Tuesday, delivery stays on schedule.', opts: ['Provided', 'Although', 'However', 'Despite'], ans: 0, exp: '"Provided that" establece una condición contractual estricta ("siempre y cuando").', socraticHint: 'Condicional formal equivalente a "on condition that".' },
+        { q: 'By Q4 2027, our robotics division ___ commissioned 120 autonomous AMRs.', opts: ['will have', 'will be', 'has been', 'had'], ans: 0, exp: 'Future Perfect ("will have + V3") indica meta ya completada antes de una fecha futura.', socraticHint: 'Referencia futura completada ("By Q4 2027").' },
+        { q: 'The turbine bearing ___ vibrating intensely for three hours before operators shut it down.', opts: ['had been', 'has been', 'was', 'would be'], ans: 0, exp: 'Past Perfect Continuous ("had been + V-ing") enfatiza duración previa a un punto pasado.', socraticHint: 'Duración de 3 horas antes del evento pasado.' },
+        { q: 'Would our reliability architect like to ___ in on the cloud failover proposal?', opts: ['weigh', 'weight', 'circle on', 'pushing'], ans: 0, exp: 'Expresión ejecutiva estadounidense para aportar opinión en junta: "weigh in".', socraticHint: 'Phrasal verb corporativo = opinar o aportar.' }
+      ],
+      dialogue: [
+        { speaker: 'VP Ops', en: 'It would appear that customs clearance might push Rack Lot 5 back by two days.', es: 'Parecería que el despacho aduanal podría retrasar dos días el Lote de Racks 5.' },
+        { speaker: 'Director', en: 'To sum up, provided that Lot 4 ships Monday, our QBR KPIs will still have been met.', es: 'En resumen, siempre y cuando el Lote 4 salga el lunes, nuestros KPIs QBR se habrán cumplido.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Teams had been benchmarking FPGA inference for 48 hours straight when memory fragmentation surfaced." How long did benchmarking run before the issue surfaced?', opts: ['48 hours', '2 hours', '1 week', '30 minutes'], ans: 0, exp: 'La duración en Past Perfect Continuous es exactamente "48 hours straight".', socraticHint: 'Localiza el indicador temporal.' }
+      ]
+    },
+    'b2-u3': {
+      vocab: [
+        { en: 'Zero-Defect Mandate', es: 'Mandato de cero defectos', ipa: '/ˈzɪroʊ ˈdifɛkt ˈmændeɪt/', pinkStress: 'ZE-ro DE-fect', example: 'Under no circumstances should unverified firmware reach safety PLCs.', exampleES: 'Bajo ninguna circunstancia debe firmware sin verificar llegar a PLCs de seguridad.' },
+        { en: 'Root Fault Isolation', es: 'Aislamiento de falla raíz', ipa: '/rut fɔlt ˌaɪsəˈleɪʃən/', pinkStress: 'i-so-LA-tion', example: 'What triggered the CAN bus saturation was a noisy ground loop.', exampleES: 'Lo que detonó la saturación del bus CAN fue un lazo de tierra ruidoso.' },
+        { en: 'Supply Bottleneck', es: 'Cuello de botella en suministro', ipa: '/səˈplaɪ ˈbɑtəlˌnɛk/', pinkStress: 'BOT-tle-neck', example: 'Despite tight microcontroller shortages, Tier-1 output exceeded targets.', exampleES: 'A pesar de la escasez de microcontroladores, la salida Tier-1 superó metas.' },
+        { en: 'Forensic Post-Mortem', es: 'Análisis forense post-mortem', ipa: '/fəˈrɛnsɪk poʊst ˈmɔrtəm/', pinkStress: 'fo-REN-sic POST-mor-tem', example: 'We needn\'t have scrapped all 50 boards; only five had cold joints.', exampleES: 'No hacía falta desechar las 50 tarjetas; solo cinco tenían soldadura fría.' }
+      ],
+      drills: [
+        { q: 'Under no circumstances ___ production operators override thermal safeties.', opts: ['should', 'they should', 'mustn\'t they', 'shouldn\'t'], ans: 0, exp: 'Tras adverbio negativo inicial ("Under no circumstances"), se invierte auxiliar antes del sujeto.', socraticHint: 'Inversión negativa formal.' },
+        { q: 'What caused the lidar frame drops ___ outdated DMA buffer sizing.', opts: ['was', 'were being', 'which was', 'it was'], ans: 0, exp: 'En Wh-cleft sentence ("What caused X"), el foco singular toma el verbo "was".', socraticHint: 'Oración hendida para enfocar causa raíz.' },
+        { q: 'We ___ tested the backup battery manually; the BMS already logs health every minute.', opts: ["needn't have", "must have", "can't have to", "didn't needed"], ans: 0, exp: '"needn\'t have + V3" indica que se realizó una acción en el pasado que resultó innecesaria.', socraticHint: 'Acción realizada innecesariamente.' },
+        { q: '___ severe customs delays, the assembly line launched on schedule.', opts: ['In spite of', 'Although', 'Even though', 'Nevertheless'], ans: 0, exp: '"In spite of" (o "Despite") va seguido de frase nominal ("severe customs delays").', socraticHint: 'Contraste seguido de sustantivo sin verbo conjugado.' }
+      ],
+      dialogue: [
+        { speaker: 'Lead Arch', en: 'Had we known about the oscillator drift, we would have swapped parts before EVT.', es: 'De haber sabido de la deriva del oscilador, habríamos cambiado piezas antes de EVT.' },
+        { speaker: 'Reliability', en: 'True, it was the low-ESR capacitor that stabilized rail ripple completely.', es: 'Cierto, fue el capacitor de baja ESR el que estabilizó el rizado por completo.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Post-mortem: Not only did the failover proxy isolate faulty packets, but it also preserved active industrial sockets." What two things did the proxy achieve?', opts: ['Isolated faulty packets and preserved active sockets', 'Deleted sockets and shut down servers', 'Increased latency', 'Skipped health checks'], ans: 0, exp: 'La inversión "Not only did... but it also..." enumera dos logros simultáneos.', socraticHint: 'Revisa ambos miembros de la estructura Not only... but also.' }
+      ]
+    },
+    'b2-u4': {
+      vocab: [
+        { en: 'Executive Bandwidth', es: 'Capacidad disponible de equipo', ipa: '/ɪɡˈzɛkjətɪv ˈbændˌwɪdθ/', pinkStress: 'BAND-width', example: 'Let\'s tackle low-hanging fruit while we have firmware bandwidth.', exampleES: 'Atendamos mejoras rápidas mientras tenemos capacidad disponible en firmware.' },
+        { en: 'Ballpark Estimate', es: 'Estimación aproximada', ipa: '/ˈbɔlˌpɑrk ˈɛstɪmət/', pinkStress: 'BALL-park ES-ti-mate', example: 'Give us a ballpark figure before tomorrow\'s CAPEX vote.', exampleES: 'Danos una cifra aproximada antes de la votación CAPEX de mañana.' },
+        { en: 'Move the Needle', es: 'Generar impacto medible', ipa: '/muv ðə ˈnidəl/', pinkStress: 'move the NEE-dle', example: 'Parallel GPU batching will genuinely move the needle on throughput.', exampleES: 'El procesamiento paralelo en GPU realmente moverá la aguja en productividad.' },
+        { en: 'Validation Rigor', es: 'Rigor de validación', ipa: '/ˌvælɪˈdeɪʃən ˈrɪɡər/', pinkStress: 'RI-gor', example: 'Safety remains non-negotiable across automated robotics.', exampleES: 'La seguridad sigue siendo innegociable en robótica automatizada.' }
+      ],
+      drills: [
+        { q: 'Engineers ___ tuning the reinforcement-learning control loop all week.', opts: ['have been', 'has been', 'are been', 'were have'], ans: 0, exp: 'Present Perfect Continuous para proceso continuo reciente que continúa vigente ("have been tuning").', socraticHint: 'Acción prolongada hasta el presente ("all week").' },
+        { q: '___, the current battery thermal dissipation margin is tighter than desired.', opts: ['Frankly', 'Deeply', 'Totally', 'Bitterly'], ans: 0, exp: 'Adverbio actitudinal al inicio de oración para transparencia ejecutiva: "Frankly".', socraticHint: 'Introduce sinceridad profesional al principio.' },
+        { q: 'Our board is ___ concerned about single-source semiconductor risk.', opts: ['deeply', 'totally exhausted', 'entirely wrong', 'bitterly happy'], ans: 0, exp: 'Colocación estándar B2/C1: "deeply concerned" (profundamente preocupado).', socraticHint: '¿Qué intensificador coloca con "concerned"?' },
+        { q: '___ Automation transforms manufacturing requires strict cybersecurity.', opts: ['Automation (zero article)', 'The Automation', 'An Automation', 'Automations'], ans: 0, exp: 'Conceptos abstractos en sentido general ("Automation", "Safety") no llevan artículo "The".', socraticHint: 'Concepto abstracto general sin artículo.' }
+      ],
+      dialogue: [
+        { speaker: 'CTO', en: 'We have been profiling edge latency all month—can we touch base after QA?', es: 'Hemos estado midiendo latencia edge todo el mes—¿podemos ponernos al día tras QA?' },
+        { speaker: 'Director', en: 'Yes, let\'s pick the low-hanging fruit that actually moves the needle this quarter.', es: 'Sí, elijamos las mejoras rápidas que realmente generen impacto este trimestre.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Frankly, we don\'t have the engineering bandwidth to build an in-house MES before Q3; let\'s integrate an off-the-shelf API." What does the speaker mean by "bandwidth"?', opts: ['Available team time and engineering capacity', 'Wi-Fi frequency spectrum', 'Fiber optic cable thickness', 'Financial debt limit'], ans: 0, exp: 'En jerga corporativa tecnológica de EE. UU., "bandwidth" significa capacidad/tiempo disponible del equipo.', socraticHint: 'Evita traducir literalmente como "ancho de banda" físico.' }
+      ]
+    },
+    B2: {
+      vocab: [
+        { en: 'Continuous Telemetry', es: 'Telemetría continua', ipa: '/kənˈtɪnjuəs təˈlɛmətri/', pinkStress: 'te-LE-me-try', example: 'Sensors had been logging anomalies prior to shutdown.', exampleES: 'Los sensores llevaban registrando anomalías antes del paro.' },
+        { en: 'Throughput Gain', es: 'Ganancia de capacidad productiva', ipa: '/ˈθruˌpʊt ɡeɪn/', pinkStress: 'THROUGH-put gain', example: 'It was edge caching that slashed API response times.', exampleES: 'Fue el caché en borde lo que recortó los tiempos de respuesta.' }
+      ],
+      drills: [
+        { q: 'Seldom ___ a single firmware patch yield such dramatic power savings.', opts: ['does', 'did it was', 'is', 'has it been do'], ans: 0, exp: 'Adverbio negativo restrictivo inicial ("Seldom") dispara inversión auxiliar ("Seldom does a...").', socraticHint: 'Inversión con "Seldom".' }
+      ],
+      dialogue: [
+        { speaker: 'Principal', en: 'Let\'s circle back on the tolerance stack-up trade-off.', es: 'Retomemos el balance técnico de acumulación de tolerancias.' },
+        { speaker: 'Lead', en: 'Provided that yield holds at 99%, we are aligned.', es: 'Siempre y cuando el rendimiento se mantenga en 99%, estamos alineados.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "By next quarter, the automated wafer handler will have completed 500,000 cycles." When is the milestone complete?', opts: ['By next quarter', 'Yesterday morning', 'Never', 'Within 5 seconds'], ans: 0, exp: '"will have completed" proyecta la finalización antes del próximo trimestre.', socraticHint: 'Verifica el horizonte temporal.' }
+      ]
+    },
+    'c1-u1': {
+      vocab: [
+        { en: 'Systemic Nominalization', es: 'Nominalización técnica formal', ipa: '/sɪˈstɛmɪk ˌnɑmənələˈzeɪʃən/', pinkStress: 'no-mi-na-li-ZA-tion', example: 'The miniaturization of MEMS gyroscopes enabled wearable telemetry.', exampleES: 'La miniaturización de giroscopios MEMS habilitó la telemetría vestible.' },
+        { en: 'Contractual Mechanism', es: 'Mecanismo contractual', ipa: '/kənˈtræktʃuəl ˈmɛkəˌnɪzəm/', pinkStress: 'ME-cha-nism', example: 'Zero-trust tokens are the protocol whereby workloads authenticate.', exampleES: 'Los tokens zero-trust son el protocolo mediante el cual se autentican cargas.' },
+        { en: 'Mandative Clause', es: 'Cláusula de mandato subjuntivo', ipa: '/ˈmændətɪv klɔz/', pinkStress: 'MAN-da-tive clause', example: 'FDA compliance mandates that every test record be cryptographically signed.', exampleES: 'El cumplimiento FDA exige que todo registro sea firmado criptográficamente.' },
+        { en: 'Lexical Density', es: 'Densidad léxica ejecutiva', ipa: '/ˈlɛksɪkəl ˈdɛnsəti/', pinkStress: 'DEN-si-ty', example: 'Having validated ASIC timing, the verification team signed off tape-out.', exampleES: 'Habiendo validado la temporización ASIC, el equipo aprobó el envío a fábrica.' }
+      ],
+      drills: [
+        { q: 'ISO auditors stipulate that calibration logs ___ retained unedited for seven years.', opts: ['be', 'are being', 'would', 'to be'], ans: 0, exp: 'Mandative subjunctive tras "stipulate that" exige verbo en forma base ("be").', socraticHint: 'Usa el subjuntivo formal inglés (verbo base sin "s" ni "are").' },
+        { q: 'Redundant interlocks constitute the failsafe architecture ___ catastrophic faults are prevented.', opts: ['whereby', 'whom', 'which in', 'that where'], ans: 0, exp: '"whereby" significa "por medio del cual / mediante el cual" en redacción técnica/legal.', socraticHint: 'Preposición relativa de mecanismo o procedimiento.' },
+        { q: '___ through formal verification, the flight-control kernel demonstrated zero deadlock states.', opts: ['Verified', 'Verifying by', 'Having verify', 'To verified'], ans: 0, exp: 'Cláusula participial reducida pasiva inicia con participio pasado ("Verified...").', socraticHint: 'Cláusula participial reducida de significado pasivo.' },
+        { q: 'Select the strongest C1 nominalized sentence:', opts: ['Thermal degradation triggered premature battery failure.', 'When the battery got hot it broke fast.', 'Because of hotness the cell ruined itself.', 'Thermal things degrade bad quickly.'], ans: 0, exp: '"Thermal degradation" y "premature battery failure" condensan verbos/adjetivos en prosa ejecutiva C1.', socraticHint: 'Convierte acciones verbales en frases nominales densas.' }
+      ],
+      dialogue: [
+        { speaker: 'Principal Eng', en: 'Our MSA outlines the arbitration framework whereby cross-border IP disputes are settled.', es: 'Nuestro MSA detalla el marco arbitral mediante el cual se resuelven disputas de PI.' },
+        { speaker: 'Counsel', en: 'Crucially, it is imperative that source-code escrow deposits be audited quarterly.', es: 'Crucialmente, es imperativo que los depósitos en custodia de código se auditen trimestralmente.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Whitepaper Extract: Having mitigated electromagnetic interference via shielded twisted pairs, sensor SNR rose 14 dB." What caused the 14 dB SNR gain?', opts: ['Mitigating EMI using shielded twisted pairs', 'Increasing cable length', 'Removing shielding', 'Lowering voltage'], ans: 0, exp: 'La cláusula participial perfecta ("Having mitigated...") explica la causa anterior directa.', socraticHint: 'Lee la cláusula inicial con "Having + V3".' }
+      ]
+    },
+    'c1-u2': {
+      vocab: [
+        { en: 'Empirical Corroboration', es: 'Corroboración empírica', ipa: '/ɪmˈpɪrɪkəl kəˌrɑbəˈreɪʃən/', pinkStress: 'cor-ro-bo-RA-tion', example: 'Benchmarks corroborate the neural compiler speedup claim.', exampleES: 'Los benchmarks corroboran la afirmación de aceleración del compilador.' },
+        { en: 'Causal Attribution', es: 'Atribución causal forense', ipa: '/ˈkɔzəl ˌætrəˈbjuʃən/', pinkStress: 'at-tri-BU-tion', example: 'Solder reflow thermal spikes may well have fractured the ceramic die.', exampleES: 'Picos térmicos en reflujo bien pudieron haber fracturado el dado cerámico.' },
+        { en: 'Ubiquitous Adoption', es: 'Adopción ubicua / generalizada', ipa: '/juˈbɪkwətəs əˈdɑpʃən/', pinkStress: 'u-BI-qui-tous', example: 'Notwithstanding higher upfront CAPEX, silicon-carbide inverters yield lifetime ROI.', exampleES: 'No obstante el CAPEX inicial mayor, los inversores SiC rinden retorno de vida útil.' },
+        { en: 'Unprecedented Trajectory', es: 'Trayectoria sin precedentes', ipa: '/ʌnˈprɛsɪdəntɪd trəˈdʒɛktəri/', pinkStress: 'tra-JEC-to-ry', example: 'Albeit computationally expensive, formal verification eliminates race conditions.', exampleES: 'Aunque costosa en cómputo, la verificación formal elimina condiciones de carrera.' }
+      ],
+      drills: [
+        { q: '___ promising laboratory efficiency, cryogenic cooling remains impractical for consumer vehicles.', opts: ['Albeit', 'Inasmuch', 'Thereby', 'Notwithstanding of'], ans: 0, exp: '"Albeit" introduce concesión directa antes de un adjetivo o frase corta ("Albeit promising...").', socraticHint: 'Equivalente elegante C1 a "although it is".' },
+        { q: 'Edge inference offloads cloud traffic, ___ slashing cellular bandwidth costs by 62%.', opts: ['thereby', 'conversely', 'albeit', 'lest'], ans: 0, exp: '"thereby + V-ing" expresa resultado instrumental directo de la acción principal.', socraticHint: 'Conector que introduce consecuencia inmediata + gerundio.' },
+        { q: 'Our reliability team ___ manually retested 100 units—the diagnostic script had already verified every hash.', opts: ["needn't have", 'may well have', 'could hardly to have', 'should have been'], ans: 0, exp: '"needn\'t have + V3" indica esfuerzo pasado innecesario porque ya estaba cubierto.', socraticHint: 'Se hizo trabajo duplicado que no hacía falta.' },
+        { q: 'Empirical evidence ___ our hypothesis regarding high-frequency switching losses.', opts: ['corroborates', 'exacerbates', 'postpones', 'fabricates'], ans: 0, exp: 'Colocación científica estándar: "empirical evidence corroborates a hypothesis".', socraticHint: 'Respalda o confirma con datos experimentales.' }
+      ],
+      dialogue: [
+        { speaker: 'R&D Lead', en: 'In light of Q2 failure telemetry, capacitor derating may well have prolonged inverter lifespan.', es: 'A la luz de la telemetría Q2, reducir el estrés del capacitor bien pudo prolongar la vida del inversor.' },
+        { speaker: 'Peer Reviewer', en: 'Granted; nonetheless, anomalous switching harmonics could hardly have stemmed from thermal drift alone.', es: 'Concedido; no obstante, los armónicos anómalos difícilmente pudieron originarse solo por deriva térmica.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Inasmuch as wafer defects correlate strongly with humidity spikes, cleanroom HVAC upgrades will mitigate yield degradation." What justifies the HVAC upgrade?', opts: ['Wafer defects correlate strongly with humidity spikes', 'Air conditioning looks modern', 'Wafer demand fell', 'Humidity lowers defects'], ans: 0, exp: '"Inasmuch as" introduce la premisa causal verificada que fundamenta la inversión.', socraticHint: 'Identifica la causa tras "Inasmuch as".' }
+      ]
+    },
+    'c1-u3': {
+      vocab: [
+        { en: 'Diplomatic Containment', es: 'Contención diplomática de crisis', ipa: '/ˌdɪpləˈmætɪk kənˈteɪnmənt/', pinkStress: 'con-TAIN-ment', example: 'Zero-trust isolation contained the API anomaly within four minutes.', exampleES: 'El aislamiento zero-trust contuvo la anomalía API en cuatro minutos.' },
+        { en: 'Dialectical Concession', es: 'Concesión dialéctica', ipa: '/ˌdaɪəˈlɛktɪkəl kənˈsɛʃən/', pinkStress: 'con-CES-sion', example: 'Granted, monoliths simplify initial prototyping; yet microservices decouple scaling.', exampleES: 'Concedido, los monolitos simplifican prototipos; sin embargo microservicios desacoplan escala.' },
+        { en: 'Stylistic Inversion', es: 'Inversión retórica de énfasis', ipa: '/staɪˈlɪstɪk ɪnˈvɜrʒən/', pinkStress: 'in-VER-sion', example: 'Not until end-to-end encryption rotated did latency stabilize completely.', exampleES: 'No fue sino hasta que rotó el cifrado que la latencia se estabilizó.' },
+        { en: 'Correlation vs Causation', es: 'Correlación vs causalidad', ipa: '/ˌkɔrəˈleɪʃən ˈvɜrsəs kɔˈzeɪʃən/', pinkStress: 'cau-SA-tion', example: 'Playing devil\'s advocate, could packet loss mirror DNS throttling instead?', exampleES: 'Haciendo de abogado del diablo, ¿podría la pérdida reflejar límite DNS?' }
+      ],
+      drills: [
+        { q: 'Not until the kernel memory leak was patched ___ container restarts cease.', opts: ['did', 'had did', 'were', 'do'], ans: 0, exp: '"Not until [cláusula]..." al inicio obliga inversión en la cláusula principal ("did container restarts cease").', socraticHint: 'Observa el tiempo pasado "was patched" → auxiliar "did".' },
+        { q: '___ our telemetry redundancy that tier-1 automotive clients stayed completely unaffected.', opts: ['Such was', 'So were', 'Too was', 'Albeit'], ans: 0, exp: '"Such was + frase nominal + that..." enfatiza la magnitud retórica C1.', socraticHint: 'Énfasis retórico formal con sustantivo ("our telemetry redundancy").' },
+        { q: 'In RFC architecture review, distinguish correlation from ___ before refactoring storage.', opts: ['causation', 'mitigation', 'precedent', 'exacerbation'], ans: 0, exp: 'Principio analítico C1: "distinguish correlation from causation".', socraticHint: 'Dos eventos simultáneos no implican que uno cause al otro.' },
+        { q: 'Effective crisis briefings follow Concession – ___ – Action to rebuild executive trust.', opts: ['Bridge', 'Blame', 'Panic', 'Denial'], ans: 0, exp: 'Marco de comunicación ejecutiva: reconocer impacto (Concession), encuadrar solución (Bridge), comprometer fecha (Action).', socraticHint: 'Elemento puente entre el reconocimiento y la acción.' }
+      ],
+      dialogue: [
+        { speaker: 'Incident Cmdr', en: 'Not only did we isolate the rogue microservice, but zero customer PII was exposed.', es: 'No solo aislamos el microservicio anómalo, sino que cero datos personales quedaron expuestos.' },
+        { speaker: 'Client CTO', en: 'Granted, containment was swift; yet what structural safeguard prevents recurrence?', es: 'Concedido, la contención fue rápida; pero ¿qué salvaguarda estructural evita recurrencia?' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "RFC Debate: Formidable though monolithic latency benchmarks appear, single-point deployment creates systemic blast-radius risk." What is the author\'s main concern?', opts: ['Systemic blast-radius risk from single-point deployment', 'Monoliths lack benchmarks', 'Deployment is too cheap', 'Latency is zero'], ans: 0, exp: 'La concesión frontada ("Formidable though...") cede rapidez pero enfatiza el riesgo sistémico.', socraticHint: 'Analiza la segunda mitad tras la concesión.' }
+      ]
+    },
+    'c1-u4': {
+      vocab: [
+        { en: 'BLUF Executive Brief', es: 'Resumen BLUF (Conclusión al frente)', ipa: '/blʌf ɪɡˈzɛkjətɪv brif/', pinkStress: 'BLUF brief', example: 'Leading with BLUF, this $1.2M robotics cell delivers 14-month CAPEX payback.', exampleES: 'Empezando con BLUF, esta celda robótica de $1.2M retorna inversión en 14 meses.' },
+        { en: 'Pragmatic Understatement', es: 'Atenuación diplomática pragmática', ipa: '/præɡˈmætɪk ˈʌndərˌsteɪtmənt/', pinkStress: 'un-der-STATE-ment', example: '"Slightly suboptimal firmware stability" in UK parlance signals a critical release blocker.', exampleES: '"Estabilidad ligeramente subóptima" en inglés británico alerta un bloqueo crítico.' },
+        { en: 'Risk-Adjusted Payback', es: 'Retorno ajustado al riesgo', ipa: '/rɪsk əˈdʒʌstɪd ˈpeɪˌbæk/', pinkStress: 'PAY-back', example: 'Risk-adjusted NPV demonstrates clear superiority over manual inspection.', exampleES: 'El VPN ajustado al riesgo demuestra clara superioridad sobre inspección manual.' },
+        { en: 'Face-Saving Dissent', es: 'Disenso diplomático constructivo', ipa: '/feɪs ˈseɪvɪŋ dɪˈsɛnt/', pinkStress: 'dis-SENT', example: 'I wonder if we might revisit thermal tolerances before finalizing the SLA.', exampleES: 'Me pregunto si podríamos revisar tolerancias térmicas antes de cerrar el SLA.' }
+      ],
+      drills: [
+        { q: 'To command executive attention in CAPEX pitches, open with ___ (Bottom Line Up Front).', opts: ['BLUF', 'appendices', 'anecdotes', 'syntax history'], ans: 0, exp: 'BLUF coloca recomendación, costo y retorno en los primeros 30 segundos.', socraticHint: 'Conclusión cuantificada desde la primera oración.' },
+        { q: 'When a British client calls your UI latency "a bit brave," they diplomatically mean it is ___.', opts: ['unacceptably slow or risky', 'courageously optimized', 'ready for launch', 'visually colorful'], ans: 0, exp: 'Understatement anglosajón suaviza críticas serias sin perder contundencia técnica.', socraticHint: 'Lee entre líneas la cortesía británica.' },
+        { q: 'Never ___ fail-safe watchdog timers be bypassed during high-speed line commissioning.', opts: ['shall', 'must to', 'did to', 'were'], ans: 0, exp: 'Inversión negativa formal de cumplimiento ("Never shall...").', socraticHint: 'Auxiliar formal normativo para prohibición absoluta.' },
+        { q: 'Which phrase exemplifies face-saving executive disagreement in boardrooms?', opts: ['"With respect to the timeline, I wonder if we might stress-test Phase 2 first."', '"Your architecture fails completely."', '"You missed every point."', '"This proposal is unusable."'], ans: 0, exp: 'Cushioning pragmático ("With respect to..., I wonder if...") cuestiona técnicamente sin confrontar personalmente.', socraticHint: 'Busca suavizadores estratégicos y enfoque en datos.' }
+      ],
+      dialogue: [
+        { speaker: 'Founder', en: 'BLUF: Automating AOI solder inspection recovers $480K annually with an 11-month payback.', es: 'BLUF: Automatizar la inspección óptica recupera $480K al año con retorno en 11 meses.' },
+        { speaker: 'Partner', en: 'I appreciate the throughput math; I wonder if we might stress-test supply chain lead times.', es: 'Aprecio las cifras de productividad; me pregunto si podríamos estresar los tiempos de suministro.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Boardroom Note: While UK partners called our prototype margin \'rather snug,\' US reviewers warned it had \'zero safety headroom.\'" What do both teams actually agree on?', opts: ['The prototype margin is dangerously tight', 'The prototype has huge safety slack', 'UK loves tight margins', 'US expects zero cost'], ans: 0, exp: 'Ambas culturas describen el mismo cuello de botella técnico con registros pragmáticos distintos.', socraticHint: 'Decodifica el understatement británico vs franqueza americana.' }
+      ]
+    },
+    'C1-C2': {
+      vocab: [
+        { en: 'Systemic Redundancy', es: 'Redundancia sistémica crítica', ipa: '/sɪˈstɛmɪk rɪˈdʌndənsi/', pinkStress: 're-DUN-dan-cy', example: 'Active-active failover remains a cornerstone of distributed cloud resilience.', exampleES: 'La conmutación activo-activo sigue siendo pilar de resiliencia en la nube.' },
+        { en: 'Architectural RFC', es: 'Propuesta de arquitectura RFC', ipa: '/ˌɑrkəˈtɛktʃərəl ɑrˌɛfˈsi/', pinkStress: 'ar-chi-TEC-tu-ral RFC', example: 'Peer scrutiny sharpened every assumption inside our telemetry RFC.', exampleES: 'El escrutinio entre pares afinó cada supuesto dentro de nuestra RFC.' }
+      ],
+      drills: [
+        { q: 'Hardly ___ the firmware benchmark finished before investors requested a live demo.', opts: ['had', 'has', 'did have', 'was'], ans: 0, exp: 'Inversión negativa clásica: "Hardly had [S] finished before/when...".', socraticHint: 'Empareja Hardly con Past Perfect invertido ("had").' }
+      ],
+      dialogue: [
+        { speaker: 'Chair', en: 'Empirical throughput data corroborates the whitepaper; any final counter-arguments?', es: 'Los datos empíricos corroboran el whitepaper; ¿algún contraargumento final?' },
+        { speaker: 'Fellow', en: 'None on scalability; however, it is vital that edge encryption keys rotate daily.', es: 'Ninguno en escalabilidad; sin embargo, es vital que las llaves edge roten diario.' }
+      ],
+      readingQuestions: [
+        { q: 'Read: "Executive Keynote: Redundancy is not overhead; rather, it is the insurance policy whereby mission-critical SLA uptime persists." How is redundancy framed?', opts: ['As mission-critical insurance for SLA persistence', 'As unnecessary waste', 'As an accounting glitch', 'As an optional UI skin'], ans: 0, exp: 'El discurso redefine redundancia como póliza indispensable de continuidad SLA.', socraticHint: 'Lee la segunda cláusula después de "rather".' }
+      ]
+    }
+  };
+
+  function normDedupeKey(str) {
+    return String(str || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  function parsePowerSheetDrills(cls) {
+    const out = [];
+    const ps = cls && cls.powerSheet;
+    if (!ps || !Array.isArray(ps.fillBlanks) || !ps.answerKey) return out;
+    const akMap = {};
+    for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
+      akMap[m[1]] = m[2].trim();
+    }
+    const helperPool = ['am', 'is', 'are', 'was', 'were', 'do', 'does', 'did', 'have', 'has', 'had', 'will', 'would', 'should', 'must', 'can', 'might', 'be', 'being', 'been'];
+    ps.fillBlanks.forEach((rawLine) => {
+      const m = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
+      if (!m || !akMap[m[1]]) return;
+      const promptTxt = m[2].trim();
+      const rawOpts = m[3].split('/').map((s) => s.trim()).filter(Boolean);
+      const ansTxt = akMap[m[1]];
+      if (!rawOpts.some((o) => o.toLowerCase() === ansTxt.toLowerCase())) {
+        rawOpts.unshift(ansTxt);
+      }
+      const uniqueOpts = [...new Set(rawOpts)];
+      // Expand 2-option Power Sheet prompts into richer 4-option checks deterministically
+      for (let h = 0; h < helperPool.length && uniqueOpts.length < 4; h++) {
+        const cand = helperPool[(h + (cls.classNum || 1)) % helperPool.length];
+        if (!uniqueOpts.some((o) => o.toLowerCase() === cand.toLowerCase()) && !ansTxt.includes(' ')) {
+          uniqueOpts.push(cand);
+        }
+      }
+      const ansIdx = uniqueOpts.findIndex((o) => o.toLowerCase() === ansTxt.toLowerCase());
+      if (ansIdx >= 0 && uniqueOpts.length >= 2) {
+        out.push({
+          q: promptTxt,
+          opts: uniqueOpts,
+          ans: ansIdx,
+          exp: `Respuesta Power Sheet: "${ansTxt}". ${cls.goldenRuleES || cls.explanationES || ''}`.replace(/<[^>]+>/g, ''),
+          socraticHint: cls.grammarFocus ? `Aplica: ${cls.grammarFocus}` : 'Aplica la regla gramatical de la clase.'
+        });
+      }
+    });
+    return out;
+  }
+
+  function buildErrorAndCognateDrills(cls) {
+    const out = [];
+    if (cls && cls.commonMistake && cls.commonMistake.bad && cls.commonMistake.good) {
+      const goodChoice = String(cls.commonMistake.good).split('/')[0].trim();
+      const badChoice = String(cls.commonMistake.bad).split('/')[0].trim();
+      if (goodChoice && badChoice && goodChoice.toLowerCase() !== badChoice.toLowerCase()) {
+        out.push({
+          q: `Error Detection (ES -> EN): Select the grammatically accurate engineering English sentence.`,
+          opts: [goodChoice, badChoice],
+          ans: 0,
+          exp: cls.commonMistake.exp || 'Evita la interferencia directa del español.',
+          socraticHint: 'Revisa sujeto, auxiliar, orden y preposiciones exactas.'
+        });
+      }
+    }
+    if (cls && cls.falseCognate && cls.falseCognate.term && cls.falseCognate.correct && cls.falseCognate.mistake) {
+      out.push({
+        q: `Precision Alert — What does "${cls.falseCognate.term}" mean in authentic US engineering English?`,
+        opts: [
+          cls.falseCognate.correct,
+          cls.falseCognate.mistake,
+          'Ignorar la especificación de calidad en el turno',
+          'Cancelar la verificación normativa sin registro'
+        ],
+        ans: 0,
+        exp: cls.falseCognate.tip || 'Falso cognado frecuente entre español técnico e inglés industrial.',
+        socraticHint: 'Cuidado con falsos amigos que parecen iguales en español.'
+      });
+    }
+    return out;
+  }
+
+  function pushUniqueBy(targetArr, seenSet, items, keyGetter, mapper) {
+    (items || []).forEach((item) => {
+      if (!item) return;
+      const mapped = mapper ? mapper(item) : item;
+      const key = normDedupeKey(keyGetter(mapped));
+      if (!key || seenSet.has(key)) return;
+      seenSet.add(key);
+      targetArr.push(mapped);
+    });
+  }
+
+  function buildVocabClozeExercises(vocabList, level) {
+    const out = [];
+    if (!Array.isArray(vocabList) || vocabList.length < 3) return out;
+    vocabList.forEach((v, idx) => {
+      const term = String(v.en || v.term || '').trim();
+      const meaning = String(v.es || v.translation || '').trim();
+      const ex = String(v.example || '').trim();
+      if (!term || !meaning) return;
+      // Pick 3 unique meanings or terms from other items as distractors
+      const others = vocabList.filter((_, i) => i !== idx);
+      // Case A: Contextual cloze when example explicitly contains the term (clean single word/phrase)
+      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const termRe = new RegExp(`\\b${escapedTerm}\\b`, 'i');
+      if (ex && termRe.test(ex)) {
+        const blanked = ex.replace(termRe, '_____');
+        const distTerms = others.map((o) => o.en || o.term).filter((t) => t && t.toLowerCase() !== term.toLowerCase()).slice(0, 3);
+        if (distTerms.length >= 2) {
+          const opts = [term, ...distTerms];
+          out.push({
+            q: `Complete the ${level || 'Tech'} technical sentence: "${blanked}"`,
+            opts: opts,
+            ans: 0,
+            exp: `"${term}" (${meaning}) completes the technical usage naturally: ${ex}`,
+            socraticHint: v.exampleES || `Busca el término que significa "${meaning}".`
+          });
+          return;
+        }
+      }
+      // Case B: Definition-to-term matching MCQ
+      const distTerms = others.map((o) => o.en || o.term).filter((t) => t && t.toLowerCase() !== term.toLowerCase()).slice(0, 3);
+      if (distTerms.length >= 2) {
+        out.push({
+          q: `Which ${level || 'STEM'} English term means "${meaning}"?`,
+          opts: [term, ...distTerms],
+          ans: 0,
+          exp: `${term} = ${meaning}.${ex ? ' Example: ' + ex : ''}`,
+          socraticHint: v.pinkStress ? `Stress: ${v.pinkStress}` : `Relaciona el concepto con "${meaning}".`
+        });
+      }
+    });
+    return out;
+  }
+
   function getModularityTemplates() {
     return Object.values(MODULARITY_TEMPLATES);
   }
@@ -4023,9 +4664,197 @@
     return CLASSES_BY_ID[id] || CLASSES_BY_ID[String(id).toUpperCase()] || CLASSES_BY_ID[String(id).toLowerCase()] || null;
   }
 
+  function rotateSlice(arr, offset) {
+    if (!Array.isArray(arr) || arr.length === 0) return [];
+    const shift = ((offset % arr.length) + arr.length) % arr.length;
+    return arr.slice(shift).concat(arr.slice(0, shift));
+  }
+
+  function shuffleDrillDeterministic(d, seed) {
+    if (!d || !Array.isArray(d.opts) || d.opts.length < 2) return d;
+    const correctIdx = (typeof d.ans === 'number' && d.ans >= 0 && d.ans < d.opts.length) ? d.ans : 0;
+    const correctVal = d.opts[correctIdx];
+    const items = d.opts.map((opt, i) => ({ opt, hash: ((i + 1) * 37 + seed * 13 + String(opt).length * 7 + String(d.q || '').length) % 97 }));
+    items.sort((a, b) => a.hash - b.hash);
+    const newOpts = items.map((x) => x.opt);
+    const newAns = newOpts.indexOf(correctVal);
+    return Object.assign({}, d, {
+      opts: newOpts,
+      ans: newAns >= 0 ? newAns : 0
+    });
+  }
+
   function toRunnableUnit(clsOrId) {
     const cls = typeof clsOrId === 'string' ? getClassById(clsOrId) : clsOrId;
     if (!cls) return null;
+
+    const rootGlobal = (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
+    const tracksApi = rootGlobal.STEMOS_MCER_TRACKS;
+    const parentUnit = (tracksApi && typeof tracksApi.getUnitById === 'function')
+      ? tracksApi.getUnitById(cls.unitId)
+      : null;
+
+    const siblingsSameUnit = CLASSES.filter((c) => c.unitId === cls.unitId && c.id !== cls.id);
+    const siblingsSameLevel = CLASSES.filter((c) => c.level === cls.level && c.unitId !== cls.unitId);
+    const rotOffset = Math.max(0, (cls.classNum || 1) - 1);
+    const rotatedUnitSibs = rotateSlice(siblingsSameUnit, rotOffset);
+    const rotatedLevelSibs = rotateSlice(siblingsSameLevel, rotOffset);
+
+    const clusterBank = CEFR_TECH_SUPPLEMENT_BANK[cls.unitId] || {};
+    const levelBank = CEFR_TECH_SUPPLEMENT_BANK[cls.level] || CEFR_TECH_SUPPLEMENT_BANK.A1;
+    const sameLevelBanks = Object.keys(CEFR_TECH_SUPPLEMENT_BANK)
+      .filter((k) => k.startsWith(cls.id.slice(0, 2) + '-u') && k !== cls.unitId)
+      .map((k) => CEFR_TECH_SUPPLEMENT_BANK[k]);
+
+    // 1. Vocabulary (>= 10 unique tech items)
+    const vocabSeen = new Set();
+    const mergedVocab = [];
+    const mapVocab = (v) => Object.assign({}, v, {
+      en: v.en || v.term || 'Technical Term',
+      es: v.es || v.translation || 'Término técnico',
+      term: v.en || v.term || 'Technical Term',
+      sample: v.example || v.sample || ''
+    });
+    pushUniqueBy(mergedVocab, vocabSeen, cls.vocab, (v) => v.en, mapVocab);
+    pushUniqueBy(mergedVocab, vocabSeen, clusterBank.vocab, (v) => v.en, mapVocab);
+    if (parentUnit && parentUnit.vocabulary) {
+      pushUniqueBy(mergedVocab, vocabSeen, parentUnit.vocabulary, (v) => v.en || v.term, mapVocab);
+    }
+    rotatedUnitSibs.forEach((sib) => {
+      if (mergedVocab.length < 16) pushUniqueBy(mergedVocab, vocabSeen, sib.vocab, (v) => v.en, mapVocab);
+    });
+    pushUniqueBy(mergedVocab, vocabSeen, levelBank.vocab, (v) => v.en, mapVocab);
+    if (mergedVocab.length < 10) {
+      rotatedLevelSibs.forEach((sib) => {
+        if (mergedVocab.length < 12) pushUniqueBy(mergedVocab, vocabSeen, sib.vocab, (v) => v.en, mapVocab);
+      });
+    }
+
+    // 2. Grammar Drills (>= 10 unique CEFR + Tech drills)
+    const drillSeen = new Set();
+    const mergedDrills = [];
+    const toStdDrill = (d) => ({
+      q: d.q || d.question || '',
+      opts: d.opts || d.options || [],
+      ans: typeof d.ans === 'number' ? d.ans : (d.answer || 0),
+      exp: d.exp || d.explanation || '',
+      socraticHint: d.socraticHint || ''
+    });
+    const mapDrillFinal = (d) => Object.assign({}, d, {
+      question: d.q,
+      options: d.opts,
+      answer: d.ans,
+      explanation: d.exp
+    });
+
+    pushUniqueBy(mergedDrills, drillSeen, cls.drills, (d) => d.q, (d) => mapDrillFinal(toStdDrill(d)));
+    const psDrills = parsePowerSheetDrills(cls).map((d, i) => shuffleDrillDeterministic(d, (cls.classNum || 1) + i + 3));
+    pushUniqueBy(mergedDrills, drillSeen, psDrills, (d) => d.q, mapDrillFinal);
+    const ownTrapDrills = buildErrorAndCognateDrills(cls).map((d, i) => shuffleDrillDeterministic(d, (cls.classNum || 1) + i + 7));
+    pushUniqueBy(mergedDrills, drillSeen, ownTrapDrills, (d) => d.q, mapDrillFinal);
+    const clusterDrills = (clusterBank.drills || []).map((d, i) => shuffleDrillDeterministic(d, (cls.classNum || 1) + i + 11));
+    pushUniqueBy(mergedDrills, drillSeen, clusterDrills, (d) => d.q, mapDrillFinal);
+    if (parentUnit && parentUnit.grammarDrills) {
+      pushUniqueBy(mergedDrills, drillSeen, parentUnit.grammarDrills, (d) => d.q || d.question, (d) => mapDrillFinal(toStdDrill(d)));
+    }
+    rotatedUnitSibs.forEach((sib) => {
+      if (mergedDrills.length < 14) {
+        pushUniqueBy(mergedDrills, drillSeen, sib.drills, (d) => d.q, (d) => mapDrillFinal(toStdDrill(d)));
+      }
+    });
+    const lvlDrills = (levelBank.drills || []).map((d, i) => shuffleDrillDeterministic(d, (cls.classNum || 1) + i + 17));
+    pushUniqueBy(mergedDrills, drillSeen, lvlDrills, (d) => d.q, mapDrillFinal);
+    if (mergedDrills.length < 10) {
+      rotatedLevelSibs.forEach((sib) => {
+        if (mergedDrills.length < 12) {
+          pushUniqueBy(mergedDrills, drillSeen, sib.drills, (d) => d.q, (d) => mapDrillFinal(toStdDrill(d)));
+        }
+      });
+    }
+
+    // 3. Dialogue Lines (>= 8 unique realistic turns)
+    const dlgSeen = new Set();
+    const mergedDialogue = [];
+    const mapDlg = (l) => Object.assign({}, l, {
+      speaker: l.speaker || 'Engineer',
+      en: l.en || l.text || '',
+      es: l.es || l.translation || '',
+      text: l.en || l.text || '',
+      translation: l.es || l.translation || ''
+    });
+    pushUniqueBy(mergedDialogue, dlgSeen, cls.dialogue, (l) => l.en, mapDlg);
+    pushUniqueBy(mergedDialogue, dlgSeen, clusterBank.dialogue, (l) => l.en, mapDlg);
+    if (parentUnit && parentUnit.dialogue && parentUnit.dialogue.lines) {
+      pushUniqueBy(mergedDialogue, dlgSeen, parentUnit.dialogue.lines, (l) => l.en || l.text, mapDlg);
+    }
+    rotatedUnitSibs.forEach((sib) => {
+      if (mergedDialogue.length < 12) pushUniqueBy(mergedDialogue, dlgSeen, sib.dialogue, (l) => l.en, mapDlg);
+    });
+    pushUniqueBy(mergedDialogue, dlgSeen, levelBank.dialogue, (l) => l.en, mapDlg);
+    if (mergedDialogue.length < 8) {
+      rotatedLevelSibs.forEach((sib) => {
+        if (mergedDialogue.length < 10) pushUniqueBy(mergedDialogue, dlgSeen, sib.dialogue, (l) => l.en, mapDlg);
+      });
+    }
+
+    // 4. Vocabulary Exercises (>= 8 unique contextual cloze / meaning exercises)
+    const vExSeen = new Set();
+    const mergedVocabEx = [];
+    if (parentUnit && parentUnit.vocabularyExercises) {
+      pushUniqueBy(mergedVocabEx, vExSeen, parentUnit.vocabularyExercises, (e) => e.q || e.question, (e) => mapDrillFinal(toStdDrill(e)));
+    }
+    const generatedClozes = buildVocabClozeExercises(mergedVocab, cls.level).map((d, i) =>
+      shuffleDrillDeterministic(d, (cls.classNum || 1) + i + 23)
+    );
+    pushUniqueBy(mergedVocabEx, vExSeen, generatedClozes, (d) => d.q, mapDrillFinal);
+
+    // 5. Reading & Context Questions (>= 8 unique reading/error-radar/spec questions)
+    const readSeen = new Set();
+    const mergedReadingQs = [];
+    const mapReadQ = (rq) => ({
+      q: rq.q || rq.question || '',
+      opts: rq.opts || rq.options || [],
+      ans: typeof rq.ans === 'number' ? rq.ans : (rq.answer || 0),
+      exp: rq.exp || rq.explanation || '',
+      socraticHint: rq.socraticHint || ''
+    });
+    pushUniqueBy(mergedReadingQs, readSeen, (clusterBank.readingQuestions || []).map((d, i) => shuffleDrillDeterministic(d, i + 5)), (d) => d.q, mapReadQ);
+    pushUniqueBy(mergedReadingQs, readSeen, ownTrapDrills, (d) => d.q, mapReadQ);
+    if (parentUnit && parentUnit.reading && parentUnit.reading.questions) {
+      pushUniqueBy(mergedReadingQs, readSeen, parentUnit.reading.questions, (d) => d.q || d.question, mapReadQ);
+    }
+    pushUniqueBy(mergedReadingQs, readSeen, psDrills, (d) => d.q, mapReadQ);
+    pushUniqueBy(mergedReadingQs, readSeen, (levelBank.readingQuestions || []).map((d, i) => shuffleDrillDeterministic(d, i + 19)), (d) => d.q, mapReadQ);
+    sameLevelBanks.forEach((b) => {
+      if (mergedReadingQs.length < 10 && b && b.readingQuestions) {
+        pushUniqueBy(mergedReadingQs, readSeen, b.readingQuestions.map((d, i) => shuffleDrillDeterministic(d, i + 31)), (d) => d.q, mapReadQ);
+      }
+    });
+    rotatedUnitSibs.forEach((sib) => {
+      if (mergedReadingQs.length < 10) {
+        const sibTraps = buildErrorAndCognateDrills(sib).map((d, i) => shuffleDrillDeterministic(d, i + 13));
+        const sibPs = parsePowerSheetDrills(sib).map((d, i) => shuffleDrillDeterministic(d, i + 29));
+        pushUniqueBy(mergedReadingQs, readSeen, sibTraps, (d) => d.q, mapReadQ);
+        pushUniqueBy(mergedReadingQs, readSeen, sibPs, (d) => d.q, mapReadQ);
+      }
+    });
+    if (mergedReadingQs.length < 8) {
+      pushUniqueBy(mergedReadingQs, readSeen, mergedDrills, (d) => d.q, mapReadQ);
+    }
+
+    // 6. Unit Quiz / Boss Synthesis (>= 10 unique synthesis checks)
+    const quizSeen = new Set();
+    const mergedQuiz = [];
+    pushUniqueBy(mergedQuiz, quizSeen, cls.drills, (d) => d.q, (d) => mapDrillFinal(toStdDrill(d)));
+    if (parentUnit && parentUnit.unitQuiz) {
+      pushUniqueBy(mergedQuiz, quizSeen, parentUnit.unitQuiz, (d) => d.q || d.question, (d) => mapDrillFinal(toStdDrill(d)));
+    }
+    pushUniqueBy(mergedQuiz, quizSeen, mergedReadingQs, (d) => d.q, mapDrillFinal);
+    pushUniqueBy(mergedQuiz, quizSeen, mergedDrills, (d) => d.q, mapDrillFinal);
+
+    const readingPassage = (parentUnit && parentUnit.reading && (parentUnit.reading.text || parentUnit.reading.passage))
+      || (cls.explanationES ? String(cls.explanationES).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : cls.canDo);
+
     return {
       id: cls.id,
       unitId: cls.unitId,
@@ -4063,37 +4892,31 @@
         commonMistake: cls.commonMistake
       },
       falseCognates: cls.falseCognate ? [cls.falseCognate] : [],
-      vocabulary: (cls.vocab || []).map((v) => Object.assign({}, v, {
-        term: v.en,
-        sample: v.example
-      })),
-      grammarDrills: (cls.drills || []).map((d) => Object.assign({}, d, {
-        question: d.q,
-        options: d.opts,
-        answer: d.ans,
-        explanation: d.exp
-      })),
-      unitQuiz: (cls.drills || []).map((d) => Object.assign({}, d, {
-        question: d.q,
-        options: d.opts,
-        answer: d.ans,
-        explanation: d.exp
-      })),
+      falseCognate: cls.falseCognate || null,
+      vocabulary: mergedVocab,
+      vocabularyExercises: mergedVocabEx,
+      grammarDrills: mergedDrills,
+      unitQuiz: mergedQuiz,
       dialogue: {
         context: cls.industryContext,
-        lines: (cls.dialogue || []).map((l) => Object.assign({}, l, {
-          text: l.en,
-          translation: l.es
-        }))
+        lines: mergedDialogue
       },
+      reading: {
+        title: cls.titleES || cls.title,
+        text: readingPassage,
+        passage: readingPassage,
+        questions: mergedReadingQs
+      },
+      readingQuestions: mergedReadingQs,
       listeningLab: {
         title: `Audio Lab · ${cls.titleES || cls.title}`,
-        transcript: (cls.dialogue || []).map((l) => l.en).join(' '),
-        questions: (cls.drills || []).slice(0, 2).map((d) => ({
+        transcript: mergedDialogue.map((l) => l.en).join(' '),
+        questions: mergedDrills.slice(0, 6).map((d) => ({
           q: d.q,
           options: d.opts,
           answer: d.ans,
-          exp: d.exp
+          exp: d.exp,
+          socraticHint: d.socraticHint
         }))
       },
       writingLab: {
