@@ -3,6 +3,8 @@
    ========================================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+    var activeGlossaryCat = 'all';
+    var activeGlossarySearchQuery = '';
 
     /* --- Skills Nodes Data --- */
     const skillsData = {
@@ -4142,8 +4144,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.initStudentProfileBridge();
 
     /* --- 7. GLOSSARY / PHRASES VIEW --- */
-    let activeGlossaryCat = 'all';
-    let activeGlossarySearchQuery = '';
+    var activeGlossaryCat = 'all';
+    var activeGlossarySearchQuery = '';
 
     function renderGlossaryView(catFilter, searchQuery) {
         if (catFilter !== undefined) activeGlossaryCat = catFilter;
@@ -5477,6 +5479,249 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     var activeMcerLevelFilter = 'all';
     window.activeMcerLevelFilter = 'all';
+
+    // 1. Studio-Grade Modern Web Audio Synthesizer (Soft-Clipped Master Compressor + Tactile Acoustic Layering)
+    // Declared above INITIAL RENDER so no earlier handler or synchronous call can hit TDZ
+    const DuoSound = {
+        ctx: null,
+        masterNode: null,
+        lastClickAt: 0,
+        getCtx() {
+            if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+                try {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                } catch (e) {
+                    console.warn('AudioContext not supported', e);
+                }
+            }
+            if (this.ctx && this.ctx.state === 'suspended') {
+                this.ctx.resume().catch(() => {});
+            }
+            return this.ctx;
+        },
+        getMaster(ctx) {
+            if (!ctx) return null;
+            if (!this.masterNode) {
+                try {
+                    const compressor = ctx.createDynamicsCompressor();
+                    compressor.threshold.setValueAtTime(-14, ctx.currentTime);
+                    compressor.knee.setValueAtTime(18, ctx.currentTime);
+                    compressor.ratio.setValueAtTime(4, ctx.currentTime);
+                    compressor.attack.setValueAtTime(0.003, ctx.currentTime);
+                    compressor.release.setValueAtTime(0.15, ctx.currentTime);
+
+                    const masterFilter = ctx.createBiquadFilter();
+                    masterFilter.type = 'lowpass';
+                    masterFilter.frequency.setValueAtTime(4800, ctx.currentTime);
+                    masterFilter.Q.setValueAtTime(0.7, ctx.currentTime);
+
+                    const masterGain = ctx.createGain();
+                    masterGain.gain.setValueAtTime(0.88, ctx.currentTime);
+
+                    masterFilter.connect(compressor);
+                    compressor.connect(masterGain);
+                    masterGain.connect(ctx.destination);
+                    this.masterNode = masterFilter;
+                } catch (_) {
+                    this.masterNode = ctx.destination;
+                }
+            }
+            return this.masterNode;
+        },
+        playBell(freq, duration = 0.35, gainVal = 0.16, delay = 0, overtoneMult = 2.0) {
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const dest = this.getMaster(ctx) || ctx.destination;
+                const now = ctx.currentTime + delay;
+
+                const noteGain = ctx.createGain();
+                noteGain.gain.setValueAtTime(0.0001, now);
+                noteGain.gain.linearRampToValueAtTime(gainVal, now + 0.006);
+                noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3600, now);
+                filter.frequency.exponentialRampToValueAtTime(1200, now + duration);
+                filter.Q.setValueAtTime(0.9, now);
+
+                // Warm body oscillator (triangle) + clean fundamental (sine)
+                const oscFund = ctx.createOscillator();
+                oscFund.type = 'sine';
+                oscFund.frequency.setValueAtTime(freq, now);
+
+                const oscBody = ctx.createOscillator();
+                const bodyGain = ctx.createGain();
+                oscBody.type = 'triangle';
+                oscBody.frequency.setValueAtTime(freq * 1.001, now);
+                bodyGain.gain.setValueAtTime(gainVal * 0.22, now);
+                bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.45));
+
+                const oscShimmer = ctx.createOscillator();
+                const shimmerGain = ctx.createGain();
+                oscShimmer.type = 'sine';
+                oscShimmer.frequency.setValueAtTime(freq * overtoneMult, now);
+                shimmerGain.gain.setValueAtTime(gainVal * 0.24, now);
+                shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.55));
+
+                oscFund.connect(noteGain);
+                oscBody.connect(bodyGain);
+                bodyGain.connect(noteGain);
+                oscShimmer.connect(shimmerGain);
+                shimmerGain.connect(noteGain);
+                noteGain.connect(filter);
+                filter.connect(dest);
+
+                oscFund.start(now);
+                oscBody.start(now);
+                oscShimmer.start(now);
+                oscFund.stop(now + duration + 0.05);
+                oscBody.stop(now + duration + 0.05);
+                oscShimmer.stop(now + duration + 0.05);
+            } catch (e) {}
+        },
+        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.14, delay = 0) {
+            this.playBell(freq, duration, gainVal, delay);
+        },
+        // Modern ultra-clean Apple/Arc-style organic click (layered bandpass transient + soft wood harmonic)
+        playClick() {
+            const nowMs = Date.now();
+            if (nowMs - this.lastClickAt < 25) return;
+            this.lastClickAt = nowMs;
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const dest = this.getMaster(ctx) || ctx.destination;
+                const now = ctx.currentTime;
+                const jitter = 0.97 + Math.random() * 0.06;
+
+                // Soft woody body resonant ping (rising micro-pitch avoids retro laser sound)
+                const osc = ctx.createOscillator();
+                const oscGain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(1450 * jitter, now);
+                filter.Q.setValueAtTime(1.8, now);
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(520 * jitter, now);
+                osc.frequency.exponentialRampToValueAtTime(760 * jitter, now + 0.018);
+
+                oscGain.gain.setValueAtTime(0.0001, now);
+                oscGain.gain.linearRampToValueAtTime(0.11, now + 0.002);
+                oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.028);
+
+                osc.connect(filter);
+                filter.connect(oscGain);
+                oscGain.connect(dest);
+                osc.start(now);
+                osc.stop(now + 0.032);
+
+                // Subtle harmonic air tick (micro transient)
+                const tickOsc = ctx.createOscillator();
+                const tickGain = ctx.createGain();
+                tickOsc.type = 'sine';
+                tickOsc.frequency.setValueAtTime(1920 * jitter, now);
+                tickGain.gain.setValueAtTime(0.0001, now);
+                tickGain.gain.linearRampToValueAtTime(0.045, now + 0.0015);
+                tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+                tickOsc.connect(tickGain);
+                tickGain.connect(dest);
+                tickOsc.start(now);
+                tickOsc.stop(now + 0.015);
+            } catch (e) {}
+        },
+        playPop() {
+            this.playClick();
+        },
+        // Warm rising two-note marimba interval for selecting options or chips
+        playSelect() {
+            this.playBell(587.33, 0.11, 0.08, 0.00, 2.0); // D5
+            this.playBell(880.00, 0.14, 0.09, 0.028, 2.0); // A5
+        },
+        // Crisp modern validation pulse when pressing VALIDATE / SUBMIT
+        playValidate() {
+            this.playClick();
+            this.playBell(783.99, 0.12, 0.09, 0.025, 2.0); // G5
+        },
+        // Studio polyphonic correct chime (C5 -> E5 -> G5 -> B5 -> E6)
+        playCorrect() {
+            this.playBell(523.25, 0.24, 0.13, 0.00, 2.0);  // C5
+            this.playBell(659.25, 0.28, 0.14, 0.045, 2.0); // E5
+            this.playBell(783.99, 0.34, 0.16, 0.09, 2.0);  // G5
+            this.playBell(987.77, 0.42, 0.15, 0.135, 2.0); // B5
+            this.playBell(1318.51, 0.56, 0.19, 0.18, 2.0); // E6
+        },
+        // Gentle, modern warm marimba double-thud (pleasant soft feedback on errors, never harsh)
+        playIncorrect() {
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const dest = this.getMaster(ctx) || ctx.destination;
+                const notes = [
+                    { f1: 220, f2: 185, d: 0.00, dur: 0.13 },
+                    { f1: 165, f2: 130, d: 0.11, dur: 0.20 }
+                ];
+                notes.forEach(n => {
+                    const now = ctx.currentTime + n.d;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const filter = ctx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(340, now);
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.f1, now);
+                    osc.frequency.exponentialRampToValueAtTime(n.f2, now + n.dur);
+
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.linearRampToValueAtTime(0.15, now + 0.006);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + n.dur);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(dest);
+                    osc.start(now);
+                    osc.stop(now + n.dur + 0.02);
+                });
+            } catch (e) {}
+        },
+        // Celebratory major-9th harmonic fanfare
+        playVictory() {
+            const chords = [
+                { f: 523.25, d: 0.00, dur: 0.34 },  // C5
+                { f: 659.25, d: 0.06, dur: 0.36 },  // E5
+                { f: 783.99, d: 0.12, dur: 0.40 },  // G5
+                { f: 987.77, d: 0.18, dur: 0.45 },  // B5
+                { f: 1174.66, d: 0.24, dur: 0.52 }, // D6
+                { f: 1318.51, d: 0.30, dur: 0.65 }, // E6
+                { f: 1567.98, d: 0.36, dur: 0.85 }, // G6
+            ];
+            chords.forEach(c => {
+                this.playBell(c.f, c.dur, 0.15, c.d, 2.0);
+            });
+            setTimeout(() => {
+                this.playBell(1046.50, 0.85, 0.18, 0.00, 2.0);
+                this.playBell(1318.51, 0.95, 0.18, 0.03, 2.0);
+                this.playBell(1567.98, 1.15, 0.20, 0.06, 2.0);
+            }, 410);
+        }
+    };
+    window.DuoSound = DuoSound;
+
+    var DUO_STEPS_META = [
+        { type: 'vocab_sprint', shortLabel: 'Vocab', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
+        { type: 'sentence_builder', shortLabel: 'Builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 3, xp: 25 },
+        { type: 'listening', shortLabel: 'Audio', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 3, xp: 25 },
+        { type: 'grammar_drills', shortLabel: 'Grammar', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 3, xp: 25 },
+        { type: 'dialogue_roleplay', shortLabel: 'Diálogo', title: 'Diálogo Activo', icon: 'fa-comments', label: 'Conversación & Respuesta en Contexto', estMin: 3, xp: 25 },
+        { type: 'reading_context', shortLabel: 'Lectura', title: 'Lectura & Práctica', icon: 'fa-book-open-reader', label: 'Comprensión de Contexto & Errores Comunes', estMin: 3, xp: 25 },
+        { type: 'voice_crucible', shortLabel: 'Boss', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 4, xp: 40, isBoss: true }
+    ];
+    window.DUO_STEPS_META = DUO_STEPS_META;
+    var activeDuoSession = null;
 
     /* --- 8. INITIAL RENDER --- */
     if (Object.keys(coursesData).length > 0) {
@@ -10634,235 +10879,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
        STEMOS INTERACTIVE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
        ══════════════════════════════════════════════════════════════════════════ */
 
-    // 1. Studio-Grade Modern Web Audio Synthesizer (Soft-Clipped Master Compressor + Tactile Acoustic Layering)
-    const DuoSound = {
-        ctx: null,
-        masterNode: null,
-        lastClickAt: 0,
-        getCtx() {
-            if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
-                try {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioCtx();
-                } catch (e) {
-                    console.warn('AudioContext not supported', e);
-                }
-            }
-            if (this.ctx && this.ctx.state === 'suspended') {
-                this.ctx.resume().catch(() => {});
-            }
-            return this.ctx;
-        },
-        getMaster(ctx) {
-            if (!ctx) return null;
-            if (!this.masterNode) {
-                try {
-                    const compressor = ctx.createDynamicsCompressor();
-                    compressor.threshold.setValueAtTime(-14, ctx.currentTime);
-                    compressor.knee.setValueAtTime(18, ctx.currentTime);
-                    compressor.ratio.setValueAtTime(4, ctx.currentTime);
-                    compressor.attack.setValueAtTime(0.003, ctx.currentTime);
-                    compressor.release.setValueAtTime(0.15, ctx.currentTime);
-
-                    const masterFilter = ctx.createBiquadFilter();
-                    masterFilter.type = 'lowpass';
-                    masterFilter.frequency.setValueAtTime(4800, ctx.currentTime);
-                    masterFilter.Q.setValueAtTime(0.7, ctx.currentTime);
-
-                    const masterGain = ctx.createGain();
-                    masterGain.gain.setValueAtTime(0.88, ctx.currentTime);
-
-                    masterFilter.connect(compressor);
-                    compressor.connect(masterGain);
-                    masterGain.connect(ctx.destination);
-                    this.masterNode = masterFilter;
-                } catch (_) {
-                    this.masterNode = ctx.destination;
-                }
-            }
-            return this.masterNode;
-        },
-        playBell(freq, duration = 0.35, gainVal = 0.16, delay = 0, overtoneMult = 2.0) {
-            try {
-                const ctx = this.getCtx();
-                if (!ctx) return;
-                const dest = this.getMaster(ctx) || ctx.destination;
-                const now = ctx.currentTime + delay;
-
-                const noteGain = ctx.createGain();
-                noteGain.gain.setValueAtTime(0.0001, now);
-                noteGain.gain.linearRampToValueAtTime(gainVal, now + 0.006);
-                noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-                const filter = ctx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(3600, now);
-                filter.frequency.exponentialRampToValueAtTime(1200, now + duration);
-                filter.Q.setValueAtTime(0.9, now);
-
-                // Warm body oscillator (triangle) + clean fundamental (sine)
-                const oscFund = ctx.createOscillator();
-                oscFund.type = 'sine';
-                oscFund.frequency.setValueAtTime(freq, now);
-
-                const oscBody = ctx.createOscillator();
-                const bodyGain = ctx.createGain();
-                oscBody.type = 'triangle';
-                oscBody.frequency.setValueAtTime(freq * 1.001, now);
-                bodyGain.gain.setValueAtTime(gainVal * 0.22, now);
-                bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.45));
-
-                const oscShimmer = ctx.createOscillator();
-                const shimmerGain = ctx.createGain();
-                oscShimmer.type = 'sine';
-                oscShimmer.frequency.setValueAtTime(freq * overtoneMult, now);
-                shimmerGain.gain.setValueAtTime(gainVal * 0.24, now);
-                shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.55));
-
-                oscFund.connect(noteGain);
-                oscBody.connect(bodyGain);
-                bodyGain.connect(noteGain);
-                oscShimmer.connect(shimmerGain);
-                shimmerGain.connect(noteGain);
-                noteGain.connect(filter);
-                filter.connect(dest);
-
-                oscFund.start(now);
-                oscBody.start(now);
-                oscShimmer.start(now);
-                oscFund.stop(now + duration + 0.05);
-                oscBody.stop(now + duration + 0.05);
-                oscShimmer.stop(now + duration + 0.05);
-            } catch (e) {}
-        },
-        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.14, delay = 0) {
-            this.playBell(freq, duration, gainVal, delay);
-        },
-        // Modern ultra-clean Apple/Arc-style organic click (layered bandpass transient + soft wood harmonic)
-        playClick() {
-            const nowMs = Date.now();
-            if (nowMs - this.lastClickAt < 25) return;
-            this.lastClickAt = nowMs;
-            try {
-                const ctx = this.getCtx();
-                if (!ctx) return;
-                const dest = this.getMaster(ctx) || ctx.destination;
-                const now = ctx.currentTime;
-                const jitter = 0.97 + Math.random() * 0.06;
-
-                // Soft woody body resonant ping (rising micro-pitch avoids retro laser sound)
-                const osc = ctx.createOscillator();
-                const oscGain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(1450 * jitter, now);
-                filter.Q.setValueAtTime(1.8, now);
-
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(520 * jitter, now);
-                osc.frequency.exponentialRampToValueAtTime(760 * jitter, now + 0.018);
-
-                oscGain.gain.setValueAtTime(0.0001, now);
-                oscGain.gain.linearRampToValueAtTime(0.11, now + 0.002);
-                oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.028);
-
-                osc.connect(filter);
-                filter.connect(oscGain);
-                oscGain.connect(dest);
-                osc.start(now);
-                osc.stop(now + 0.032);
-
-                // Subtle harmonic air tick (micro transient)
-                const tickOsc = ctx.createOscillator();
-                const tickGain = ctx.createGain();
-                tickOsc.type = 'sine';
-                tickOsc.frequency.setValueAtTime(1920 * jitter, now);
-                tickGain.gain.setValueAtTime(0.0001, now);
-                tickGain.gain.linearRampToValueAtTime(0.045, now + 0.0015);
-                tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
-                tickOsc.connect(tickGain);
-                tickGain.connect(dest);
-                tickOsc.start(now);
-                tickOsc.stop(now + 0.015);
-            } catch (e) {}
-        },
-        playPop() {
-            this.playClick();
-        },
-        // Warm rising two-note marimba interval for selecting options or chips
-        playSelect() {
-            this.playBell(587.33, 0.11, 0.08, 0.00, 2.0); // D5
-            this.playBell(880.00, 0.14, 0.09, 0.028, 2.0); // A5
-        },
-        // Crisp modern validation pulse when pressing VALIDATE / SUBMIT
-        playValidate() {
-            this.playClick();
-            this.playBell(783.99, 0.12, 0.09, 0.025, 2.0); // G5
-        },
-        // Studio polyphonic correct chime (C5 -> E5 -> G5 -> B5 -> E6)
-        playCorrect() {
-            this.playBell(523.25, 0.24, 0.13, 0.00, 2.0);  // C5
-            this.playBell(659.25, 0.28, 0.14, 0.045, 2.0); // E5
-            this.playBell(783.99, 0.34, 0.16, 0.09, 2.0);  // G5
-            this.playBell(987.77, 0.42, 0.15, 0.135, 2.0); // B5
-            this.playBell(1318.51, 0.56, 0.19, 0.18, 2.0); // E6
-        },
-        // Gentle, modern warm marimba double-thud (pleasant soft feedback on errors, never harsh)
-        playIncorrect() {
-            try {
-                const ctx = this.getCtx();
-                if (!ctx) return;
-                const dest = this.getMaster(ctx) || ctx.destination;
-                const notes = [
-                    { f1: 220, f2: 185, d: 0.00, dur: 0.13 },
-                    { f1: 165, f2: 130, d: 0.11, dur: 0.20 }
-                ];
-                notes.forEach(n => {
-                    const now = ctx.currentTime + n.d;
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    const filter = ctx.createBiquadFilter();
-                    filter.type = 'lowpass';
-                    filter.frequency.setValueAtTime(340, now);
-
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(n.f1, now);
-                    osc.frequency.exponentialRampToValueAtTime(n.f2, now + n.dur);
-
-                    gain.gain.setValueAtTime(0.0001, now);
-                    gain.gain.linearRampToValueAtTime(0.15, now + 0.006);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, now + n.dur);
-
-                    osc.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(dest);
-                    osc.start(now);
-                    osc.stop(now + n.dur + 0.02);
-                });
-            } catch (e) {}
-        },
-        // Celebratory major-9th harmonic fanfare
-        playVictory() {
-            const chords = [
-                { f: 523.25, d: 0.00, dur: 0.34 },  // C5
-                { f: 659.25, d: 0.06, dur: 0.36 },  // E5
-                { f: 783.99, d: 0.12, dur: 0.40 },  // G5
-                { f: 987.77, d: 0.18, dur: 0.45 },  // B5
-                { f: 1174.66, d: 0.24, dur: 0.52 }, // D6
-                { f: 1318.51, d: 0.30, dur: 0.65 }, // E6
-                { f: 1567.98, d: 0.36, dur: 0.85 }, // G6
-            ];
-            chords.forEach(c => {
-                this.playBell(c.f, c.dur, 0.15, c.d, 2.0);
-            });
-            setTimeout(() => {
-                this.playBell(1046.50, 0.85, 0.18, 0.00, 2.0);
-                this.playBell(1318.51, 0.95, 0.18, 0.03, 2.0);
-                this.playBell(1567.98, 1.15, 0.20, 0.06, 2.0);
-            }, 410);
-        }
-    };
-    window.DuoSound = DuoSound;
+    // 1. Studio-Grade Modern Web Audio Synthesizer (DuoSound initialized before INITIAL RENDER)
 
     // Global cohesive subtle tactile click for primary navigation & interactive UI controls
     document.addEventListener('click', (e) => {
@@ -12388,8 +12405,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         return exercises;
     }
 
-    // 6. Immersive Lesson Runner Engine
-    let activeDuoSession = null;
+    // 6. Immersive Lesson Runner Engine (activeDuoSession declared before INITIAL RENDER)
+    activeDuoSession = null;
 
     function normalizeSentenceCompare(str) {
         return String(str || '')
@@ -12541,15 +12558,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }, 120);
     };
 
-    const DUO_STEPS_META = [
-        { type: 'vocab_sprint', shortLabel: 'Vocab', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
-        { type: 'sentence_builder', shortLabel: 'Builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 3, xp: 25 },
-        { type: 'listening', shortLabel: 'Audio', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 3, xp: 25 },
-        { type: 'grammar_drills', shortLabel: 'Grammar', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 3, xp: 25 },
-        { type: 'dialogue_roleplay', shortLabel: 'Diálogo', title: 'Diálogo Activo', icon: 'fa-comments', label: 'Conversación & Respuesta en Contexto', estMin: 3, xp: 25 },
-        { type: 'reading_context', shortLabel: 'Lectura', title: 'Lectura & Práctica', icon: 'fa-book-open-reader', label: 'Comprensión de Contexto & Errores Comunes', estMin: 3, xp: 25 },
-        { type: 'voice_crucible', shortLabel: 'Boss', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 4, xp: 40, isBoss: true }
-    ];
+    // DUO_STEPS_META & window.DUO_STEPS_META initialized before INITIAL RENDER
 
     function startDuoLessonForUnit(unitId, stepIndex = 1) {
         if (!unitId) return;
