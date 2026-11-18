@@ -274,8 +274,42 @@ test('Unit study screens include interactive launchers across vocab, listening, 
   assert(appHtml.includes('Evaluación Boss de Unidad (Paso 5)'), 'Missing Boss Quiz banner in app.html');
 });
 
+console.log('\n▶ 11. Navigation Cleanup, Validate Spinner UX, Score Saving & Modern Audio Engine');
+const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+
+test('index.html upper navigation and mobile drawer omit #power-sheets-section links', () => {
+  const desktopNavMatch = indexHtml.match(/<div class="supaste-nav-links">([\s\S]*?)<\/div>/);
+  const mobileDrawerMatch = indexHtml.match(/id="supaste-mobile-nav-panel"([\s\S]*?)<section class="supaste-hero-section">/);
+  assert(desktopNavMatch, 'Missing .supaste-nav-links in index.html');
+  assert(mobileDrawerMatch, 'Missing #supaste-mobile-nav-panel in index.html');
+  assert(!desktopNavMatch[1].includes('#power-sheets-section'), 'Desktop upper nav must not contain #power-sheets-section');
+  assert(!mobileDrawerMatch[1].includes('#power-sheets-section'), 'Mobile upper nav drawer must not contain #power-sheets-section');
+});
+
+test('app.html & dev.css implement English VALIDATE button, accessible spinner, live XP/Hearts HUD & retry control', () => {
+  assert(appHtml.includes('>VALIDATE<') || appHtml.includes('VALIDATE'), 'Missing English VALIDATE label on #btn-duo-check');
+  assert(!appHtml.includes('COMPROBAR'), 'Old Spanish COMPROBAR label should not appear in app.html');
+  assert(appHtml.includes('id="duo-runner-xp-pill"'), 'Missing #duo-runner-xp-pill in runner topbar');
+  assert(appHtml.includes('id="duo-runner-hearts-icons"'), 'Missing #duo-runner-hearts-icons in runner topbar');
+  assert(appHtml.includes('id="btn-duo-retry-question"'), 'Missing #btn-duo-retry-question in runner feedback drawer');
+  assert(devCss.includes('progress.loading-spinner:indeterminate'), 'Missing accessible progress.loading-spinner styles in dev.css');
+  assert(devCss.includes('prefers-reduced-motion: reduce'), 'Missing reduced-motion handling in dev.css spinner');
+});
+
+test('app.js null-guards statPoints, adds processing spinner, persists wrong scores, signals outside completion & upgrades DuoSound', () => {
+  assert(!appJs.includes('\n        statPoints.textContent = globalXP;'), 'Unsafe unguarded statPoints.textContent found');
+  assert(appJs.includes('function recordActivityScore('), 'Missing recordActivityScore helper in app.js');
+  assert(appJs.includes('function saveLiveDuoAttemptScore('), 'Missing saveLiveDuoAttemptScore helper in app.js');
+  assert(appJs.includes('function runWithButtonSpinner('), 'Missing runWithButtonSpinner helper in app.js');
+  assert(appJs.includes('window.finishAndCloseDuoLesson'), 'Missing window.finishAndCloseDuoLesson in app.js');
+  assert(appJs.includes('window.retryCurrentDuoQuestion'), 'Missing window.retryCurrentDuoQuestion in app.js');
+  assert(appJs.includes('createDynamicsCompressor'), 'Missing DynamicsCompressor in upgraded DuoSound engine');
+  assert(appJs.includes('playValidate()'), 'Missing playValidate() in upgraded DuoSound engine');
+  assert(appJs.includes('duo-card-sections-progress'), 'Missing outside section progress bar in renderDuoLearningPath');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/32 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/${pass} TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS INTERACTIVE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 

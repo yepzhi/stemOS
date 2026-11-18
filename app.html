@@ -38,7 +38,7 @@
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css?v=1.1.2">
-    <link rel="stylesheet" href="dev.css?v=5.16.0">
+    <link rel="stylesheet" href="dev.css?v=5.17.0">
     <link rel="stylesheet" href="world-map.css?v=1.2.0">
 
     <style>
@@ -2249,7 +2249,7 @@
                             <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Regresar al Glosario
                         </button>
                         <button class="btn btn-primary" id="btn-submit-quiz">
-                            Enviar Evaluación <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                            Submit Evaluation <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -2559,8 +2559,8 @@
                             <div id="mcer-vocab-score-val" style="font-size:1.3rem; font-weight:800; color:#16a34a;">4/4 (100%)</div>
                             <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">¡Léxico técnico dominado! (+100 XP)</div>
                         </div>
-                        <button class="btn btn-primary" id="btn-submit-mcer-vocab" style="margin-top:12px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); border:none; box-shadow:0 3px 10px rgba(16,185,129,0.3);">
-                            <i class="fa-solid fa-gamepad"></i> Practicar Vocab Sprint Interactivo
+                        <button class="btn btn-primary" id="btn-submit-mcer-vocab" style="margin-top:12px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); border:none; box-shadow:0 3px 10px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-check"></i> Validate Vocab Answers
                         </button>
                     </div>
                 </div>
@@ -2623,8 +2623,8 @@
                         <div id="mcer-listening-score-val" style="font-size:1.4rem; font-weight:800; color:#16a34a;">3/3 (100%)</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">Comprensión auditiva acreditada (+150 XP)</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-listening" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border:none; box-shadow:0 3px 10px rgba(2,132,199,0.3);">
-                        <i class="fa-solid fa-gamepad"></i> Practicar Audio Lab Interactivo
+                    <button class="btn btn-primary" id="btn-submit-mcer-listening" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border:none; box-shadow:0 3px 10px rgba(2,132,199,0.3); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-check"></i> Validate Listening Answers
                     </button>
                 </div>
 
@@ -2662,8 +2662,8 @@
                         <div id="mcer-grammar-score-val" style="font-size:1.4rem; font-weight:800; color:#16a34a;">5/5 (100%)</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">Precisión sintáctica verificada (+200 XP)</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-grammar" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border:none; box-shadow:0 3px 10px rgba(139,92,246,0.3);">
-                        <i class="fa-solid fa-gamepad"></i> Practicar Grammar Drills Interactivos
+                    <button class="btn btn-primary" id="btn-submit-mcer-grammar" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border:none; box-shadow:0 3px 10px rgba(139,92,246,0.3); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-check"></i> Validate Grammar Answers
                     </button>
                 </div>
 
@@ -2679,8 +2679,8 @@
                         <div id="mcer-reading-score-val" style="font-size:1.4rem; font-weight:800; color:#16a34a;">4/4 (100%)</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">Comprensión técnica validada (+200 XP)</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-reading" style="margin-top:14px; width:auto; padding:8px 18px; font-size:0.85rem; font-weight:700;">
-                        <i class="fa-solid fa-check"></i> Verificar Respuestas de Lectura
+                    <button class="btn btn-primary" id="btn-submit-mcer-reading" style="margin-top:14px; width:auto; padding:8px 18px; font-size:0.85rem; font-weight:700; display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-check"></i> Validate Reading Answers
                     </button>
                 </div>
 
@@ -2794,8 +2794,8 @@
                         <textarea id="mcer-crucible-input" rows="4" placeholder="Escribe o dicta tu reporte en inglés profesional de planta (ej. 'Good morning supervisor, reporting for Line 3...')" style="width:100%; border:1px solid #cbd5e1; border-radius:8px; padding:10px 12px; font-size:0.9rem; font-family:inherit; color:#0f172a; resize:vertical; box-sizing:border-box;"></textarea>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
                             <span id="mcer-crucible-word-count" style="font-size:0.75rem; color:#94a3b8;">0 palabras</span>
-                            <button id="btn-mcer-crucible-submit" type="button" class="btn btn-primary" style="padding:8px 18px; font-size:0.85rem; font-weight:700;">
-                                <i class="fa-solid fa-brain"></i> Evaluar con IA Industrial
+                            <button id="btn-mcer-crucible-submit" type="button" class="btn btn-primary" style="padding:8px 18px; font-size:0.85rem; font-weight:700; display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-brain"></i> Submit &amp; Validate with AI
                             </button>
                         </div>
                     </div>
@@ -2921,8 +2921,8 @@
 
                     <!-- Action Controls -->
                     <div style="display:flex; gap:10px; align-items:center; margin-bottom:16px;">
-                        <button class="btn btn-primary" id="btn-mcer-evaluate-writing" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; font-weight:800; padding:10px 20px; font-size:0.88rem; box-shadow:0 4px 14px rgba(245,158,11,0.35);">
-                            <i class="fa-solid fa-bolt"></i> Evaluar Redacción con IA Rápida
+                        <button class="btn btn-primary" id="btn-mcer-evaluate-writing" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; font-weight:800; padding:10px 20px; font-size:0.88rem; box-shadow:0 4px 14px rgba(245,158,11,0.35); display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-bolt"></i> Submit &amp; Validate Writing
                         </button>
                         <button class="btn" id="btn-mcer-writing-clear" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:10px 14px; font-size:0.85rem;">
                             Limpiar
@@ -2976,8 +2976,8 @@
                         <div id="mcer-quiz-score-val" style="font-size:2rem; font-weight:900; color:#16a34a;">100%</div>
                         <div style="font-size:0.85rem; font-weight:700; color:#15803d; margin-top:4px;">¡Unidad MCER Aprobada! Micro-credencial verificada.</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-quiz" style="margin-top:16px; padding:12px 24px; font-weight:800; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
-                        <i class="fa-solid fa-gamepad"></i> Calificar / Iniciar Desafío Boss
+                    <button class="btn btn-primary" id="btn-submit-mcer-quiz" style="margin-top:16px; padding:12px 24px; font-weight:800; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; box-shadow:0 4px 12px rgba(245,158,11,0.3); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-check"></i> Submit Evaluation
                     </button>
                 </div>
             </div>
@@ -3897,7 +3897,7 @@
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.2.0" defer></script>
     <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
-    <script src="/app.js?v=2026.11.6" defer></script>
+    <script src="/app.js?v=2026.11.17" defer></script>
     <script src="/world-map.js?v=1.2.2" defer></script>
 
     <!-- Service Worker PWA Registration & Auto-Update Engine -->
@@ -4259,16 +4259,26 @@
 
     <!-- ════ STEMOS IMMERSIVE LESSON RUNNER MODAL ════ -->
     <div id="duo-runner-overlay" class="duo-runner-overlay" role="dialog" aria-modal="true" aria-label="Lección Interactiva stemOS" style="display: none;">
-        <!-- Top Bar with Close, Animated Progress & Lives -->
+        <!-- Top Bar with Close, Animated Progress, Live XP & Visual Hearts -->
         <header class="duo-runner-topbar">
-            <button type="button" class="duo-runner-close-btn" id="btn-duo-runner-close" onclick="window.closeDuoLessonRunner()" aria-label="Salir de la lección">
+            <button type="button" class="duo-runner-close-btn" id="btn-duo-runner-close" onclick="window.closeDuoLessonRunner()" aria-label="Exit Lesson">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="duo-progress-container" aria-label="Progreso de la sesión">
-                <div class="duo-progress-fill" id="duo-runner-progress-fill" style="width: 0%;"></div>
+            <div class="duo-runner-progress-wrap">
+                <div class="duo-progress-container" aria-label="Session Progress">
+                    <div class="duo-progress-fill" id="duo-runner-progress-fill" style="width: 0%;"></div>
+                </div>
+                <span class="duo-runner-step-counter" id="duo-runner-step-counter">1 / 4</span>
             </div>
-            <div class="duo-hearts-display" id="duo-runner-hearts" title="Escudos de vida restantes">
-                <i class="fa-solid fa-heart"></i> <span id="duo-runner-hearts-count">5</span>
+            <div class="duo-runner-hud-group">
+                <div class="duo-runner-xp-display" id="duo-runner-xp-pill" title="Experience Points Earned">
+                    <i class="fa-solid fa-bolt"></i> <span id="duo-runner-xp-count">0</span> <span>XP</span>
+                    <span class="duo-xp-gain-float" id="duo-runner-xp-float" style="display:none;">+15 XP</span>
+                </div>
+                <div class="duo-hearts-display" id="duo-runner-hearts" title="Remaining Hearts">
+                    <span id="duo-runner-hearts-icons" class="duo-hearts-icons-row" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
+                    <span id="duo-runner-hearts-count">5</span>
+                </div>
             </div>
         </header>
 
@@ -4284,13 +4294,18 @@
                     <i class="fa-solid fa-check"></i>
                 </div>
                 <div>
-                    <h4 class="duo-feedback-title" id="duo-feedback-title">¡Selecciona tu respuesta!</h4>
-                    <p class="duo-feedback-subtitle" id="duo-feedback-subtitle">Elige o ensambla las opciones para continuar.</p>
+                    <h4 class="duo-feedback-title" id="duo-feedback-title">Select your answer to validate</h4>
+                    <p class="duo-feedback-subtitle" id="duo-feedback-subtitle">Choose or assemble the options above, then click Validate.</p>
                 </div>
             </div>
-            <button type="button" class="duo-check-btn disabled" id="btn-duo-check" onclick="window.handleDuoCheckClick()">
-                COMPROBAR
-            </button>
+            <div class="duo-feedback-actions">
+                <button type="button" class="duo-retry-btn" id="btn-duo-retry-question" onclick="window.retryCurrentDuoQuestion()" style="display:none;">
+                    <i class="fa-solid fa-rotate-left"></i> Retry Question
+                </button>
+                <button type="button" class="duo-check-btn disabled" id="btn-duo-check" onclick="window.handleDuoCheckClick()">
+                    VALIDATE
+                </button>
+            </div>
         </footer>
     </div>
 

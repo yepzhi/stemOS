@@ -23605,16 +23605,19 @@ html.theme-light body {
   transform: translateY(-1px);
 }
 
-.duo-sub-step-btn.completed {
-  background: #f0fdf4;
-  color: #15803d;
-  border-color: #86efac;
+.duo-sub-step-btn.completed,
+.duo-sub-step-btn.boss-step.completed {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border-color: #059669;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.28);
 }
 
-.duo-sub-step-btn.completed:hover {
-  background: #dcfce7;
-  color: #166534;
-  border-color: #4ade80;
+.duo-sub-step-btn.completed:hover,
+.duo-sub-step-btn.boss-step.completed:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  border-color: #047857;
 }
 
 .duo-sub-step-btn.boss-step {
@@ -24182,7 +24185,7 @@ html.theme-light body {
 
 /* Main Action Button */
 .duo-check-btn {
-  min-width: 160px;
+  min-width: 170px;
   padding: 14px 28px;
   font-size: 1rem;
   font-weight: 900;
@@ -24195,6 +24198,16 @@ html.theme-light body {
   color: #ffffff;
   box-shadow: 0 5px 0 #059669;
   transition: all 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.duo-check-btn.is-validating {
+  background: #0284c7;
+  box-shadow: 0 4px 0 #0369a1;
+  cursor: progress;
 }
 
 .duo-check-btn:active {
@@ -24686,6 +24699,379 @@ html.theme-light body {
   0% { transform: scale(0.8); opacity: 0.5; }
   100% { transform: scale(1.2); opacity: 1; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Interactive Runner HUD, Accessible Spinner & Outside Completion Signals
+   ═══════════════════════════════════════════════════════════════════ */
+@property --arc-start {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --arc-end {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --progress-dash-animation {
+  syntax: "*";
+  inherits: false;
+  initial-value: , progress-dash 3s ease-in-out infinite;
+}
+
+progress.loading-spinner:indeterminate::-webkit-progress-bar {
+  display: none;
+  background: none;
+}
+progress.loading-spinner:indeterminate::-webkit-progress-value {
+  display: none;
+  background: none;
+}
+progress.loading-spinner:indeterminate::-moz-progress-bar {
+  display: none;
+  background: none;
+}
+progress.loading-spinner:indeterminate::slider-fill {
+  display: none;
+  background: none;
+}
+
+progress.loading-spinner:indeterminate {
+  --_from: calc(90deg + var(--arc-start, 0deg));
+  --_to: calc(90deg + var(--arc-end, 158deg));
+  --size: 20px;
+  --thickness: 2.5px;
+  --spinner-color: #ffffff;
+  --track-color: rgba(255, 255, 255, 0.28);
+  --spinner-duration: 1.2s;
+  --_used-spinner-duration: var(--spinner-duration);
+
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  appearance: none;
+  vertical-align: middle;
+
+  background: conic-gradient(
+      from var(--_from),
+      var(--spinner-color) calc(var(--_to) - var(--_from)),
+      transparent 0
+    )
+    var(--track-color);
+
+  @supports (background-clip: border-area) {
+    background-clip: border-area;
+    border: var(--thickness) solid transparent;
+    background-origin: border-box;
+  }
+
+  @supports not (background-clip: border-area) {
+    --clip-boundary: calc(100% - var(--thickness) * 2);
+    mask-image: radial-gradient(
+      farthest-side,
+      transparent var(--clip-boundary),
+      black calc(var(--clip-boundary) + 1px)
+    );
+    border: 0;
+  }
+
+  @media (forced-colors: active) {
+    forced-color-adjust: none;
+    --spinner-color: CanvasText;
+    --track-color: Canvas;
+  }
+
+  animation:
+    progress-spin var(--_used-spinner-duration) linear infinite
+    var(--progress-dash-animation, );
+
+  @media (prefers-reduced-motion: reduce) {
+    --_used-spinner-duration: 6s;
+    --progress-dash-animation: ;
+    --arc-end: 158deg;
+  }
+}
+
+progress.loading-spinner.duo-btn-spinner:indeterminate {
+  --size: 18px;
+  --thickness: 2.5px;
+}
+
+@keyframes progress-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes progress-dash {
+  from {
+    --arc-start: 0deg;
+    --arc-end: 3deg;
+  }
+  50% {
+    --arc-start: 100deg;
+    --arc-end: 358deg;
+  }
+  to {
+    --arc-start: 360deg;
+    --arc-end: 363deg;
+  }
+}
+
+.duo-runner-progress-wrap {
+  flex: 1;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.duo-runner-step-counter {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.duo-runner-hud-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.duo-runner-xp-display {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fefce8;
+  border: 1.5px solid #fde047;
+  color: #b45309;
+  font-family: var(--font-mono, monospace);
+  font-weight: 900;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(234, 179, 8, 0.14);
+}
+
+.duo-runner-xp-display i {
+  color: #eab308;
+}
+
+.duo-xp-gain-float {
+  position: absolute;
+  top: -18px;
+  right: 4px;
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.duo-xp-gain-float.animate {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: duoXpFloat 1s ease-out forwards;
+  }
+}
+
+@keyframes duoXpFloat {
+  0% { opacity: 0; transform: translateY(8px) scale(0.85); }
+  25% { opacity: 1; transform: translateY(-2px) scale(1.06); }
+  100% { opacity: 0; transform: translateY(-16px) scale(1); }
+}
+
+.duo-hearts-icons-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.92rem;
+}
+
+.duo-heart-full {
+  color: #e11d48;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.duo-heart-lost {
+  color: #cbd5e1;
+  opacity: 0.65;
+}
+
+.duo-hearts-display.shake {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: duoShake 0.45s ease-in-out;
+  }
+}
+
+.duo-feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.duo-retry-btn {
+  padding: 13px 18px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border-radius: 14px;
+  border: 2px solid #fca5a5;
+  background: #ffffff;
+  color: #b91c1c;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.duo-retry-btn:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+/* Section completion bars & signals on outside cards */
+.duo-card-sections-progress {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.duo-card-sections-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.duo-card-sections-bar {
+  width: 100%;
+  height: 7px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.duo-card-sections-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.plc-status-pill.completed-pill {
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #86efac;
+}
+
+.plc-status-pill.partial-complete-pill {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #7dd3fc;
+}
+
+.path-level-step.just-finished .path-level-card {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25), 0 12px 28px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Victory Screen Summary Badges & Checklist */
+.duo-victory-card {
+  max-width: 540px;
+}
+
+.duo-victory-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dcfce7;
+  color: #15803d;
+  border: 1.5px solid #86efac;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.duo-victory-rewards {
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 20px;
+}
+
+.duo-victory-checklist {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 22px;
+  padding: 12px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.duo-victory-check-item {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.duo-victory-check-item.done {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #86efac;
+}
+
+.duo-victory-check-item.current {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+}
+
+@media (max-width: 640px) {
+  .duo-runner-topbar {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  .duo-runner-step-counter {
+    display: none;
+  }
+  .duo-hearts-icons-row .duo-heart-icon-extra {
+    display: none;
+  }
+  .duo-victory-rewards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 
 
 

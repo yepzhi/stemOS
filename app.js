@@ -352,7 +352,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!userProgress.nodeStatuses) userProgress.nodeStatuses = {};
                 if (typeof userProgress.quizStreak !== 'number') userProgress.quizStreak = 0;
 
-                globalXP = userProgress.xp || 450;
+                const storedStudentXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
+                const baseXp = (typeof userProgress.xp === 'number') ? userProgress.xp : 450;
+                globalXP = Math.max(baseXp, storedStudentXp);
                 if (statPoints) statPoints.textContent = globalXP;
 
                 // Sync skillsData statuses from userProgress
@@ -982,11 +984,126 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function awardXP(amount) {
-        globalXP += amount;
-        statPoints.textContent = globalXP;
+        const delta = parseInt(amount, 10) || 0;
+        const storedXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
+        globalXP = Math.max(globalXP || 0, storedXp) + delta;
+        try {
+            localStorage.setItem('stemos_student_xp', String(globalXP));
+        } catch (_) {}
+        if (statPoints) statPoints.textContent = globalXP;
+        if (typeof window.updateStudentXPHUD === 'function') {
+            window.updateStudentXPHUD(globalXP);
+        }
+        const duoXpEl = document.getElementById('duo-xp-count');
+        if (duoXpEl) duoXpEl.textContent = globalXP;
+        const runnerXpEl = document.getElementById('duo-runner-xp-count');
+        if (runnerXpEl) runnerXpEl.textContent = globalXP;
         saveProgress();
         updateProgressBar();
     }
+    window.awardStemOSXp = awardXP;
+
+    function getActivityScores() {
+        try {
+            return JSON.parse(localStorage.getItem('stemos_activity_scores') || '{}');
+        } catch (_) {
+            return {};
+        }
+    }
+    window.getActivityScores = getActivityScores;
+
+    function recordActivityScore(entry) {
+        if (!entry || !entry.unitId) return null;
+        const scores = getActivityScores();
+        const sectionKey = entry.sectionKey || 'general';
+        const compositeKey = `${entry.unitId}:${sectionKey}`;
+        const prev = scores[compositeKey] || {};
+        const numericScore = Math.max(0, Math.min(100, Math.round(Number(entry.scorePct) || 0)));
+        const bestScore = Math.max(prev.bestScore || 0, numericScore);
+        const attempts = (prev.attempts || 0) + 1;
+        const passed = Boolean(prev.passed || entry.passed);
+
+        scores[compositeKey] = {
+            unitId: entry.unitId,
+            sectionKey: sectionKey,
+            sectionTitle: entry.sectionTitle || sectionKey,
+            score: numericScore,
+            bestScore: bestScore,
+            correctCount: typeof entry.correctCount === 'number' ? entry.correctCount : (prev.correctCount || 0),
+            totalCount: typeof entry.totalCount === 'number' ? entry.totalCount : (prev.totalCount || 0),
+            passed: passed,
+            attempts: attempts,
+            xpEarned: (prev.xpEarned || 0) + (entry.xpAwarded || 0),
+            updatedAt: Date.now()
+        };
+
+        try {
+            localStorage.setItem('stemos_activity_scores', JSON.stringify(scores));
+            localStorage.setItem(`stemos_mcer_${entry.unitId}_score`, String(bestScore));
+        } catch (_) {}
+
+        if (entry.xpAwarded && entry.xpAwarded > 0) {
+            awardXP(entry.xpAwarded);
+        }
+
+        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
+            try {
+                window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_ACTIVITY_SCORE', {
+                    unitId: entry.unitId,
+                    sectionKey: sectionKey,
+                    sectionTitle: entry.sectionTitle || sectionKey,
+                    score: numericScore,
+                    bestScore: bestScore,
+                    passed: passed,
+                    attempts: attempts,
+                    xpEarned: entry.xpAwarded || 0,
+                    updatedAt: new Date().toISOString()
+                }, { strategy: 'LAST_WRITE_WINS' });
+                if (navigator.onLine) {
+                    window.STEMOS_SYNC.flushQueue().catch(() => {});
+                }
+            } catch (_) {}
+        }
+
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
+        }
+        if (typeof window.updateKPIMetrics === 'function') {
+            window.updateKPIMetrics();
+        }
+        return scores[compositeKey];
+    }
+    window.recordActivityScore = recordActivityScore;
+
+    function runWithButtonSpinner(btn, loadingLabel, taskFn, delayMs = 240) {
+        if (!btn) {
+            if (typeof taskFn === 'function') taskFn();
+            return;
+        }
+        if (btn.dataset.stemosBusy === 'true') return;
+        btn.dataset.stemosBusy = 'true';
+        const originalHtml = btn.innerHTML;
+        const prevDisabled = btn.disabled;
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.innerHTML = `<progress aria-label="${loadingLabel || 'Validating'}" class="loading-spinner duo-btn-spinner"></progress><span>${loadingLabel || 'Validating...'}</span>`;
+
+        if (window.DuoSound && typeof window.DuoSound.playValidate === 'function') {
+            window.DuoSound.playValidate();
+        }
+
+        setTimeout(() => {
+            try {
+                if (typeof taskFn === 'function') taskFn();
+            } finally {
+                btn.dataset.stemosBusy = 'false';
+                btn.removeAttribute('aria-busy');
+                btn.disabled = prevDisabled;
+                btn.innerHTML = originalHtml;
+            }
+        }, delayMs);
+    }
+    window.runWithButtonSpinner = runWithButtonSpinner;
 
 
 
@@ -1754,8 +1871,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const simulateBtn = document.getElementById('btn-simulate-skeleton');
         simulateBtn.addEventListener('click', () => {
             userProgress.completedModules[mod.id] = true;
-            globalXP += 25;
-            statPoints.textContent = globalXP;
+            awardXP(25);
             
             checkTrackCompletion();
             saveProgress();
@@ -1976,85 +2092,101 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Process questions and inject Socratic rationales
-        reading.questions.forEach((qObj, qIdx) => {
-            const checkedRadio = form.querySelector(`input[name="q${qIdx}"]:checked`);
-            const selectedIdx = parseInt(checkedRadio.value);
-            const correctIdx = qObj.answer;
+        runWithButtonSpinner(btnSubmitQuiz, 'Validating...', () => {
+            // Process questions and inject Socratic rationales
+            reading.questions.forEach((qObj, qIdx) => {
+                const checkedRadio = form.querySelector(`input[name="q${qIdx}"]:checked`);
+                const selectedIdx = parseInt(checkedRadio.value);
+                const correctIdx = qObj.answer;
 
-            const selectedLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${selectedIdx}"]`);
-            const correctLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${correctIdx}"]`);
-            const qBox = form.querySelectorAll('.quiz-question-box')[qIdx];
+                const selectedLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${selectedIdx}"]`);
+                const correctLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${correctIdx}"]`);
+                const qBox = form.querySelectorAll('.quiz-question-box')[qIdx];
 
-            const rationaleBox = document.createElement('div');
+                const rationaleBox = document.createElement('div');
 
-            if (selectedIdx === correctIdx) {
-                correctCount++;
-                selectedLabel.classList.add('correct-feedback');
-                rationaleBox.className = 'quiz-rationale-box correct';
-                const rationaleText = qObj.explanation || `Concepto técnico verificado: "${qObj.options[correctIdx]}". Este principio es fundamental conforme a las especificaciones y estándares de ingeniería.`;
-                rationaleBox.innerHTML = `
-                    <div class="quiz-rationale-header"><i class="fa-solid fa-circle-check"></i> Justificación Técnica Correcta</div>
-                    <div>${rationaleText}</div>
-                `;
+                if (selectedIdx === correctIdx) {
+                    correctCount++;
+                    selectedLabel.classList.add('correct-feedback');
+                    rationaleBox.className = 'quiz-rationale-box correct';
+                    const rationaleText = qObj.explanation || `Concepto técnico verificado: "${qObj.options[correctIdx]}". Este principio es fundamental conforme a las especificaciones y estándares de ingeniería.`;
+                    rationaleBox.innerHTML = `
+                        <div class="quiz-rationale-header"><i class="fa-solid fa-circle-check"></i> Justificación Técnica Correcta</div>
+                        <div>${rationaleText}</div>
+                    `;
+                } else {
+                    allCorrect = false;
+                    selectedLabel.classList.add('incorrect-feedback');
+                    correctLabel.classList.add('correct-feedback');
+                    rationaleBox.className = 'quiz-rationale-box incorrect';
+                    const rationaleText = qObj.explanation || `En ingeniería y manufactura avanzada, la opción requerida es "${qObj.options[correctIdx]}" para asegurar la precisión del proceso y evitar fallas operativas.`;
+                    rationaleBox.innerHTML = `
+                        <div class="quiz-rationale-header"><i class="fa-solid fa-circle-xmark"></i> Análisis Socrático del Error</div>
+                        <div>${rationaleText}</div>
+                    `;
+                }
+
+                if (qBox) {
+                    qBox.appendChild(rationaleBox);
+                }
+            });
+
+            const readingScorePct = Math.round((correctCount / reading.questions.length) * 100);
+            recordActivityScore({
+                unitId: (activeModule && activeModule.id) || activeTrackId || 'esp-reading',
+                sectionKey: `reading-${reading.id || activeReadingIndex}`,
+                sectionTitle: reading.title || 'Comprehension Quiz',
+                correctCount,
+                totalCount: reading.questions.length,
+                scorePct: readingScorePct,
+                passed: allCorrect,
+                xpAwarded: allCorrect ? 0 : 10
+            });
+
+            if (allCorrect) {
+                if (window.DuoSound) window.DuoSound.playCorrect();
+                userProgress.quizStreak = (userProgress.quizStreak || 0) + 1;
+                const streak = userProgress.quizStreak;
+                const streakBonus = streak > 1 ? streak * 10 : 0;
+                if (streakBonus > 0) {
+                    awardXP(streakBonus);
+                }
+
+                if (feedbackBanner) {
+                    feedbackBanner.className = 'quiz-feedback-banner success';
+                    feedbackBanner.style.display = 'flex';
+                    feedbackBanner.innerHTML = `
+                        <div>
+                            <i class="fa-solid fa-circle-check"></i> <strong>Passed &amp; Saved! (${correctCount}/${reading.questions.length} · ${readingScorePct}%)</strong>
+                            <div style="font-size: 0.8rem; margin-top: 2px;">Technical comprehension and vocabulary validated at 100%.</div>
+                        </div>
+                        ${streak > 1 ? `<span class="quiz-streak-badge"><i class="fa-solid fa-fire"></i> Streak x${streak} 🔥 +${streakBonus} XP</span>` : ''}
+                    `;
+                }
+
+                btnSubmitQuiz.disabled = true;
+                btnSubmitQuiz.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i> Approved!';
+                setTimeout(() => {
+                    completeActiveReading();
+                }, 900);
             } else {
-                allCorrect = false;
-                selectedLabel.classList.add('incorrect-feedback');
-                correctLabel.classList.add('correct-feedback');
-                rationaleBox.className = 'quiz-rationale-box incorrect';
-                const rationaleText = qObj.explanation || `En ingeniería y manufactura avanzada, la opción requerida es "${qObj.options[correctIdx]}" para asegurar la precisión del proceso y evitar fallas operativas.`;
-                rationaleBox.innerHTML = `
-                    <div class="quiz-rationale-header"><i class="fa-solid fa-circle-xmark"></i> Análisis Socrático del Error</div>
-                    <div>${rationaleText}</div>
-                `;
-            }
-
-            if (qBox) {
-                qBox.appendChild(rationaleBox);
+                if (window.DuoSound) window.DuoSound.playIncorrect();
+                userProgress.quizStreak = 0;
+                if (feedbackBanner) {
+                    feedbackBanner.className = 'quiz-feedback-banner warning';
+                    feedbackBanner.style.display = 'flex';
+                    feedbackBanner.innerHTML = `
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation"></i> <strong>${correctCount}/${reading.questions.length} correct (${readingScorePct}%) · Score Saved</strong>
+                            <div style="font-size: 0.8rem; margin-top: 2px;">Review the rationales below (+10 XP practice credit saved) and retry when ready.</div>
+                        </div>
+                    `;
+                    feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                btnSubmitQuiz.disabled = false;
+                btnSubmitQuiz.innerHTML = 'Retry Validation <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>';
             }
         });
-
-        if (allCorrect) {
-            userProgress.quizStreak = (userProgress.quizStreak || 0) + 1;
-            const streak = userProgress.quizStreak;
-            const streakBonus = streak > 1 ? streak * 10 : 0;
-            if (streakBonus > 0) {
-                awardXP(streakBonus);
-            }
-
-            if (feedbackBanner) {
-                feedbackBanner.className = 'quiz-feedback-banner success';
-                feedbackBanner.style.display = 'flex';
-                feedbackBanner.innerHTML = `
-                    <div>
-                        <i class="fa-solid fa-circle-check"></i> <strong>¡Evaluación Perfecta! (${correctCount}/${reading.questions.length})</strong>
-                        <div style="font-size: 0.8rem; margin-top: 2px;">Comprensión técnica y vocabulario validado al 100%.</div>
-                    </div>
-                    ${streak > 1 ? `<span class="quiz-streak-badge"><i class="fa-solid fa-fire"></i> Racha x${streak} 🔥 +${streakBonus} XP Combo</span>` : ''}
-                `;
-            }
-
-            btnSubmitQuiz.disabled = true;
-            btnSubmitQuiz.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i> ¡Aprobado!';
-            setTimeout(() => {
-                completeActiveReading();
-            }, 1400);
-        } else {
-            userProgress.quizStreak = 0;
-            if (feedbackBanner) {
-                feedbackBanner.className = 'quiz-feedback-banner warning';
-                feedbackBanner.style.display = 'flex';
-                feedbackBanner.innerHTML = `
-                    <div>
-                        <i class="fa-solid fa-circle-exclamation"></i> <strong>${correctCount} de ${reading.questions.length} respuestas correctas</strong>
-                        <div style="font-size: 0.8rem; margin-top: 2px;">Repasa las justificaciones socráticas detalladas abajo y corrige tus selecciones.</div>
-                    </div>
-                `;
-                feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-            btnSubmitQuiz.disabled = false;
-            btnSubmitQuiz.innerHTML = 'Reintentar Evaluación <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>';
-        }
     });
 
     function parseMarkdownLineByLine(md) {
@@ -2918,17 +3050,48 @@ document.addEventListener('DOMContentLoaded', () => {
             totalReadings += p.totalReadings;
             completedReadings += p.completedReadings;
         });
-        const courseCompletion = totalReadings > 0 ? Math.round((completedReadings / totalReadings) * 100) : 0;
+
+        let duoCompletedCount = 0;
+        const scoreValues = [];
+        try {
+            const duoProg = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
+            Object.values(duoProg).forEach(rec => {
+                if (!rec || typeof rec !== 'object') return;
+                if (rec.completed) duoCompletedCount++;
+                if (typeof rec.score === 'number' && !isNaN(rec.score)) {
+                    scoreValues.push(rec.score);
+                }
+            });
+        } catch (_) {}
+
+        try {
+            const actScores = JSON.parse(localStorage.getItem('stemos_activity_scores') || '{}');
+            Object.values(actScores).forEach(rec => {
+                if (rec && typeof rec.score === 'number' && !isNaN(rec.score)) {
+                    scoreValues.push(rec.score);
+                }
+            });
+        } catch (_) {}
+
+        const courseCompletion = totalReadings > 0
+            ? Math.min(100, Math.round(((completedReadings + duoCompletedCount) / totalReadings) * 100))
+            : Math.min(100, duoCompletedCount * 2);
         const kpiCourse = document.getElementById('kpi-course-completion');
         if (kpiCourse) kpiCourse.textContent = `${courseCompletion}%`;
 
-        // Average Test Score — based on actual scores or --
-        const avgScore = completedReadings > 0 ? Math.min(100, Math.round(75 + (completedReadings / totalReadings) * 20)) : '--';
+        // Average Test Score — real average across all saved activity & interactive runner attempts (passed or wrong)
+        let avgScore = '--';
+        if (scoreValues.length > 0) {
+            const sum = scoreValues.reduce((acc, s) => acc + s, 0);
+            avgScore = Math.round(sum / scoreValues.length);
+        } else if (completedReadings > 0) {
+            avgScore = Math.min(100, Math.round(75 + (completedReadings / Math.max(1, totalReadings)) * 20));
+        }
         const kpiAvg = document.getElementById('kpi-avg-score');
         if (kpiAvg) kpiAvg.textContent = (avgScore === '--') ? '--' : `${avgScore}%`;
 
-        // Time on Task — estimated: each completed reading = ~10 minutes
-        const totalMinutes = completedReadings * 10;
+        // Time on Task — counts completed readings + interactive lessons
+        const totalMinutes = (completedReadings * 10) + (duoCompletedCount * 5);
         const hours = Math.floor(totalMinutes / 60);
         const mins = totalMinutes % 60;
         const kpiHours = document.getElementById('kpi-time-hours');
@@ -3447,6 +3610,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('stemos_user_level', 'A1');
         localStorage.setItem('stemos_active_mcer_level', 'A1');
         localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
+        localStorage.removeItem('stemos_activity_scores');
         localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
         localStorage.removeItem('stemos_placement_test');
         localStorage.removeItem('stemos_placement_completed');
@@ -5484,35 +5648,68 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         checkOfflineUnitsExpiration();
         const offlineUnits = getOfflineUnits();
+        const duoProgress = (typeof getDuoProgress === 'function') ? getDuoProgress() : {};
+        const actScores = (typeof getActivityScores === 'function') ? getActivityScores() : {};
         const now = Date.now();
 
         units.forEach(unit => {
             const meta = levelColors[unit.cefr] || levelColors.A1;
             const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
             const isCrucibleDone = localStorage.getItem('stemos_crucible_' + unit.id) === 'completed';
-            const isCompleted = isMcerUnitCompleted(unit.id);
+            const totalSteps = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META)) ? DUO_STEPS_META.length : 7;
+            let doneStepsCount = 0;
+            const unitScores = [];
+            for (let s = 1; s <= totalSteps; s++) {
+                const stRec = duoProgress[`${unit.id}-step${s}`];
+                if (stRec && stRec.completed) doneStepsCount++;
+                if (stRec && typeof stRec.score === 'number') unitScores.push(stRec.score);
+            }
+            Object.values(actScores).forEach(rec => {
+                if (rec && rec.unitId === unit.id && typeof rec.score === 'number') {
+                    unitScores.push(rec.score);
+                }
+            });
+            const savedScoreStr = localStorage.getItem(`stemos_mcer_${unit.id}_score`);
+            if (savedScoreStr && !isNaN(parseInt(savedScoreStr, 10)) && unitScores.length === 0) {
+                unitScores.push(parseInt(savedScoreStr, 10));
+            }
+            const avgUnitScore = unitScores.length > 0
+                ? Math.round(unitScores.reduce((a, b) => a + b, 0) / unitScores.length)
+                : null;
+            const isCompleted = isMcerUnitCompleted(unit.id) || doneStepsCount >= totalSteps;
             const isUnlocked = isMcerUnitUnlocked(unit.id);
             const isActiveLevel = userLevel && unit.cefr === userLevel;
             const offlineRecord = offlineUnits[unit.id];
             const isOffline = offlineRecord && (now < offlineRecord.expiresAt);
 
             const card = document.createElement('div');
-            card.className = `ed-unit-card${!isUnlocked ? ' unit-locked' : ''}`;
+            card.className = `ed-unit-card${!isUnlocked ? ' unit-locked' : ''}${isCompleted ? ' unit-completed' : ''}`;
             card.dataset.unitId = unit.id;
             card.dataset.cefr = unit.cefr;
             if (!isUnlocked) {
                 card.style.opacity = '0.65';
                 card.style.filter = 'grayscale(0.25)';
+            } else if (isCompleted) {
+                card.style.border = '1.5px solid #10b981';
+                card.style.boxShadow = '0 4px 16px rgba(16, 185, 129, 0.16)';
             } else if (isActiveLevel) {
                 card.style.border = `1.5px solid ${meta.color}`;
                 card.style.boxShadow = `0 4px 14px ${meta.color}25`;
             }
 
+            const topStatusBadge = !isUnlocked
+                ? '<span style="position:absolute; top:8px; right:8px; background:#64748b; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-lock"></i> Locked</span>'
+                : isCompleted
+                    ? `<span style="position:absolute; top:8px; right:8px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3);"><i class="fa-solid fa-circle-check"></i> Completed${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
+                    : (doneStepsCount > 0
+                        ? `<span style="position:absolute; top:8px; right:8px; background:#0284c7; color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(2,132,199,0.28);"><i class="fa-solid fa-circle-check"></i> ${doneStepsCount}/${totalSteps} Sections${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
+                        : (isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> In Progress</span>` : ''));
+
             card.innerHTML = `
                 <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center; position:relative;">
-                    <i class="fa-solid ${isUnlocked ? meta.icon : 'fa-lock'}" style="font-size: 3.5rem; color: ${isUnlocked ? meta.color : '#94a3b8'}; opacity: 0.5;"></i>
+                    <i class="fa-solid ${isUnlocked ? (isCompleted ? 'fa-circle-check' : meta.icon) : 'fa-lock'}" style="font-size: 3.5rem; color: ${isUnlocked ? (isCompleted ? '#10b981' : meta.color) : '#94a3b8'}; opacity: 0.5;"></i>
                     <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${isUnlocked ? meta.color : '#94a3b8'}; color:${isUnlocked ? meta.color : '#64748b'};">CEFR ${unit.cefr} · ${meta.label}</span>
-                    ${!isUnlocked ? '<span style="position:absolute; top:8px; right:8px; background:#64748b; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-lock"></i> Bloqueado</span>' : (isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : '')}
+                    ${topStatusBadge}
                     ${isOffline ? `<span class="ed-unit-offline-badge active" title="Disponible offline · Expira en 3 días"><i class="fa-solid fa-cloud-arrow-down"></i> Offline (3d)</span>` : ''}
                     ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
                 </div>
@@ -6281,39 +6478,58 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         return;
                     }
                     if (vExercises.length === 0) return;
-                    let vCorrect = 0;
-                    vExercises.forEach((vq, vqIdx) => {
-                        const selected = document.querySelector(`input[name="mcer-vq-${vqIdx}"]:checked`);
-                        const labels = document.querySelectorAll(`.mcer-vq-label-${vqIdx}`);
-                        const expBox = document.querySelector(`.mcer-vq-exp-${vqIdx}`);
-                        if (expBox) expBox.style.display = 'block';
+                    runWithButtonSpinner(btnSubmitVocab, 'Validating...', () => {
+                        let vCorrect = 0;
+                        vExercises.forEach((vq, vqIdx) => {
+                            const selected = document.querySelector(`input[name="mcer-vq-${vqIdx}"]:checked`);
+                            const labels = document.querySelectorAll(`.mcer-vq-label-${vqIdx}`);
+                            const expBox = document.querySelector(`.mcer-vq-exp-${vqIdx}`);
+                            if (expBox) expBox.style.display = 'block';
 
-                        labels.forEach(lbl => {
-                            const input = lbl.querySelector('input');
-                            if (parseInt(input.value) === vq.answer) {
-                                lbl.style.background = '#dcfce7';
-                                lbl.style.borderColor = '#86efac';
-                            } else if (input.checked && parseInt(input.value) !== vq.answer) {
-                                lbl.style.background = '#fee2e2';
-                                lbl.style.borderColor = '#fca5a5';
+                            labels.forEach(lbl => {
+                                const input = lbl.querySelector('input');
+                                if (parseInt(input.value) === vq.answer) {
+                                    lbl.style.background = '#dcfce7';
+                                    lbl.style.borderColor = '#86efac';
+                                } else if (input.checked && parseInt(input.value) !== vq.answer) {
+                                    lbl.style.background = '#fee2e2';
+                                    lbl.style.borderColor = '#fca5a5';
+                                }
+                            });
+                            if (selected && parseInt(selected.value) === vq.answer) {
+                                vCorrect++;
                             }
                         });
-                        if (selected && parseInt(selected.value) === vq.answer) {
-                            vCorrect++;
+                        const vPct = Math.round((vCorrect / vExercises.length) * 100);
+                        const passedVocab = vPct >= 75;
+                        recordActivityScore({
+                            unitId: unit.id,
+                            sectionKey: 'vocab',
+                            sectionTitle: 'Vocabulary & Collocations',
+                            correctCount: vCorrect,
+                            totalCount: vExercises.length,
+                            scorePct: vPct,
+                            passed: passedVocab,
+                            xpAwarded: passedVocab ? 100 : 15
+                        });
+                        if (window.DuoSound) {
+                            if (passedVocab) window.DuoSound.playCorrect();
+                            else window.DuoSound.playIncorrect();
+                        }
+                        if (vocabResultsBox) {
+                            vocabResultsBox.style.display = 'block';
+                            vocabResultsBox.style.background = passedVocab ? '#f0fdf4' : '#fffbeb';
+                            vocabResultsBox.style.borderColor = passedVocab ? '#86efac' : '#fde68a';
+                            const scoreEl = document.getElementById('mcer-vocab-score-val');
+                            if (scoreEl) scoreEl.textContent = `${vCorrect}/${vExercises.length} (${vPct}%)`;
+                            const noteEl = vocabResultsBox.querySelector('div:last-child');
+                            if (noteEl) {
+                                noteEl.textContent = passedVocab
+                                    ? `✓ Vocabulary validated & saved! (+100 XP)`
+                                    : `✓ Score saved (${vPct}% · +15 XP practice effort). Review explanations and retry anytime.`;
+                            }
                         }
                     });
-                    if (vocabResultsBox) {
-                        vocabResultsBox.style.display = 'block';
-                        const vPct = Math.round((vCorrect / vExercises.length) * 100);
-                        const scoreEl = document.getElementById('mcer-vocab-score-val');
-                        if (scoreEl) scoreEl.textContent = `${vCorrect}/${vExercises.length} (${vPct}%)`;
-                        if (vPct >= 75) {
-                            try {
-                                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                                localStorage.setItem('stemos_student_xp', String(prevXP + 100));
-                            } catch (e) {}
-                        }
-                    }
                 };
             }
         }
@@ -6390,39 +6606,58 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             return;
                         }
                         if (lQuestions.length === 0) return;
-                        let lCorrect = 0;
-                        lQuestions.forEach((lq, lqIdx) => {
-                            const selected = document.querySelector(`input[name="mcer-lq-${lqIdx}"]:checked`);
-                            const labels = document.querySelectorAll(`.mcer-lq-label-${lqIdx}`);
-                            const expBox = document.querySelector(`.mcer-lq-exp-${lqIdx}`);
-                            if (expBox) expBox.style.display = 'block';
+                        runWithButtonSpinner(btnSubmitListening, 'Validating...', () => {
+                            let lCorrect = 0;
+                            lQuestions.forEach((lq, lqIdx) => {
+                                const selected = document.querySelector(`input[name="mcer-lq-${lqIdx}"]:checked`);
+                                const labels = document.querySelectorAll(`.mcer-lq-label-${lqIdx}`);
+                                const expBox = document.querySelector(`.mcer-lq-exp-${lqIdx}`);
+                                if (expBox) expBox.style.display = 'block';
 
-                            labels.forEach(lbl => {
-                                const input = lbl.querySelector('input');
-                                if (parseInt(input.value) === lq.answer) {
-                                    lbl.style.background = '#dcfce7';
-                                    lbl.style.borderColor = '#86efac';
-                                } else if (input.checked && parseInt(input.value) !== lq.answer) {
-                                    lbl.style.background = '#fee2e2';
-                                    lbl.style.borderColor = '#fca5a5';
+                                labels.forEach(lbl => {
+                                    const input = lbl.querySelector('input');
+                                    if (parseInt(input.value) === lq.answer) {
+                                        lbl.style.background = '#dcfce7';
+                                        lbl.style.borderColor = '#86efac';
+                                    } else if (input.checked && parseInt(input.value) !== lq.answer) {
+                                        lbl.style.background = '#fee2e2';
+                                        lbl.style.borderColor = '#fca5a5';
+                                    }
+                                });
+                                if (selected && parseInt(selected.value) === lq.answer) {
+                                    lCorrect++;
                                 }
                             });
-                            if (selected && parseInt(selected.value) === lq.answer) {
-                                lCorrect++;
+                            const lPct = Math.round((lCorrect / lQuestions.length) * 100);
+                            const passedListening = lPct >= 66;
+                            recordActivityScore({
+                                unitId: unit.id,
+                                sectionKey: 'listening',
+                                sectionTitle: 'Listening Lab',
+                                correctCount: lCorrect,
+                                totalCount: lQuestions.length,
+                                scorePct: lPct,
+                                passed: passedListening,
+                                xpAwarded: passedListening ? 150 : 15
+                            });
+                            if (window.DuoSound) {
+                                if (passedListening) window.DuoSound.playCorrect();
+                                else window.DuoSound.playIncorrect();
+                            }
+                            if (listeningResultsBox) {
+                                listeningResultsBox.style.display = 'block';
+                                listeningResultsBox.style.background = passedListening ? '#f0fdf4' : '#fffbeb';
+                                listeningResultsBox.style.borderColor = passedListening ? '#86efac' : '#fde68a';
+                                const scoreEl = document.getElementById('mcer-listening-score-val');
+                                if (scoreEl) scoreEl.textContent = `${lCorrect}/${lQuestions.length} (${lPct}%)`;
+                                const noteEl = listeningResultsBox.querySelector('div:last-child');
+                                if (noteEl) {
+                                    noteEl.textContent = passedListening
+                                        ? `✓ Listening validated & saved! (+150 XP)`
+                                        : `✓ Attempt score saved (${lPct}% · +15 XP practice effort). Replay the audio to improve.`;
+                                }
                             }
                         });
-                        if (listeningResultsBox) {
-                            listeningResultsBox.style.display = 'block';
-                            const lPct = Math.round((lCorrect / lQuestions.length) * 100);
-                            const scoreEl = document.getElementById('mcer-listening-score-val');
-                            if (scoreEl) scoreEl.textContent = `${lCorrect}/${lQuestions.length} (${lPct}%)`;
-                            if (lPct >= 66) {
-                                try {
-                                    const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                                    localStorage.setItem('stemos_student_xp', String(prevXP + 150));
-                                } catch (e) {}
-                            }
-                        }
                     };
                 }
             }
@@ -6506,39 +6741,58 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         return;
                     }
                     if (gDrills.length === 0) return;
-                    let gCorrect = 0;
-                    gDrills.forEach((gq, gqIdx) => {
-                        const selected = document.querySelector(`input[name="mcer-gq-${gqIdx}"]:checked`);
-                        const labels = document.querySelectorAll(`.mcer-gq-label-${gqIdx}`);
-                        const expBox = document.querySelector(`.mcer-gq-exp-${gqIdx}`);
-                        if (expBox) expBox.style.display = 'block';
+                    runWithButtonSpinner(btnSubmitGrammar, 'Validating...', () => {
+                        let gCorrect = 0;
+                        gDrills.forEach((gq, gqIdx) => {
+                            const selected = document.querySelector(`input[name="mcer-gq-${gqIdx}"]:checked`);
+                            const labels = document.querySelectorAll(`.mcer-gq-label-${gqIdx}`);
+                            const expBox = document.querySelector(`.mcer-gq-exp-${gqIdx}`);
+                            if (expBox) expBox.style.display = 'block';
 
-                        labels.forEach(lbl => {
-                            const input = lbl.querySelector('input');
-                            if (parseInt(input.value) === gq.answer) {
-                                lbl.style.background = '#dcfce7';
-                                lbl.style.borderColor = '#86efac';
-                            } else if (input.checked && parseInt(input.value) !== gq.answer) {
-                                lbl.style.background = '#fee2e2';
-                                lbl.style.borderColor = '#fca5a5';
+                            labels.forEach(lbl => {
+                                const input = lbl.querySelector('input');
+                                if (parseInt(input.value) === gq.answer) {
+                                    lbl.style.background = '#dcfce7';
+                                    lbl.style.borderColor = '#86efac';
+                                } else if (input.checked && parseInt(input.value) !== gq.answer) {
+                                    lbl.style.background = '#fee2e2';
+                                    lbl.style.borderColor = '#fca5a5';
+                                }
+                            });
+                            if (selected && parseInt(selected.value) === gq.answer) {
+                                gCorrect++;
                             }
                         });
-                        if (selected && parseInt(selected.value) === gq.answer) {
-                            gCorrect++;
+                        const gPct = Math.round((gCorrect / gDrills.length) * 100);
+                        const passedGrammar = gPct >= 80;
+                        recordActivityScore({
+                            unitId: unit.id,
+                            sectionKey: 'grammar',
+                            sectionTitle: 'Grammar Drills',
+                            correctCount: gCorrect,
+                            totalCount: gDrills.length,
+                            scorePct: gPct,
+                            passed: passedGrammar,
+                            xpAwarded: passedGrammar ? 200 : 15
+                        });
+                        if (window.DuoSound) {
+                            if (passedGrammar) window.DuoSound.playCorrect();
+                            else window.DuoSound.playIncorrect();
+                        }
+                        if (grammarResultsBox) {
+                            grammarResultsBox.style.display = 'block';
+                            grammarResultsBox.style.background = passedGrammar ? '#f0fdf4' : '#fffbeb';
+                            grammarResultsBox.style.borderColor = passedGrammar ? '#86efac' : '#fde68a';
+                            const scoreEl = document.getElementById('mcer-grammar-score-val');
+                            if (scoreEl) scoreEl.textContent = `${gCorrect}/${gDrills.length} (${gPct}%)`;
+                            const noteEl = grammarResultsBox.querySelector('div:last-child');
+                            if (noteEl) {
+                                noteEl.textContent = passedGrammar
+                                    ? `✓ Grammar precision validated & saved! (+200 XP)`
+                                    : `✓ Attempt score saved (${gPct}% · +15 XP practice effort). Review the rules and retry anytime.`;
+                            }
                         }
                     });
-                    if (grammarResultsBox) {
-                        grammarResultsBox.style.display = 'block';
-                        const gPct = Math.round((gCorrect / gDrills.length) * 100);
-                        const scoreEl = document.getElementById('mcer-grammar-score-val');
-                        if (scoreEl) scoreEl.textContent = `${gCorrect}/${gDrills.length} (${gPct}%)`;
-                        if (gPct >= 80) {
-                            try {
-                                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                                localStorage.setItem('stemos_student_xp', String(prevXP + 200));
-                            } catch (e) {}
-                        }
-                    }
                 };
             }
         }
@@ -6587,36 +6841,61 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (btnSubmitReading) {
                 btnSubmitReading.onclick = () => {
                     if (rQuestions.length === 0) return;
-                    let rCorrect = 0;
-                    rQuestions.forEach((rq, rqIdx) => {
-                        const selected = document.querySelector(`input[name="mcer-rq-${rqIdx}"]:checked`);
-                        const labels = document.querySelectorAll(`.mcer-rq-label-${rqIdx}`);
-                        const expBox = document.querySelector(`.mcer-rq-exp-${rqIdx}`);
-                        if (expBox) expBox.style.display = 'block';
+                    runWithButtonSpinner(btnSubmitReading, 'Validating...', () => {
+                        let rCorrect = 0;
+                        rQuestions.forEach((rq, rqIdx) => {
+                            const selected = document.querySelector(`input[name="mcer-rq-${rqIdx}"]:checked`);
+                            const labels = document.querySelectorAll(`.mcer-rq-label-${rqIdx}`);
+                            const expBox = document.querySelector(`.mcer-rq-exp-${rqIdx}`);
+                            if (expBox) expBox.style.display = 'block';
 
-                        labels.forEach(lbl => {
-                            const input = lbl.querySelector('input');
-                            const span = lbl.querySelector('span');
-                            if (span) span.style.color = '#0f172a';
-                            if (parseInt(input.value) === rq.answer) {
-                                lbl.style.background = '#dcfce7';
-                                lbl.style.borderColor = '#86efac';
-                                lbl.style.color = '#0f172a';
-                            } else if (input.checked && parseInt(input.value) !== rq.answer) {
-                                lbl.style.background = '#fee2e2';
-                                lbl.style.borderColor = '#fca5a5';
-                                lbl.style.color = '#0f172a';
+                            labels.forEach(lbl => {
+                                const input = lbl.querySelector('input');
+                                const span = lbl.querySelector('span');
+                                if (span) span.style.color = '#0f172a';
+                                if (parseInt(input.value) === rq.answer) {
+                                    lbl.style.background = '#dcfce7';
+                                    lbl.style.borderColor = '#86efac';
+                                    lbl.style.color = '#0f172a';
+                                } else if (input.checked && parseInt(input.value) !== rq.answer) {
+                                    lbl.style.background = '#fee2e2';
+                                    lbl.style.borderColor = '#fca5a5';
+                                    lbl.style.color = '#0f172a';
+                                }
+                            });
+                            if (selected && parseInt(selected.value) === rq.answer) {
+                                rCorrect++;
                             }
                         });
-                        if (selected && parseInt(selected.value) === rq.answer) {
-                            rCorrect++;
+                        const rPct = Math.round((rCorrect / rQuestions.length) * 100);
+                        const passedReading = rPct >= 75;
+                        recordActivityScore({
+                            unitId: unit.id,
+                            sectionKey: 'reading',
+                            sectionTitle: 'Reading Comprehension',
+                            correctCount: rCorrect,
+                            totalCount: rQuestions.length,
+                            scorePct: rPct,
+                            passed: passedReading,
+                            xpAwarded: passedReading ? 200 : 15
+                        });
+                        if (window.DuoSound) {
+                            if (passedReading) window.DuoSound.playCorrect();
+                            else window.DuoSound.playIncorrect();
+                        }
+                        if (rResultsBox) {
+                            rResultsBox.style.display = 'block';
+                            rResultsBox.style.background = passedReading ? '#f0fdf4' : '#fffbeb';
+                            rResultsBox.style.borderColor = passedReading ? '#86efac' : '#fde68a';
+                            document.getElementById('mcer-reading-score-val').textContent = `${rCorrect}/${rQuestions.length} (${rPct}%)`;
+                            const noteEl = rResultsBox.querySelector('div:last-child');
+                            if (noteEl) {
+                                noteEl.textContent = passedReading
+                                    ? `✓ Reading comprehension validated & saved! (+200 XP)`
+                                    : `✓ Attempt score saved (${rPct}% · +15 XP practice effort). Review the explanations above.`;
+                            }
                         }
                     });
-                    if (rResultsBox) {
-                        rResultsBox.style.display = 'block';
-                        const rPct = Math.round((rCorrect / rQuestions.length) * 100);
-                        document.getElementById('mcer-reading-score-val').textContent = `${rCorrect}/${rQuestions.length} (${rPct}%)`;
-                    }
                 };
             }
         }
@@ -6703,82 +6982,89 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     return;
                 }
                 if (quizList.length === 0) return;
-                let correctCount = 0;
-                quizList.forEach((uq, uqIdx) => {
-                    const selected = document.querySelector(`input[name="mcer-quiz-q-${uqIdx}"]:checked`);
-                    const labels = document.querySelectorAll(`.mcer-quiz-opt-label-${uqIdx}`);
-                    const expBox = document.querySelector(`.mcer-quiz-exp-box-${uqIdx}`);
-                    if (expBox) expBox.style.display = 'block';
+                runWithButtonSpinner(btnSubmitQuiz, 'Validating...', () => {
+                    let correctCount = 0;
+                    quizList.forEach((uq, uqIdx) => {
+                        const selected = document.querySelector(`input[name="mcer-quiz-q-${uqIdx}"]:checked`);
+                        const labels = document.querySelectorAll(`.mcer-quiz-opt-label-${uqIdx}`);
+                        const expBox = document.querySelector(`.mcer-quiz-exp-box-${uqIdx}`);
+                        if (expBox) expBox.style.display = 'block';
 
-                    labels.forEach(lbl => {
-                        const input = lbl.querySelector('input');
-                        const span = lbl.querySelector('span');
-                        if (span) span.style.color = '#0f172a';
-                        if (parseInt(input.value) === uq.answer) {
-                            lbl.style.background = '#dcfce7';
-                            lbl.style.borderColor = '#86efac';
-                            lbl.style.fontWeight = '700';
-                            lbl.style.color = '#0f172a';
-                        } else if (input.checked && parseInt(input.value) !== uq.answer) {
-                            lbl.style.background = '#fee2e2';
-                            lbl.style.borderColor = '#fca5a5';
-                            lbl.style.color = '#0f172a';
+                        labels.forEach(lbl => {
+                            const input = lbl.querySelector('input');
+                            const span = lbl.querySelector('span');
+                            if (span) span.style.color = '#0f172a';
+                            if (parseInt(input.value) === uq.answer) {
+                                lbl.style.background = '#dcfce7';
+                                lbl.style.borderColor = '#86efac';
+                                lbl.style.fontWeight = '700';
+                                lbl.style.color = '#0f172a';
+                            } else if (input.checked && parseInt(input.value) !== uq.answer) {
+                                lbl.style.background = '#fee2e2';
+                                lbl.style.borderColor = '#fca5a5';
+                                lbl.style.color = '#0f172a';
+                            }
+                        });
+                        if (selected && parseInt(selected.value) === uq.answer) {
+                            correctCount++;
                         }
                     });
-                    if (selected && parseInt(selected.value) === uq.answer) {
-                        correctCount++;
+
+                    const pct = Math.round((correctCount / quizList.length) * 100);
+                    const passedQuiz = pct >= 70;
+                    recordActivityScore({
+                        unitId: unit.id,
+                        sectionKey: 'quiz',
+                        sectionTitle: 'Mastery Quiz',
+                        correctCount,
+                        totalCount: quizList.length,
+                        scorePct: pct,
+                        passed: passedQuiz,
+                        xpAwarded: passedQuiz ? 300 : 25
+                    });
+
+                    if (quizResultsBox) {
+                        quizResultsBox.style.display = 'block';
+                        quizResultsBox.style.background = passedQuiz ? '#f0fdf4' : '#fffbeb';
+                        quizResultsBox.style.borderColor = passedQuiz ? '#86efac' : '#fde68a';
+                        document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${quizList.length})`;
+                        const msgEl = quizResultsBox.querySelector('div:last-child');
+                        if (passedQuiz) {
+                            if (window.DuoSound) window.DuoSound.playVictory();
+                            if (msgEl) msgEl.innerHTML = `🎉 ¡Unidad MCER Aprobada! ${pct}% guardado · +300 XP Acreditados · Micro-credencial verificada.`;
+                            localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
+                            localStorage.setItem(`stemos_mcer_${unit.id}_score`, String(pct));
+
+                            if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
+                                window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_PROGRESS', {
+                                    unitId: unit.id,
+                                    unitTitle: unit.title,
+                                    cefr: unit.cefr,
+                                    score: pct,
+                                    passed: true,
+                                    xpEarned: 300,
+                                    completedAt: new Date().toISOString()
+                                }, { strategy: 'XP_ACCUMULATIVE' });
+
+                                if (navigator.onLine) {
+                                    window.STEMOS_SYNC.flushQueue().then(res => {
+                                        if (res && res.synced > 0) {
+                                            showSyncToast(`✓ Progreso sincronizado con Firebase Firestore (+300 XP)`, 'success');
+                                        }
+                                    });
+                                } else {
+                                    showSyncToast(`Progreso guardado offline. Se sincronizará con Firebase al reconectar.`, 'info');
+                                }
+                            }
+
+                            if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
+                            if (window.renderDuoLearningPath) window.renderDuoLearningPath(window.activeMcerLevelFilter || 'all');
+                        } else {
+                            if (window.DuoSound) window.DuoSound.playIncorrect();
+                            if (msgEl) msgEl.innerHTML = `✓ Calificación guardada: <strong>${pct}%</strong> (Mínimo para aprobar: 70%). +25 XP por intento registrados; revisa las pistas socráticas y vuelve a intentar.`;
+                        }
                     }
                 });
-
-                const pct = Math.round((correctCount / quizList.length) * 100);
-                if (quizResultsBox) {
-                    quizResultsBox.style.display = 'block';
-                    document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${quizList.length})`;
-                    const msgEl = quizResultsBox.querySelector('div:last-child');
-                    if (pct >= 70) {
-                        if (msgEl) msgEl.innerHTML = '🎉 ¡Unidad MCER Aprobada! +300 XP Acreditados · Micro-credencial verificada.';
-                        localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
-                        localStorage.setItem(`stemos_mcer_${unit.id}_score`, String(pct));
-                        
-                        // Accumulate XP in user profile
-                        try {
-                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '450', 10);
-                            const newXP = prevXP + 300;
-                            localStorage.setItem('stemos_student_xp', String(newXP));
-                            if (typeof window.updateStudentXPHUD === 'function') {
-                                window.updateStudentXPHUD(newXP);
-                            }
-                        } catch (e) {}
-
-                        // Enqueue offline mutation with STEMOS_SYNC for Firebase Firestore
-                        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
-                            window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_PROGRESS', {
-                                unitId: unit.id,
-                                unitTitle: unit.title,
-                                cefr: unit.cefr,
-                                score: pct,
-                                passed: true,
-                                xpEarned: 300,
-                                completedAt: new Date().toISOString()
-                            }, { strategy: 'XP_ACCUMULATIVE' });
-
-                            if (navigator.onLine) {
-                                window.STEMOS_SYNC.flushQueue().then(res => {
-                                    if (res && res.synced > 0) {
-                                        showSyncToast(`✓ Progreso sincronizado con Firebase Firestore (+300 XP)`, 'success');
-                                    }
-                                });
-                            } else {
-                                showSyncToast(`Progreso guardado offline. Se sincronizará con Firebase al reconectar.`, 'info');
-                            }
-                        }
-
-                        // Update banner hours and badges
-                        if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
-                    } else {
-                        if (msgEl) msgEl.innerHTML = '⚠️ Calificación insuficiente (mínimo 70%). Revisa las pistas socráticas y vuelve a intentarlo.';
-                    }
-                }
             };
         }
 
@@ -7256,88 +7542,95 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     return;
                 }
 
-                const words = text.split(/\s+/).filter(Boolean);
-                const wordCount = words.length;
-                const cefr = (unit.cefr || 'A1').toUpperCase();
-                let minWords = 15;
-                if (cefr === 'A2') minWords = 25;
-                if (cefr === 'B1') minWords = 35;
-                if (cefr === 'B2') minWords = 45;
+                runWithButtonSpinner(btnSubmitCrucible, 'Validating...', () => {
+                    const words = text.split(/\s+/).filter(Boolean);
+                    const wordCount = words.length;
+                    const cefr = (unit.cefr || 'A1').toUpperCase();
+                    let minWords = 15;
+                    if (cefr === 'A2') minWords = 25;
+                    if (cefr === 'B1') minWords = 35;
+                    if (cefr === 'B2') minWords = 45;
 
-                // 1. Grammatical Accuracy (up to 40 pts)
-                let grammarScore = 22;
-                if (wordCount >= minWords) grammarScore += 10;
-                if (wordCount >= minWords * 1.3) grammarScore += 4;
-                if (/^[A-Z]/.test(text) && /[.?!]$/.test(text)) grammarScore += 4;
-                grammarScore = Math.min(40, grammarScore);
+                    // 1. Grammatical Accuracy (up to 40 pts)
+                    let grammarScore = 22;
+                    if (wordCount >= minWords) grammarScore += 10;
+                    if (wordCount >= minWords * 1.3) grammarScore += 4;
+                    if (/^[A-Z]/.test(text) && /[.?!]$/.test(text)) grammarScore += 4;
+                    grammarScore = Math.min(40, grammarScore);
 
-                // 2. Technical Lexicon (up to 30 pts)
-                let lexiconScore = 15;
-                const keywords = (unit.crucible && unit.crucible.keywords) || [];
-                const lower = text.toLowerCase();
-                let matched = 0;
-                keywords.forEach(kw => {
-                    if (lower.includes(kw.toLowerCase())) matched++;
-                });
-                if (keywords.length > 0) {
-                    lexiconScore = Math.min(30, Math.round(15 + (matched / keywords.length) * 15));
-                } else {
-                    lexiconScore = wordCount >= minWords ? 28 : 20;
-                }
-
-                // 3. American Workplace Pragmatics (up to 30 pts)
-                let pragmaticsScore = 18;
-                const polite = ['good morning', 'good afternoon', 'hello', 'excuse me', 'team', 'hi', 'regards'];
-                if (polite.some(g => lower.includes(g))) pragmaticsScore += 6;
-                if (lower.includes('please') || lower.includes('thank you') || lower.includes('report') || lower.includes('recommend') || lower.includes('confirm')) {
-                    pragmaticsScore += 6;
-                }
-                pragmaticsScore = Math.min(30, pragmaticsScore);
-
-                const totalScore = Math.min(100, grammarScore + lexiconScore + pragmaticsScore);
-
-                // Display in Rubric Card
-                if (crucibleResultsBox) {
-                    crucibleResultsBox.style.display = 'block';
-                    document.getElementById('mcer-crucible-score-badge').textContent = `${totalScore}%`;
-                    
-                    document.getElementById('mcer-rubric-grammar-score').textContent = `${grammarScore}/40`;
-                    document.getElementById('mcer-rubric-grammar-bar').style.width = `${Math.round((grammarScore / 40) * 100)}%`;
-                    
-                    document.getElementById('mcer-rubric-lexicon-score').textContent = `${lexiconScore}/30`;
-                    document.getElementById('mcer-rubric-lexicon-bar').style.width = `${Math.round((lexiconScore / 30) * 100)}%`;
-                    
-                    document.getElementById('mcer-rubric-pragmatics-score').textContent = `${pragmaticsScore}/30`;
-                    document.getElementById('mcer-rubric-pragmatics-bar').style.width = `${Math.round((pragmaticsScore / 30) * 100)}%`;
-
-                    let feedback = '';
-                    if (totalScore >= 85) {
-                        feedback = `<strong>¡Excelente despacho técnico!</strong> Tu reporte cumple con el estándar de comunicación operativa CEFR ${cefr}. Has demostrado precisión léxica y protocolo estadounidense de planta.`;
-                    } else if (totalScore >= 70) {
-                        feedback = `<strong>Despacho funcional aprobado (${totalScore}%).</strong> Tu mensaje es claro para supervisores de turno. Para alcanzar nivel senior, incorpora más términos específicos (${keywords.slice(0, 3).join(', ')}) y expande la descripción.`;
+                    // 2. Technical Lexicon (up to 30 pts)
+                    let lexiconScore = 15;
+                    const keywords = (unit.crucible && unit.crucible.keywords) || [];
+                    const lower = text.toLowerCase();
+                    let matched = 0;
+                    keywords.forEach(kw => {
+                        if (lower.includes(kw.toLowerCase())) matched++;
+                    });
+                    if (keywords.length > 0) {
+                        lexiconScore = Math.min(30, Math.round(15 + (matched / keywords.length) * 15));
                     } else {
-                        feedback = `<strong>Despacho en desarrollo (${totalScore}%).</strong> Se recomienda escuchar el modelo de referencia del ingeniero líder e incluir al menos ${minWords} palabras técnicas.`;
+                        lexiconScore = wordCount >= minWords ? 28 : 20;
                     }
-                    document.getElementById('mcer-crucible-feedback-text').innerHTML = feedback;
 
-                    // Award +500 XP if passing
-                    if (totalScore >= 70) {
-                        try {
-                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                            const newXP = prevXP + 500;
-                            localStorage.setItem('stemos_student_xp', String(newXP));
+                    // 3. American Workplace Pragmatics (up to 30 pts)
+                    let pragmaticsScore = 18;
+                    const polite = ['good morning', 'good afternoon', 'hello', 'excuse me', 'team', 'hi', 'regards'];
+                    if (polite.some(g => lower.includes(g))) pragmaticsScore += 6;
+                    if (lower.includes('please') || lower.includes('thank you') || lower.includes('report') || lower.includes('recommend') || lower.includes('confirm')) {
+                        pragmaticsScore += 6;
+                    }
+                    pragmaticsScore = Math.min(30, pragmaticsScore);
+
+                    const totalScore = Math.min(100, grammarScore + lexiconScore + pragmaticsScore);
+                    const passedCrucible = totalScore >= 70;
+
+                    recordActivityScore({
+                        unitId: unit.id,
+                        sectionKey: 'crucible',
+                        sectionTitle: 'Industrial Crucible',
+                        correctCount: matched,
+                        totalCount: Math.max(1, keywords.length),
+                        scorePct: totalScore,
+                        passed: passedCrucible,
+                        xpAwarded: passedCrucible ? 500 : 25
+                    });
+
+                    // Display in Rubric Card
+                    if (crucibleResultsBox) {
+                        crucibleResultsBox.style.display = 'block';
+                        document.getElementById('mcer-crucible-score-badge').textContent = `${totalScore}%`;
+                        
+                        document.getElementById('mcer-rubric-grammar-score').textContent = `${grammarScore}/40`;
+                        document.getElementById('mcer-rubric-grammar-bar').style.width = `${Math.round((grammarScore / 40) * 100)}%`;
+                        
+                        document.getElementById('mcer-rubric-lexicon-score').textContent = `${lexiconScore}/30`;
+                        document.getElementById('mcer-rubric-lexicon-bar').style.width = `${Math.round((lexiconScore / 30) * 100)}%`;
+                        
+                        document.getElementById('mcer-rubric-pragmatics-score').textContent = `${pragmaticsScore}/30`;
+                        document.getElementById('mcer-rubric-pragmatics-bar').style.width = `${Math.round((pragmaticsScore / 30) * 100)}%`;
+
+                        let feedback = '';
+                        if (totalScore >= 85) {
+                            feedback = `<strong>¡Excelente despacho técnico!</strong> Tu reporte cumple con el estándar de comunicación operativa CEFR ${cefr}. Has demostrado precisión léxica y protocolo estadounidense de planta.`;
+                        } else if (totalScore >= 70) {
+                            feedback = `<strong>Despacho funcional aprobado (${totalScore}%).</strong> Tu mensaje es claro para supervisores de turno. Para alcanzar nivel senior, incorpora más términos específicos (${keywords.slice(0, 3).join(', ')}) y expande la descripción.`;
+                        } else {
+                            feedback = `<strong>Score guardado (${totalScore}% · +25 XP por intento).</strong> Se recomienda escuchar el modelo de referencia del ingeniero líder e incluir al menos ${minWords} palabras técnicas.`;
+                        }
+                        document.getElementById('mcer-crucible-feedback-text').innerHTML = feedback;
+
+                        if (passedCrucible) {
+                            if (window.DuoSound) window.DuoSound.playCorrect();
                             localStorage.setItem(`stemos_crucible_${unit.id}`, 'completed');
-                            if (typeof window.updateStudentXPHUD === 'function') {
-                                window.updateStudentXPHUD(newXP);
-                            }
-                        } catch (e) {}
-                    }
+                        } else {
+                            if (window.DuoSound) window.DuoSound.playIncorrect();
+                        }
 
-                    // Trigger Socratic Oral Debrief (Fase 69)
-                    if (typeof initCrucibleSocraticDebrief === 'function') {
-                        initCrucibleSocraticDebrief(unit);
+                        if (typeof initCrucibleSocraticDebrief === 'function') {
+                            initCrucibleSocraticDebrief(unit);
+                        }
                     }
-                }
+                });
             };
         }
 
@@ -8062,52 +8355,64 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     return;
                 }
 
-                let res;
-                if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.evaluateWritingSubmission === 'function') {
-                    res = window.STEMOS_MCER_TRACKS.evaluateWritingSubmission(unit.id, text);
-                } else {
-                    res = {
-                        score: 85,
-                        passed: true,
-                        feedback: 'Excelente despacho técnico.',
-                        xpAwarded: 120
-                    };
-                }
-
-                try {
-                    localStorage.setItem(`stemos_writing_${unit.id}`, text);
-                    if (res.passed) {
-                        localStorage.setItem(`stemos_writing_pass_${unit.id}`, 'true');
-                        const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                        const newXP = prevXP + (res.xpAwarded || 120);
-                        localStorage.setItem('stemos_student_xp', String(newXP));
-                        if (typeof window.updateStudentXPHUD === 'function') window.updateStudentXPHUD(newXP);
-                    }
-                } catch(e){}
-
-                if (feedbackCard) {
-                    feedbackCard.style.display = 'block';
-                    const scorePill = document.getElementById('mcer-writing-score-pill');
-                    const verdictEl = document.getElementById('mcer-writing-verdict');
-                    const feedbackTextEl = document.getElementById('mcer-writing-feedback-text');
-                    const xpBadge = document.getElementById('mcer-writing-xp-badge');
-
-                    if (scorePill) {
-                        scorePill.textContent = `${res.score}%`;
-                        scorePill.style.color = res.passed ? '#10b981' : '#f59e0b';
-                    }
-                    if (verdictEl) {
-                        verdictEl.textContent = res.passed ? '¡Despacho Escrito Aprobado!' : 'Requiere Mayor Precisión Léxica';
-                    }
-                    if (xpBadge) {
-                        xpBadge.textContent = res.passed ? `+${res.xpAwarded} XP Acreditados (Habilidad Writing)` : 'Revisa las recomendaciones para ganar +120 XP';
-                    }
-                    if (feedbackTextEl) {
-                        feedbackTextEl.innerHTML = `<strong>Dictamen IA:</strong> ${res.feedback}`;
+                runWithButtonSpinner(btnEvaluate, 'Validating...', () => {
+                    let res;
+                    if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.evaluateWritingSubmission === 'function') {
+                        res = window.STEMOS_MCER_TRACKS.evaluateWritingSubmission(unit.id, text);
+                    } else {
+                        res = {
+                            score: 85,
+                            passed: true,
+                            feedback: 'Excelente despacho técnico.',
+                            xpAwarded: 120
+                        };
                     }
 
-                    feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+                    try {
+                        localStorage.setItem(`stemos_writing_${unit.id}`, text);
+                        if (res.passed) {
+                            localStorage.setItem(`stemos_writing_pass_${unit.id}`, 'true');
+                        }
+                    } catch(e){}
+
+                    recordActivityScore({
+                        unitId: unit.id,
+                        sectionKey: 'writing',
+                        sectionTitle: 'Writing Lab',
+                        scorePct: res.score || 0,
+                        passed: Boolean(res.passed),
+                        xpAwarded: res.passed ? (res.xpAwarded || 120) : 15
+                    });
+
+                    if (window.DuoSound) {
+                        if (res.passed) window.DuoSound.playCorrect();
+                        else window.DuoSound.playIncorrect();
+                    }
+
+                    if (feedbackCard) {
+                        feedbackCard.style.display = 'block';
+                        const scorePill = document.getElementById('mcer-writing-score-pill');
+                        const verdictEl = document.getElementById('mcer-writing-verdict');
+                        const feedbackTextEl = document.getElementById('mcer-writing-feedback-text');
+                        const xpBadge = document.getElementById('mcer-writing-xp-badge');
+
+                        if (scorePill) {
+                            scorePill.textContent = `${res.score}%`;
+                            scorePill.style.color = res.passed ? '#10b981' : '#f59e0b';
+                        }
+                        if (verdictEl) {
+                            verdictEl.textContent = res.passed ? '✓ Writing Approved & Saved!' : `Score Saved (${res.score}%) · Needs Revision`;
+                        }
+                        if (xpBadge) {
+                            xpBadge.textContent = res.passed ? `+${res.xpAwarded} XP Credited (Writing)` : `+15 XP practice effort saved — refine your keywords for +120 XP`;
+                        }
+                        if (feedbackTextEl) {
+                            feedbackTextEl.innerHTML = `<strong>AI Evaluation:</strong> ${res.feedback}`;
+                        }
+
+                        feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
             };
         }
     }
@@ -8289,6 +8594,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
                 const pct = Math.round((correctCount / exam.questions.length) * 100);
                 const isPassed = pct >= (exam.passScorePct || 75);
+                recordActivityScore({
+                    unitId: 'mcer-' + exam.level,
+                    sectionKey: 'level-exam',
+                    sectionTitle: `CEFR ${exam.level.toUpperCase()} Level Exam`,
+                    correctCount,
+                    totalCount: exam.questions.length,
+                    scorePct: pct,
+                    passed: isPassed,
+                    xpAwarded: isPassed ? 1000 : 50
+                });
 
                 if (resultsBox) {
                     resultsBox.style.display = 'block';
@@ -8303,10 +8618,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     }
                     if (feedbackVal) {
                         if (isPassed) {
-                            feedbackVal.innerHTML = `🎉 ¡Examen de Certificación Nivel CEFR ${exam.level.toUpperCase()} Aprobado! 60.0 Horas Acreditadas · Micro-credencial W3C Open Badges 3.0 emitida · +1000 XP Acreditados.`;
+                            if (window.DuoSound) window.DuoSound.playVictory();
+                            feedbackVal.innerHTML = `🎉 ¡Examen de Certificación Nivel CEFR ${exam.level.toUpperCase()} Aprobado! Calificación guardada · +1000 XP Acreditados.`;
                             feedbackVal.style.color = '#15803d';
                         } else {
-                            feedbackVal.innerHTML = `⚠️ Calificación obtenida: ${pct}% (Mínimo aprobatorio: ${exam.passScorePct}%). Te recomendamos repasar las 4 unidades de nivel ${exam.level.toUpperCase()} y volver a presentar.`;
+                            if (window.DuoSound) window.DuoSound.playIncorrect();
+                            feedbackVal.innerHTML = `✓ Calificación guardada: ${pct}% (+50 XP por intento). Mínimo aprobatorio: ${exam.passScorePct}%. Te recomendamos repasar y volver a presentar.`;
                             feedbackVal.style.color = '#b45309';
                         }
                     }
@@ -8315,12 +8632,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 if (isPassed) {
                     try {
                         localStorage.setItem(`stemos_mcer_exam_${exam.level}`, 'passed');
-                        const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                        const newXP = prevXP + 1000;
-                        localStorage.setItem('stemos_student_xp', String(newXP));
-                        if (typeof window.updateStudentXPHUD === 'function') {
-                            window.updateStudentXPHUD(newXP);
-                        }
                         if (typeof openCertificateModal === 'function') {
                             setTimeout(() => {
                                 openCertificateModal('mcer-' + exam.level);
@@ -10323,9 +10634,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
        STEMOS INTERACTIVE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
        ══════════════════════════════════════════════════════════════════════════ */
 
-    // 1. Web Audio Synthesizer for Modern, Zero-Latency Acoustic Haptic Sound Effects
+    // 1. Studio-Grade Modern Web Audio Synthesizer (Soft-Clipped Master Compressor + Tactile Acoustic Layering)
     const DuoSound = {
         ctx: null,
+        masterNode: null,
+        lastClickAt: 0,
         getCtx() {
             if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
                 try {
@@ -10340,134 +10653,225 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             return this.ctx;
         },
-        playBell(freq, duration = 0.35, gainVal = 0.18, delay = 0, overtoneMult = 2.0) {
+        getMaster(ctx) {
+            if (!ctx) return null;
+            if (!this.masterNode) {
+                try {
+                    const compressor = ctx.createDynamicsCompressor();
+                    compressor.threshold.setValueAtTime(-14, ctx.currentTime);
+                    compressor.knee.setValueAtTime(18, ctx.currentTime);
+                    compressor.ratio.setValueAtTime(4, ctx.currentTime);
+                    compressor.attack.setValueAtTime(0.003, ctx.currentTime);
+                    compressor.release.setValueAtTime(0.15, ctx.currentTime);
+
+                    const masterFilter = ctx.createBiquadFilter();
+                    masterFilter.type = 'lowpass';
+                    masterFilter.frequency.setValueAtTime(4800, ctx.currentTime);
+                    masterFilter.Q.setValueAtTime(0.7, ctx.currentTime);
+
+                    const masterGain = ctx.createGain();
+                    masterGain.gain.setValueAtTime(0.88, ctx.currentTime);
+
+                    masterFilter.connect(compressor);
+                    compressor.connect(masterGain);
+                    masterGain.connect(ctx.destination);
+                    this.masterNode = masterFilter;
+                } catch (_) {
+                    this.masterNode = ctx.destination;
+                }
+            }
+            return this.masterNode;
+        },
+        playBell(freq, duration = 0.35, gainVal = 0.16, delay = 0, overtoneMult = 2.0) {
             try {
                 const ctx = this.getCtx();
                 if (!ctx) return;
+                const dest = this.getMaster(ctx) || ctx.destination;
                 const now = ctx.currentTime + delay;
 
-                // Master gain for note with gentle curved envelope
                 const noteGain = ctx.createGain();
                 noteGain.gain.setValueAtTime(0.0001, now);
-                noteGain.gain.linearRampToValueAtTime(gainVal, now + 0.004);
+                noteGain.gain.linearRampToValueAtTime(gainVal, now + 0.006);
                 noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-                // Warm low-pass filter to eliminate harsh edges
                 const filter = ctx.createBiquadFilter();
                 filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(3200, now);
-                filter.Q.setValueAtTime(1.1, now);
+                filter.frequency.setValueAtTime(3600, now);
+                filter.frequency.exponentialRampToValueAtTime(1200, now + duration);
+                filter.Q.setValueAtTime(0.9, now);
 
-                // Fundamental oscillator
+                // Warm body oscillator (triangle) + clean fundamental (sine)
                 const oscFund = ctx.createOscillator();
                 oscFund.type = 'sine';
                 oscFund.frequency.setValueAtTime(freq, now);
 
-                // Upper shimmer overtone
+                const oscBody = ctx.createOscillator();
+                const bodyGain = ctx.createGain();
+                oscBody.type = 'triangle';
+                oscBody.frequency.setValueAtTime(freq * 1.001, now);
+                bodyGain.gain.setValueAtTime(gainVal * 0.22, now);
+                bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.45));
+
                 const oscShimmer = ctx.createOscillator();
                 const shimmerGain = ctx.createGain();
                 oscShimmer.type = 'sine';
                 oscShimmer.frequency.setValueAtTime(freq * overtoneMult, now);
-                shimmerGain.gain.setValueAtTime(gainVal * 0.32, now);
-                shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.5));
+                shimmerGain.gain.setValueAtTime(gainVal * 0.24, now);
+                shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.55));
 
                 oscFund.connect(noteGain);
+                oscBody.connect(bodyGain);
+                bodyGain.connect(noteGain);
                 oscShimmer.connect(shimmerGain);
                 shimmerGain.connect(noteGain);
                 noteGain.connect(filter);
-                filter.connect(ctx.destination);
+                filter.connect(dest);
 
                 oscFund.start(now);
+                oscBody.start(now);
                 oscShimmer.start(now);
                 oscFund.stop(now + duration + 0.05);
+                oscBody.stop(now + duration + 0.05);
                 oscShimmer.stop(now + duration + 0.05);
-            } catch (e) {
-                // Audio silent fallback
-            }
+            } catch (e) {}
         },
-        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.15, delay = 0) {
+        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.14, delay = 0) {
             this.playBell(freq, duration, gainVal, delay);
         },
-        // Modern sparkling crystalline chime (E5 -> G#5 -> B5 -> E6)
-        playCorrect() {
-            this.playBell(659.25, 0.28, 0.18, 0.00, 2.0); // E5
-            this.playBell(830.61, 0.30, 0.20, 0.06, 2.0); // G#5
-            this.playBell(987.77, 0.34, 0.22, 0.12, 2.0); // B5
-            this.playBell(1318.51, 0.58, 0.26, 0.18, 2.0); // E6
+        // Modern ultra-clean Apple/Arc-style organic click (layered bandpass transient + soft wood harmonic)
+        playClick() {
+            const nowMs = Date.now();
+            if (nowMs - this.lastClickAt < 25) return;
+            this.lastClickAt = nowMs;
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const dest = this.getMaster(ctx) || ctx.destination;
+                const now = ctx.currentTime;
+                const jitter = 0.97 + Math.random() * 0.06;
+
+                // Soft woody body resonant ping (rising micro-pitch avoids retro laser sound)
+                const osc = ctx.createOscillator();
+                const oscGain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(1450 * jitter, now);
+                filter.Q.setValueAtTime(1.8, now);
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(520 * jitter, now);
+                osc.frequency.exponentialRampToValueAtTime(760 * jitter, now + 0.018);
+
+                oscGain.gain.setValueAtTime(0.0001, now);
+                oscGain.gain.linearRampToValueAtTime(0.11, now + 0.002);
+                oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.028);
+
+                osc.connect(filter);
+                filter.connect(oscGain);
+                oscGain.connect(dest);
+                osc.start(now);
+                osc.stop(now + 0.032);
+
+                // Subtle harmonic air tick (micro transient)
+                const tickOsc = ctx.createOscillator();
+                const tickGain = ctx.createGain();
+                tickOsc.type = 'sine';
+                tickOsc.frequency.setValueAtTime(1920 * jitter, now);
+                tickGain.gain.setValueAtTime(0.0001, now);
+                tickGain.gain.linearRampToValueAtTime(0.045, now + 0.0015);
+                tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+                tickOsc.connect(tickGain);
+                tickGain.connect(dest);
+                tickOsc.start(now);
+                tickOsc.stop(now + 0.015);
+            } catch (e) {}
         },
-        // Warm subtle wooden bump (gentle low pitch-slide, no harsh buzzer)
+        playPop() {
+            this.playClick();
+        },
+        // Warm rising two-note marimba interval for selecting options or chips
+        playSelect() {
+            this.playBell(587.33, 0.11, 0.08, 0.00, 2.0); // D5
+            this.playBell(880.00, 0.14, 0.09, 0.028, 2.0); // A5
+        },
+        // Crisp modern validation pulse when pressing VALIDATE / SUBMIT
+        playValidate() {
+            this.playClick();
+            this.playBell(783.99, 0.12, 0.09, 0.025, 2.0); // G5
+        },
+        // Studio polyphonic correct chime (C5 -> E5 -> G5 -> B5 -> E6)
+        playCorrect() {
+            this.playBell(523.25, 0.24, 0.13, 0.00, 2.0);  // C5
+            this.playBell(659.25, 0.28, 0.14, 0.045, 2.0); // E5
+            this.playBell(783.99, 0.34, 0.16, 0.09, 2.0);  // G5
+            this.playBell(987.77, 0.42, 0.15, 0.135, 2.0); // B5
+            this.playBell(1318.51, 0.56, 0.19, 0.18, 2.0); // E6
+        },
+        // Gentle, modern warm marimba double-thud (pleasant soft feedback on errors, never harsh)
         playIncorrect() {
             try {
                 const ctx = this.getCtx();
                 if (!ctx) return;
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
+                const dest = this.getMaster(ctx) || ctx.destination;
+                const notes = [
+                    { f1: 220, f2: 185, d: 0.00, dur: 0.13 },
+                    { f1: 165, f2: 130, d: 0.11, dur: 0.20 }
+                ];
+                notes.forEach(n => {
+                    const now = ctx.currentTime + n.d;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const filter = ctx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(340, now);
 
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(380, now);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.f1, now);
+                    osc.frequency.exponentialRampToValueAtTime(n.f2, now + n.dur);
 
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(175, now);
-                osc.frequency.exponentialRampToValueAtTime(85, now + 0.18);
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.linearRampToValueAtTime(0.15, now + 0.006);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + n.dur);
 
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.linearRampToValueAtTime(0.20, now + 0.004);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.20);
-
-                osc.connect(gain);
-                gain.connect(filter);
-                filter.connect(ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.22);
-            } catch (e) {}
-        },
-        // Tactile droplet pop (iOS-like tactile micro-pop)
-        playPop() {
-            try {
-                const ctx = this.getCtx();
-                if (!ctx) return;
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(940, now);
-                osc.frequency.exponentialRampToValueAtTime(380, now + 0.035);
-
-                gain.gain.setValueAtTime(0.001, now);
-                gain.gain.linearRampToValueAtTime(0.18, now + 0.003);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.05);
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(dest);
+                    osc.start(now);
+                    osc.stop(now + n.dur + 0.02);
+                });
             } catch (e) {}
         },
         // Celebratory major-9th harmonic fanfare
         playVictory() {
             const chords = [
-                { f: 523.25, d: 0.00, dur: 0.35 },  // C5
-                { f: 659.25, d: 0.07, dur: 0.35 },  // E5
-                { f: 783.99, d: 0.14, dur: 0.40 },  // G5
-                { f: 987.77, d: 0.21, dur: 0.45 },  // B5
-                { f: 1174.66, d: 0.28, dur: 0.50 }, // D6
-                { f: 1318.51, d: 0.35, dur: 0.65 }, // E6
-                { f: 1567.98, d: 0.42, dur: 0.85 }, // G6
+                { f: 523.25, d: 0.00, dur: 0.34 },  // C5
+                { f: 659.25, d: 0.06, dur: 0.36 },  // E5
+                { f: 783.99, d: 0.12, dur: 0.40 },  // G5
+                { f: 987.77, d: 0.18, dur: 0.45 },  // B5
+                { f: 1174.66, d: 0.24, dur: 0.52 }, // D6
+                { f: 1318.51, d: 0.30, dur: 0.65 }, // E6
+                { f: 1567.98, d: 0.36, dur: 0.85 }, // G6
             ];
             chords.forEach(c => {
-                this.playBell(c.f, c.dur, 0.18, c.d, 2.0);
+                this.playBell(c.f, c.dur, 0.15, c.d, 2.0);
             });
             setTimeout(() => {
-                this.playBell(1046.50, 0.85, 0.22, 0.00, 3.0);
-                this.playBell(1318.51, 0.95, 0.22, 0.03, 3.0);
-                this.playBell(1567.98, 1.15, 0.25, 0.06, 2.0);
-            }, 440);
+                this.playBell(1046.50, 0.85, 0.18, 0.00, 2.0);
+                this.playBell(1318.51, 0.95, 0.18, 0.03, 2.0);
+                this.playBell(1567.98, 1.15, 0.20, 0.06, 2.0);
+            }, 410);
         }
     };
+    window.DuoSound = DuoSound;
+
+    // Global cohesive subtle tactile click for primary navigation & interactive UI controls
+    document.addEventListener('click', (e) => {
+        const el = e.target && e.target.closest ? e.target.closest('.btn, .ed-filter-chip, .mcer-tab-btn, .ed-world-tab-btn, .stemos-duo-mode-btn, .ed-nav-btn, .duo-speed-btn') : null;
+        if (!el || el.disabled || el.id === 'btn-duo-check' || el.classList.contains('duo-word-chip') || el.classList.contains('duo-pair-card') || el.classList.contains('duo-mcq-card')) {
+            return;
+        }
+        DuoSound.playClick();
+    }, { passive: true });
 
     // 2. Daily Streak & Gamification State Helpers
     function getDailyStreakData() {
@@ -10525,17 +10929,41 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
     }
 
+    function renderHeartsIconsInto(containerEl, heartsVal, maxHearts = 5) {
+        if (!containerEl) return;
+        const clamped = Math.max(0, Math.min(maxHearts, parseInt(heartsVal, 10) || 0));
+        let html = '';
+        for (let i = 0; i < maxHearts; i++) {
+            const cls = i < clamped ? 'fa-solid fa-heart duo-heart-full' : 'fa-regular fa-heart duo-heart-lost';
+            const extraCls = i > 0 ? ' duo-heart-icon-extra' : '';
+            html += `<i class="${cls}${extraCls}"></i>`;
+        }
+        containerEl.innerHTML = html;
+    }
+
     function updateDuoHudUI() {
         const streakData = getDailyStreakData();
         const streakCountEl = document.getElementById('duo-streak-count');
         if (streakCountEl) streakCountEl.textContent = streakData.streak;
 
+        const storedStudentXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
+        const currentTotalXp = Math.max(globalXP || 0, storedStudentXp);
         const xpCountEl = document.getElementById('duo-xp-count');
-        if (xpCountEl) xpCountEl.textContent = globalXP || 0;
+        if (xpCountEl) xpCountEl.textContent = currentTotalXp;
 
-        const heartsCountEl = document.getElementById('duo-hearts-count');
+        const runnerXpEl = document.getElementById('duo-runner-xp-count');
+        if (runnerXpEl) runnerXpEl.textContent = currentTotalXp;
+
         const heartsVal = parseInt(localStorage.getItem('stemos_duo_hearts') || '5', 10);
-        if (heartsCountEl) heartsCountEl.textContent = isNaN(heartsVal) ? 5 : heartsVal;
+        const safeHearts = isNaN(heartsVal) ? 5 : Math.max(1, heartsVal);
+        const heartsCountEl = document.getElementById('duo-hearts-count');
+        if (heartsCountEl) heartsCountEl.textContent = safeHearts;
+
+        const runnerHeartsCountEl = document.getElementById('duo-runner-hearts-count');
+        const runnerHeartsIconsEl = document.getElementById('duo-runner-hearts-icons');
+        const sessionHearts = (typeof activeDuoSession !== 'undefined' && activeDuoSession) ? activeDuoSession.hearts : safeHearts;
+        if (runnerHeartsCountEl) runnerHeartsCountEl.textContent = sessionHearts;
+        if (runnerHeartsIconsEl) renderHeartsIconsInto(runnerHeartsIconsEl, sessionHearts, 5);
 
         const hoursCountEl = document.getElementById('duo-hours-count');
         const caceiHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
@@ -10545,6 +10973,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (speedLabelEl) {
             const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
             speedLabelEl.textContent = `${spd.toFixed(1)}x`;
+        }
+
+        if (typeof window.updateStudentXPHUD === 'function') {
+            window.updateStudentXPHUD(currentTotalXp);
         }
     }
 
@@ -11245,18 +11677,37 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 nodesLayer.appendChild(hitoDiv);
             }
 
-            // Gating Check
+            // Gating & Section Progress Check
+            let doneStepsCount = 0;
+            const modStepScores = [];
+            DUO_STEPS_META.forEach((st, stIdx) => {
+                const sNum = stIdx + 1;
+                const rec = duoProgress[`${mod.id}-step${sNum}`];
+                if (rec && rec.completed) doneStepsCount++;
+                if (rec && typeof rec.score === 'number') modStepScores.push(rec.score);
+            });
+            const actScores = (typeof getActivityScores === 'function') ? getActivityScores() : {};
+            Object.values(actScores).forEach(rec => {
+                if (rec && rec.unitId === mod.id && typeof rec.score === 'number') {
+                    modStepScores.push(rec.score);
+                }
+            });
+            const avgModScore = modStepScores.length > 0
+                ? Math.round(modStepScores.reduce((a, b) => a + b, 0) / modStepScores.length)
+                : null;
+            const sectionPct = Math.round((doneStepsCount / Math.max(1, DUO_STEPS_META.length)) * 100);
+
             let isCompleted = false;
             let isUnlocked = false;
 
             if (mod.isMcerUnit) {
-                isCompleted = isMcerUnitCompleted(mod.id) || (mod.unitId && isMcerUnitCompleted(mod.unitId));
+                isCompleted = isMcerUnitCompleted(mod.id) || (mod.unitId && isMcerUnitCompleted(mod.unitId)) || doneStepsCount >= DUO_STEPS_META.length;
                 isUnlocked = isCompleted || isMcerUnitUnlocked(mod.id);
                 if (!isUnlocked && idx > 0 && modules[idx - 1]) {
                     isUnlocked = isMcerUnitCompleted(modules[idx - 1].id);
                 }
             } else {
-                isCompleted = !!(prog.modules && prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
+                isCompleted = !!(prog.modules && prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed)) || doneStepsCount >= DUO_STEPS_META.length;
                 const espUnlocks = getTeacherCohortUnlocks();
                 const isPrevCompleted = (idx === 0) || !!(prog.modules && prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
                 isUnlocked = isCompleted || isPrevCompleted || (idx === 0) || mod.isUnlockedByTeacher || espUnlocks.has(String(mod.id).toUpperCase());
@@ -11269,13 +11720,17 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const rawIcon = mod.icon || 'fa-microchip';
             const iconClass = rawIcon.includes('fa-solid') || rawIcon.includes('fa-regular') ? rawIcon : `fa-solid ${rawIcon}`;
             const safeAttrTitle = String(mod.title || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+            const isJustFinished = (window._lastFinishedDuoUnitId === mod.id);
 
             const stepEl = document.createElement('div');
-            stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
+            stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}${isJustFinished ? ' just-finished' : ''}`;
+            stepEl.dataset.modId = mod.id;
 
-            let statusPill = `<span class="plc-status-pill" style="background:${mod.color}22; color:${mod.color};"><i class="fa-solid fa-play"></i> In Progress</span>`;
+            let statusPill = `<span class="plc-status-pill" style="background:${mod.color}22; color:${mod.color};"><i class="fa-solid fa-play"></i> Ready to Start</span>`;
             if (isCompleted) {
-                statusPill = `<span class="plc-status-pill" style="background:#05966922; color:#10b981;"><i class="fa-solid fa-check-double"></i> Station Passed</span>`;
+                statusPill = `<span class="plc-status-pill completed-pill"><i class="fa-solid fa-circle-check"></i> ✓ Section Completed${avgModScore !== null ? ' · ' + avgModScore + '%' : ''}</span>`;
+            } else if (doneStepsCount > 0 || avgModScore !== null) {
+                statusPill = `<span class="plc-status-pill partial-complete-pill"><i class="fa-solid fa-circle-check"></i> ✓ ${doneStepsCount}/${DUO_STEPS_META.length} Done${avgModScore !== null ? ' · Score: ' + avgModScore + '%' : ''}</span>`;
             } else if (!isUnlocked) {
                 statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
             }
@@ -11299,23 +11754,38 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             const duoStepsStripHtml = DUO_STEPS_META.map((st, stIdx) => {
                 const sNum = stIdx + 1;
-                const isStepDone = !!(duoProgress[`${mod.id}-step${sNum}`] && duoProgress[`${mod.id}-step${sNum}`].completed);
+                const rec = duoProgress[`${mod.id}-step${sNum}`];
+                const isStepDone = !!(rec && rec.completed);
+                const hasScore = rec && typeof rec.score === 'number';
                 const extraCls = `${st.isBoss ? ' boss-step' : ''}${isStepDone ? ' completed' : ''}`;
-                const tip = `Paso ${sNum}: ${st.title} (${st.label})`;
+                const tip = `Section ${sNum}: ${st.title}${isStepDone ? ' — Completed' : ''}${hasScore ? ` (${rec.score}%)` : ''}`;
+                const scoreSuffix = hasScore ? ` ${rec.score}%` : '';
                 return `<button type="button" class="duo-sub-step-btn${extraCls}" title="${tip}" data-step="${sNum}">
-                            <i class="fa-solid ${isStepDone ? 'fa-check' : st.icon}"></i> ${st.shortLabel}
+                            <i class="fa-solid ${isStepDone ? 'fa-circle-check' : st.icon}"></i> ${st.shortLabel}${scoreSuffix}
                         </button>`;
             }).join('\n                        ');
 
+            const sectionProgressBarHtml = (doneStepsCount > 0 || avgModScore !== null || isCompleted) ? `
+                    <div class="duo-card-sections-progress">
+                        <div class="duo-card-sections-meta">
+                            <span><i class="fa-solid fa-list-check" style="color:#10b981;"></i> Progress: ${doneStepsCount}/${DUO_STEPS_META.length} sections (${sectionPct}%)</span>
+                            ${avgModScore !== null ? `<span style="color:#0284c7;">Saved Score: ${avgModScore}%</span>` : ''}
+                        </div>
+                        <div class="duo-card-sections-bar">
+                            <div class="duo-card-sections-fill" style="width:${sectionPct}%;"></div>
+                        </div>
+                    </div>
+            ` : '';
+
             stepEl.innerHTML = `
-                <div class="path-node-disc" data-mod-id="${mod.id}" title="${safeAttrTitle}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
+                <div class="path-node-disc" data-mod-id="${mod.id}" title="${safeAttrTitle}" style="border-color:${isCompleted ? '#10b981' : (isUnlocked ? mod.color : '#94a3b8')}; cursor:pointer;">
                     ${mascotHtml}
                     ${starCrownHtml}
-                    <span class="node-m-num" style="color:${isUnlocked ? mod.color : '#64748b'}; font-size:0.62rem;">${nodeIdentifier}</span>
-                    <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon" style="color:${isUnlocked ? mod.color : '#64748b'};"></i>
+                    <span class="node-m-num" style="color:${isCompleted ? '#10b981' : (isUnlocked ? mod.color : '#64748b')}; font-size:0.62rem;">${nodeIdentifier}</span>
+                    <i class="${isCompleted ? 'fa-solid fa-check' : (isUnlocked ? iconClass : 'fa-solid fa-lock')} node-m-icon" style="color:${isCompleted ? '#10b981' : (isUnlocked ? mod.color : '#64748b')};"></i>
                 </div>
 
-                <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? mod.color : '#cbd5e1'}; cursor:pointer;">
+                <div class="path-level-card" style="border-left:3px solid ${isCompleted ? '#10b981' : (isUnlocked ? mod.color : '#cbd5e1')}; cursor:pointer;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
                         ${statusPill}
                         <span style="font-size:0.7rem; font-weight:800; color:${mod.color}; background:${mod.color}15; padding:2px 8px; border-radius:6px;">
@@ -11332,6 +11802,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <span>${mod.standard || 'ISO / IEEE'}</span>
                     </div>
 
+                    ${sectionProgressBarHtml}
+
                     <!-- 7-Step Interactive Duolingo Micro-Lessons Strip -->
                     <div class="duo-steps-strip">
                         ${duoStepsStripHtml}
@@ -11339,7 +11811,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
                     <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
                         <button type="button" class="btn-play-duo-direct" title="Iniciar sesión interactiva con vidas y XP">
-                            <i class="fa-solid fa-gamepad"></i> <span>Lección Interactiva</span>
+                            <i class="fa-solid fa-gamepad"></i> <span>${doneStepsCount > 0 ? 'Continue Practice' : 'Start Interactive'}</span>
                         </button>
                         <a class="btn-powersheet-direct" href="${powerSheetHref}" target="_blank" rel="noopener" style="background:#f0fdf4; color:#15803d; border:1px solid #86efac; padding:5px 10px; border-radius:10px; font-size:0.74rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:5px;" title="Descargar o imprimir hoja resumen de 1 página">
                             <i class="fa-solid fa-file-lines"></i> <span>Power Sheet</span>
@@ -11919,9 +12391,87 @@ Nearshoring Center of Excellence • stemOS Certified`;
     // 6. Immersive Lesson Runner Engine
     let activeDuoSession = null;
 
+    function normalizeSentenceCompare(str) {
+        return String(str || '')
+            .replace(/[.,!?;:"'()]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+    }
+
+    function floatRunnerXpGain(amountText) {
+        const el = document.getElementById('duo-runner-xp-float');
+        if (!el) return;
+        el.textContent = amountText || '+15 XP';
+        el.style.display = 'inline-block';
+        el.classList.remove('animate');
+        void el.offsetWidth;
+        el.classList.add('animate');
+        setTimeout(() => {
+            el.style.display = 'none';
+            el.classList.remove('animate');
+        }, 1050);
+    }
+
+    function computeSessionScoreStats(session) {
+        if (!session) return { correctCount: 0, wrongCount: 0, answeredCount: 0, scorePct: 100 };
+        const results = session.questionResults || {};
+        const values = Object.values(results);
+        if (values.length === 0) {
+            return { correctCount: 0, wrongCount: 0, answeredCount: 0, scorePct: 100 };
+        }
+        const correctCount = values.filter(v => v === true).length;
+        const wrongCount = values.filter(v => v === false).length;
+        const answeredCount = values.length;
+        const scorePct = Math.round((correctCount / Math.max(1, answeredCount)) * 100);
+        return { correctCount, wrongCount, answeredCount, scorePct };
+    }
+
+    function saveLiveDuoAttemptScore(session, isCompletedFinal) {
+        if (!session) return 0;
+        const stats = computeSessionScoreStats(session);
+        const duoProgress = getDuoProgress();
+        const prev = duoProgress[session.stepKey] || {};
+        const finalCompleted = Boolean(isCompletedFinal || prev.completed);
+        const bestScore = Math.max(prev.bestScore || 0, stats.scorePct);
+        const stars = stats.scorePct >= 90 ? 3 : (stats.scorePct >= 70 ? 2 : 1);
+
+        duoProgress[session.stepKey] = {
+            completed: finalCompleted,
+            inProgress: !finalCompleted,
+            completedAt: finalCompleted ? (prev.completedAt || Date.now()) : null,
+            updatedAt: Date.now(),
+            score: stats.scorePct,
+            bestScore: bestScore,
+            correctCount: stats.correctCount,
+            wrongCount: stats.wrongCount,
+            answeredCount: stats.answeredCount,
+            totalQuestions: session.exercises.length,
+            xpEarned: session.sessionXP || prev.xpEarned || 0,
+            heartsRemaining: session.hearts,
+            stars: stars,
+            unitId: session.unit.id,
+            stepNum: session.stepNum
+        };
+        saveDuoProgress(duoProgress);
+
+        recordActivityScore({
+            unitId: session.unit.id,
+            sectionKey: `duo-step${session.stepNum}`,
+            sectionTitle: (session.stepMeta && session.stepMeta.title) || `Step ${session.stepNum}`,
+            correctCount: stats.correctCount,
+            totalCount: Math.max(1, stats.answeredCount),
+            scorePct: stats.scorePct,
+            passed: finalCompleted && stats.scorePct >= 60,
+            xpAwarded: 0
+        });
+
+        return stats.scorePct;
+    }
+
     function openDuoLesson(unit, stepNum, stepMeta) {
         const exercises = buildDuoLessonExercises(unit, stepMeta);
-        const hearts = parseInt(localStorage.getItem('stemos_duo_hearts') || '5', 10);
+        localStorage.setItem('stemos_duo_hearts', '5');
 
         activeDuoSession = {
             unit: unit,
@@ -11930,10 +12480,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
             stepKey: `${unit.id}-step${stepNum}`,
             exercises: exercises,
             currentIdx: 0,
-            hearts: Math.max(1, hearts),
+            hearts: 5,
+            sessionXP: 0,
+            questionResults: {},
+            isValidating: false,
             selectedSlotWords: [],
             availableBankWords: [],
             selectedPairLeft: null,
+            selectedPairFirst: null,
             selectedMcqIdx: null,
             matchedPairsCount: 0,
             isAnswerChecked: false
@@ -11947,6 +12501,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
 
         renderCurrentDuoExercise();
+        updateDuoHudUI();
     }
 
     window.closeDuoLessonRunner = function() {
@@ -11961,6 +12516,29 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
         activeDuoSession = null;
         renderDuoLearningPath(activeMcerLevelFilter);
+        if (typeof window.renderMcerUnitsGrid === 'function') {
+            window.renderMcerUnitsGrid(activeMcerLevelFilter);
+        }
+        if (typeof window.updateKPIMetrics === 'function') {
+            window.updateKPIMetrics();
+        }
+    };
+
+    window.finishAndCloseDuoLesson = function() {
+        const unitId = window._lastFinishedDuoUnitId || (activeDuoSession && activeDuoSession.unit && activeDuoSession.unit.id);
+        const lastBannerMsg = window._lastFinishedDuoToast || '✓ Section completed and score saved!';
+        window.closeDuoLessonRunner();
+        setTimeout(() => {
+            if (typeof showSyncToast === 'function') {
+                showSyncToast(lastBannerMsg, 'success');
+            }
+            if (unitId) {
+                const targetCard = document.querySelector(`.path-level-step[data-mod-id="${unitId}"], .ed-unit-card[data-unit-id="${unitId}"]`);
+                if (targetCard && typeof targetCard.scrollIntoView === 'function') {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }, 120);
     };
 
     const DUO_STEPS_META = [
@@ -12043,37 +12621,48 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const ex = session.exercises[session.currentIdx];
         const stage = document.getElementById('duo-exercise-stage');
         const progressFill = document.getElementById('duo-runner-progress-fill');
-        const heartsCount = document.getElementById('duo-runner-hearts-count');
+        const stepCounter = document.getElementById('duo-runner-step-counter');
         const checkBtn = document.getElementById('btn-duo-check');
+        const retryBtn = document.getElementById('btn-duo-retry-question');
         const drawer = document.getElementById('duo-feedback-drawer');
         const fbIcon = document.getElementById('duo-feedback-icon');
         const fbTitle = document.getElementById('duo-feedback-title');
         const fbSub = document.getElementById('duo-feedback-subtitle');
 
         session.isAnswerChecked = false;
+        session.isValidating = false;
         session.selectedSlotWords = [];
         session.selectedPairLeft = null;
+        session.selectedPairFirst = null;
         session.selectedMcqIdx = null;
+        session.selectedMcqText = '';
+        session.spokenTranscript = '';
 
-        // Update progress bar & hearts
+        // Update progress bar, step counter & hearts/XP HUD
         const pct = Math.round((session.currentIdx / session.exercises.length) * 100);
         if (progressFill) progressFill.style.width = `${pct}%`;
-        if (heartsCount) heartsCount.textContent = session.hearts;
+        if (stepCounter) stepCounter.textContent = `${session.currentIdx + 1} / ${session.exercises.length}`;
+        updateDuoHudUI();
 
-        // Reset feedback drawer
-        if (drawer) drawer.className = 'duo-feedback-drawer';
+        // Always restore sticky drawer visibility & reset state cleanly
+        if (drawer) {
+            drawer.style.display = 'flex';
+            drawer.className = 'duo-feedback-drawer';
+        }
         if (fbIcon) fbIcon.style.display = 'none';
         if (fbTitle) {
-            fbTitle.textContent = '¡Selecciona tu respuesta!';
+            fbTitle.textContent = 'Select your answer to validate';
             fbTitle.style.color = '';
         }
         if (fbSub) {
-            fbSub.textContent = 'Elige o ensambla las opciones para continuar.';
+            fbSub.textContent = 'Choose or assemble the options above, then click Validate.';
             fbSub.style.color = '';
         }
+        if (retryBtn) retryBtn.style.display = 'none';
         if (checkBtn) {
+            checkBtn.disabled = false;
             checkBtn.className = 'duo-check-btn disabled';
-            checkBtn.textContent = 'COMPROBAR';
+            checkBtn.textContent = 'VALIDATE';
         }
 
         if (!stage) return;
@@ -12435,35 +13024,61 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         recognition.onend = () => {
                             isRecording = false;
                             micBtn.classList.remove('recording');
+                            if (!session.spokenTranscript) {
+                                session.spokenTranscript = ex.targetText;
+                                statusLabel.innerHTML = '✓ Speech captured · Ready to <strong>Validate</strong>.';
+                                statusLabel.style.color = '#15803d';
+                                if (checkBtn) checkBtn.className = 'duo-check-btn';
+                            }
                         };
 
                         recognition.start();
                     } catch (e) {
                         session.spokenTranscript = ex.targetText;
-                        statusLabel.textContent = '✓ Grabación procesada exitosamente.';
+                        statusLabel.textContent = '✓ Recording ready to Validate.';
+                        statusLabel.style.color = '#15803d';
                         if (checkBtn) checkBtn.className = 'duo-check-btn';
                     }
                 } else {
                     // Fallback simulation for unsupported browsers/test runners
                     session.spokenTranscript = ex.targetText;
-                    statusLabel.textContent = '✓ Pronunciación calibrada (Simulación Industrial).';
+                    statusLabel.textContent = '✓ Pronunciation ready to Validate.';
+                    statusLabel.style.color = '#15803d';
                     if (checkBtn) checkBtn.className = 'duo-check-btn';
                 }
             });
 
+            const fallbackPracticeBtn = document.createElement('button');
+            fallbackPracticeBtn.type = 'button';
+            fallbackPracticeBtn.id = 'duo-mic-fallback-btn';
+            fallbackPracticeBtn.style.cssText = 'display:block; margin:14px auto 0; padding:8px 16px; border-radius:999px; border:1px solid #cbd5e1; background:#f8fafc; color:#475569; font-size:0.78rem; font-weight:700; cursor:pointer;';
+            fallbackPracticeBtn.innerHTML = '<i class="fa-solid fa-ear-listen"></i> Practice Without Mic (Listen &amp; Validate)';
+            fallbackPracticeBtn.addEventListener('click', () => {
+                DuoSound.playSelect();
+                if (typeof window.speakEnglishText === 'function') {
+                    const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.9;
+                    window.speakEnglishText(ex.targetText, spd);
+                }
+                session.spokenTranscript = ex.targetText;
+                statusLabel.innerHTML = '✓ Reference phrase validated — click <strong>Validate</strong> below.';
+                statusLabel.style.color = '#15803d';
+                if (checkBtn) checkBtn.className = 'duo-check-btn';
+            });
+
             stage.appendChild(micBtn);
             stage.appendChild(statusLabel);
+            stage.appendChild(fallbackPracticeBtn);
         }
     }
 
     // Interaction handler: Word Chip Tap
     function handleWordChipClick(item) {
-        if (!activeDuoSession) return;
+        if (!activeDuoSession || activeDuoSession.isValidating) return;
         const session = activeDuoSession;
         const targetSlot = document.getElementById('duo-sentence-slot');
         const checkBtn = document.getElementById('btn-duo-check');
 
-        DuoSound.playPop();
+        DuoSound.playSelect();
         item.placed = true;
         session.selectedSlotWords.push(item);
 
@@ -12478,93 +13093,218 @@ Nearshoring Center of Excellence • stemOS Certified`;
         slotChip.id = `slot-${item.id}`;
         slotChip.textContent = item.text;
         slotChip.addEventListener('click', () => {
+            if (session.isValidating) return;
             DuoSound.playPop();
-            // Remove from slot
             session.selectedSlotWords = session.selectedSlotWords.filter(w => w.id !== item.id);
             item.placed = false;
             slotChip.remove();
             if (bankChip) bankChip.classList.remove('placed');
 
-            if (session.selectedSlotWords.length === 0 && checkBtn) {
+            if (session.selectedSlotWords.length === 0 && checkBtn && !session.isAnswerChecked) {
                 checkBtn.className = 'duo-check-btn disabled';
             }
         });
 
         if (targetSlot) targetSlot.appendChild(slotChip);
 
-        if (checkBtn) {
+        if (checkBtn && !session.isAnswerChecked) {
             checkBtn.className = 'duo-check-btn';
         }
     }
 
-    // Interaction handler: Tap-to-Pair
+    // Interaction handler: Bidirectional Tap-to-Pair (works clicking left or right side first!)
     function handlePairCardClick(item, cardEl) {
-        if (!activeDuoSession) return;
+        if (!activeDuoSession || activeDuoSession.isValidating) return;
         const session = activeDuoSession;
         const checkBtn = document.getElementById('btn-duo-check');
         const ex = session.exercises[session.currentIdx];
 
-        DuoSound.playPop();
+        if (cardEl.classList.contains('matched')) return;
 
-        if (!session.selectedPairLeft && item.side === 'left') {
-            // First item selected (left side)
-            session.selectedPairLeft = { item, cardEl };
+        const first = session.selectedPairFirst || session.selectedPairLeft;
+
+        // Deselect if clicking the exact same card again
+        if (first && first.item.id === item.id) {
+            DuoSound.playPop();
+            cardEl.classList.remove('selected');
+            session.selectedPairFirst = null;
+            session.selectedPairLeft = null;
+            return;
+        }
+
+        // Switch selection if clicking another card on the same side
+        if (!first || first.item.side === item.side) {
+            DuoSound.playSelect();
+            session.selectedPairFirst = { item, cardEl };
+            session.selectedPairLeft = (item.side === 'left') ? { item, cardEl } : null;
             document.querySelectorAll('.duo-pair-card').forEach(c => c.classList.remove('selected'));
             cardEl.classList.add('selected');
-        } else if (session.selectedPairLeft && item.side === 'right') {
-            // Matching check
-            const leftData = session.selectedPairLeft;
-            if (leftData.item.idx === item.idx) {
-                // Correct match!
-                DuoSound.playCorrect();
-                leftData.cardEl.classList.remove('selected');
-                leftData.cardEl.classList.add('matched');
-                cardEl.classList.add('matched');
-                session.matchedPairsCount++;
+            return;
+        }
 
-                session.selectedPairLeft = null;
+        // Opposite side clicked -> evaluate match
+        if (first.item.idx === item.idx) {
+            DuoSound.playCorrect();
+            first.cardEl.classList.remove('selected');
+            first.cardEl.classList.add('matched');
+            cardEl.classList.add('matched');
+            session.matchedPairsCount++;
+            session.selectedPairFirst = null;
+            session.selectedPairLeft = null;
 
-                if (session.matchedPairsCount >= ex.pairs.length) {
-                    // All pairs completed!
-                    if (checkBtn) checkBtn.className = 'duo-check-btn';
-                    setTimeout(() => {
-                        window.handleDuoCheckClick();
-                    }, 400);
-                }
-            } else {
-                // Mismatch
-                DuoSound.playIncorrect();
-                cardEl.classList.add('mismatch');
-                leftData.cardEl.classList.add('mismatch');
-
+            if (session.matchedPairsCount >= ex.pairs.length) {
+                if (checkBtn) checkBtn.className = 'duo-check-btn';
                 setTimeout(() => {
-                    cardEl.classList.remove('mismatch', 'selected');
-                    leftData.cardEl.classList.remove('mismatch', 'selected');
-                    session.selectedPairLeft = null;
-                }, 450);
+                    window.handleDuoCheckClick();
+                }, 320);
             }
-        } else if (item.side === 'left') {
-            // Changed left selection
-            session.selectedPairLeft = { item, cardEl };
-            document.querySelectorAll('.duo-pair-card').forEach(c => c.classList.remove('selected'));
-            cardEl.classList.add('selected');
+        } else {
+            DuoSound.playIncorrect();
+            cardEl.classList.add('mismatch');
+            first.cardEl.classList.add('mismatch');
+
+            setTimeout(() => {
+                cardEl.classList.remove('mismatch', 'selected');
+                first.cardEl.classList.remove('mismatch', 'selected');
+                session.selectedPairFirst = null;
+                session.selectedPairLeft = null;
+            }, 420);
         }
     }
 
-    // 7. Check Answer & Drawer Feedback Trigger
-    window.handleDuoCheckClick = function() {
-        if (!activeDuoSession) return;
-        const session = activeDuoSession;
+    // 7. Check Answer, Accessible Spinner, Score Persistence & Drawer Feedback Trigger
+    function finalizeDuoAnswerCheck(session) {
+        if (!activeDuoSession || activeDuoSession !== session) return;
         const ex = session.exercises[session.currentIdx];
         const checkBtn = document.getElementById('btn-duo-check');
+        const retryBtn = document.getElementById('btn-duo-retry-question');
         const drawer = document.getElementById('duo-feedback-drawer');
         const fbIcon = document.getElementById('duo-feedback-icon');
         const fbTitle = document.getElementById('duo-feedback-title');
         const fbSub = document.getElementById('duo-feedback-subtitle');
-        const heartsCount = document.getElementById('duo-runner-hearts-count');
+        const progressFill = document.getElementById('duo-runner-progress-fill');
+        const heartsDisplay = document.getElementById('duo-runner-hearts');
 
-        // If answer was already checked, clicking button advances to next exercise
+        // Validate answer based on exercise type
+        let isCorrect = false;
+        let solutionText = '';
+        let hintExplanation = '';
+
+        if (ex.type === 'sentence_builder') {
+            const assembled = normalizeSentenceCompare(session.selectedSlotWords.map(w => w.text).join(' '));
+            const targetNorm = normalizeSentenceCompare(ex.targetSentence);
+            isCorrect = (assembled === targetNorm);
+            solutionText = ex.targetSentence;
+            hintExplanation = ex.subtext ? `Structure: ${ex.subtext}` : '';
+        } else if (ex.type === 'tap_pair') {
+            isCorrect = (session.matchedPairsCount >= ex.pairs.length);
+            solutionText = 'All term pairs matched.';
+            hintExplanation = 'Great industrial vocabulary association.';
+        } else if (ex.type === 'audio_listen') {
+            const chosen = (ex.options || [])[session.selectedMcqIdx] || session.selectedMcqText || '';
+            isCorrect = (chosen.toLowerCase().trim() === (ex.correct || '').toLowerCase().trim());
+            solutionText = ex.correct;
+            hintExplanation = 'Standard American workplace pronunciation.';
+        } else if (ex.type === 'mcq_gap') {
+            isCorrect = (session.selectedMcqIdx === ex.correctIdx);
+            solutionText = (ex.options || [])[ex.correctIdx] || '';
+            hintExplanation = ex.hint || '';
+        } else if (ex.type === 'voice_crucible') {
+            isCorrect = true;
+            solutionText = ex.targetText;
+            hintExplanation = 'Acoustic clarity and pronunciation verified.';
+        }
+
+        const isLastExercise = session.currentIdx >= session.exercises.length - 1;
+        const continueLabel = isLastExercise ? 'FINISH SECTION →' : 'CONTINUE →';
+
+        session.isValidating = false;
+        session.isAnswerChecked = true;
+
+        // Track accuracy score for this question index (updates cleanly if retried)
+        session.questionResults[session.currentIdx] = isCorrect;
+
+        // Immediately advance progress bar as feedback on validation
+        if (progressFill) {
+            const validatedPct = Math.round(((session.currentIdx + 1) / Math.max(1, session.exercises.length)) * 100);
+            progressFill.style.width = `${validatedPct}%`;
+        }
+
+        if (isCorrect) {
+            DuoSound.playCorrect();
+            const earned = 15;
+            session.sessionXP = (session.sessionXP || 0) + earned;
+            awardXP(earned);
+            floatRunnerXpGain(`+${earned} XP`);
+            const liveScorePct = saveLiveDuoAttemptScore(session, false);
+            updateDuoHudUI();
+
+            if (drawer) drawer.className = 'duo-feedback-drawer correct';
+            if (fbIcon) {
+                fbIcon.style.display = 'flex';
+                fbIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            }
+            if (fbTitle) fbTitle.textContent = `✓ Correct! +${earned} XP · Score: ${liveScorePct}%`;
+            if (fbSub) fbSub.textContent = hintExplanation || 'Excellent technical precision!';
+            if (retryBtn) retryBtn.style.display = 'none';
+            if (checkBtn) {
+                checkBtn.disabled = false;
+                checkBtn.className = 'duo-check-btn';
+                checkBtn.textContent = continueLabel;
+            }
+        } else {
+            DuoSound.playIncorrect();
+            session.hearts = Math.max(1, session.hearts - 1);
+            localStorage.setItem('stemos_duo_hearts', String(session.hearts));
+            // Always record practice credit (+5 XP) & live score even when wrong so effort & scores are saved!
+            const practiceXP = 5;
+            session.sessionXP = (session.sessionXP || 0) + practiceXP;
+            awardXP(practiceXP);
+            floatRunnerXpGain(`+${practiceXP} XP`);
+            const liveScorePct = saveLiveDuoAttemptScore(session, false);
+            updateDuoHudUI();
+
+            if (heartsDisplay) {
+                heartsDisplay.classList.remove('shake');
+                void heartsDisplay.offsetWidth;
+                heartsDisplay.classList.add('shake');
+            }
+
+            if (drawer) drawer.className = 'duo-feedback-drawer incorrect';
+            if (fbIcon) {
+                fbIcon.style.display = 'flex';
+                fbIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            }
+            const stats = computeSessionScoreStats(session);
+            if (fbTitle) fbTitle.textContent = `Incorrect · Score Saved (${liveScorePct}% · ${stats.correctCount}/${stats.answeredCount})`;
+            if (fbSub) fbSub.innerHTML = `Correct Answer: <strong>${solutionText}</strong>. ${hintExplanation}`;
+            if (retryBtn) retryBtn.style.display = 'inline-flex';
+            if (checkBtn) {
+                checkBtn.disabled = false;
+                checkBtn.className = 'duo-check-btn incorrect-mode';
+                checkBtn.textContent = continueLabel;
+            }
+        }
+    }
+
+    window.retryCurrentDuoQuestion = function() {
+        if (!activeDuoSession || activeDuoSession.isValidating) return;
+        DuoSound.playClick();
+        renderCurrentDuoExercise();
+    };
+
+    window.handleDuoCheckClick = function() {
+        if (!activeDuoSession) return;
+        const session = activeDuoSession;
+        if (session.isValidating) return;
+
+        const checkBtn = document.getElementById('btn-duo-check');
+        const drawer = document.getElementById('duo-feedback-drawer');
+        const fbTitle = document.getElementById('duo-feedback-title');
+
+        // If answer was already validated, clicking button advances cleanly
         if (session.isAnswerChecked) {
+            DuoSound.playClick();
             session.currentIdx++;
             if (session.currentIdx >= session.exercises.length) {
                 showDuoLessonVictory();
@@ -12574,82 +13314,38 @@ Nearshoring Center of Excellence • stemOS Certified`;
             return;
         }
 
-        // Validate answer based on exercise type
-        let isCorrect = false;
-        let solutionText = '';
-        let hintExplanation = '';
-
-        if (ex.type === 'sentence_builder') {
-            const assembled = session.selectedSlotWords.map(w => w.text.toLowerCase()).join(' ');
-            const targetNorm = ex.targetSentence.toLowerCase().trim();
-            isCorrect = (assembled === targetNorm);
-            solutionText = ex.targetSentence;
-            hintExplanation = 'Estructura: ' + ex.subtext;
-        } else if (ex.type === 'tap_pair') {
-            isCorrect = (session.matchedPairsCount >= ex.pairs.length);
-            solutionText = 'Todas las parejas conectadas.';
-            hintExplanation = 'Excelente asociación de vocabulario industrial.';
-        } else if (ex.type === 'audio_listen') {
-            const chosen = (ex.options || [])[session.selectedMcqIdx] || session.selectedMcqText || '';
-            isCorrect = (chosen.toLowerCase().trim() === (ex.correct || '').toLowerCase().trim());
-            solutionText = ex.correct;
-            hintExplanation = 'Instrucción técnica Standard American (Piper Neural PRO).';
-        } else if (ex.type === 'mcq_gap') {
-            isCorrect = (session.selectedMcqIdx === ex.correctIdx);
-            solutionText = (ex.options || [])[ex.correctIdx] || '';
-            hintExplanation = ex.hint || '';
-        } else if (ex.type === 'voice_crucible') {
-            isCorrect = true; // Voice recognized or simulated
-            solutionText = ex.targetText;
-            hintExplanation = 'Claridad acústica y dicción verificada.';
-        }
-
-        session.isAnswerChecked = true;
-
-        if (isCorrect) {
-            DuoSound.playCorrect();
-            awardXP(15);
-            updateDuoHudUI();
-
-            if (drawer) drawer.className = 'duo-feedback-drawer correct';
-            if (fbIcon) {
-                fbIcon.style.display = 'flex';
-                fbIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
-            }
-            if (fbTitle) fbTitle.textContent = '¡Excelente! +15 XP';
-            if (fbSub) fbSub.textContent = hintExplanation || '¡Precisión técnica impecable!';
-            if (checkBtn) {
-                checkBtn.className = 'duo-check-btn';
-                checkBtn.textContent = 'CONTINUAR';
-            }
-        } else {
+        // Prevent empty validation while giving clear instant feedback instead of appearing stuck
+        if (checkBtn && checkBtn.classList.contains('disabled')) {
             DuoSound.playIncorrect();
-            session.hearts = Math.max(0, session.hearts - 1);
-            localStorage.setItem('stemos_duo_hearts', String(session.hearts));
-            if (heartsCount) heartsCount.textContent = session.hearts;
-            updateDuoHudUI();
-
-            if (drawer) drawer.className = 'duo-feedback-drawer incorrect';
-            if (fbIcon) {
-                fbIcon.style.display = 'flex';
-                fbIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            if (fbTitle) fbTitle.textContent = 'Select or assemble an answer first!';
+            if (drawer) {
+                drawer.classList.remove('incorrect');
+                void drawer.offsetWidth;
             }
-            if (fbTitle) fbTitle.textContent = 'Respuesta Incorrecta';
-            if (fbSub) fbSub.innerHTML = `Solución correcta: <strong>${solutionText}</strong>. ${hintExplanation}`;
-            if (checkBtn) {
-                checkBtn.className = 'duo-check-btn incorrect-mode';
-                checkBtn.textContent = 'CONTINUAR';
-            }
+            return;
         }
+
+        // Show accessible processing spinner while validating
+        session.isValidating = true;
+        DuoSound.playValidate();
+        if (checkBtn) {
+            checkBtn.disabled = true;
+            checkBtn.className = 'duo-check-btn is-validating';
+            checkBtn.innerHTML = '<progress aria-label="Validating" class="loading-spinner duo-btn-spinner"></progress><span>VALIDATING...</span>';
+        }
+
+        setTimeout(() => {
+            finalizeDuoAnswerCheck(session);
+        }, 220);
     };
 
-    // Keyboard shortcut: Pressing Enter triggers Check / Continue
+    // Keyboard shortcut: Pressing Enter triggers Validate / Continue
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const runner = document.getElementById('duo-runner-overlay');
             if (runner && runner.classList.contains('active')) {
                 const btn = document.getElementById('btn-duo-check');
-                if (btn && !btn.classList.contains('disabled')) {
+                if (btn && !btn.classList.contains('disabled') && !(activeDuoSession && activeDuoSession.isValidating)) {
                     e.preventDefault();
                     window.handleDuoCheckClick();
                 }
@@ -12657,7 +13353,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
     });
 
-    // 8. Celebration Victory Screen
+    // 8. Celebration Victory Screen & Persistent Outside Completion Signal
     function showDuoLessonVictory() {
         if (!activeDuoSession) return;
         const session = activeDuoSession;
@@ -12666,31 +13362,47 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // Increment daily streak
         const newStreak = recordDailyStudyCompleted();
 
-        // Award completion bonus XP
+        // Award completion bonus XP safely
         const bonusXP = session.stepMeta.xp || 30;
+        session.sessionXP = (session.sessionXP || 0) + bonusXP;
         awardXP(bonusXP);
 
-        // Accumulate accredited CACEI hours (0.25h / 15 min per lesson)
+        // Accumulate accredited practice hours
         let currentCacei = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
         currentCacei += 0.25;
         localStorage.setItem('stemos_cacei_accredited_hours', currentCacei.toFixed(2));
 
-        // Mark stepping stone as completed
+        // Persist completed step & final score
+        const finalScorePct = saveLiveDuoAttemptScore(session, true);
         const duoProgress = getDuoProgress();
-        duoProgress[session.stepKey] = {
-            completed: true,
-            completedAt: Date.now(),
-            stars: 3,
-            unitId: session.unit.id,
-            stepNum: session.stepNum
-        };
-        saveDuoProgress(duoProgress);
+        const doneStepsCount = DUO_STEPS_META.filter((_, i) => {
+            const r = duoProgress[`${session.unit.id}-step${i + 1}`];
+            return r && r.completed;
+        }).length;
 
-        // If final step (Boss) is completed, mark unit as completed!
-        if (session.stepNum >= DUO_STEPS_META.length || (session.stepMeta && session.stepMeta.isBoss)) {
+        // Update career ESP progress if applicable, or mark MCER unit complete when Boss/all sections done
+        const isUnitFullyFinished = doneStepsCount >= DUO_STEPS_META.length || session.stepNum >= DUO_STEPS_META.length || (session.stepMeta && session.stepMeta.isBoss);
+        if (isUnitFullyFinished) {
             localStorage.setItem('stemos_crucible_' + session.unit.id, 'completed');
             localStorage.setItem('stemos_unit_completed_' + session.unit.id, 'true');
             localStorage.setItem('stemos_mcer_unit_' + session.unit.id, 'passed');
+
+            if (session.unit && session.unit.isEsp) {
+                const cid = session.unit.trackId || localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+                const modKey = session.unit.modId || session.unit.id;
+                try {
+                    const progKey = 'stemos_progress_' + cid;
+                    const cProg = JSON.parse(localStorage.getItem(progKey) || '{}');
+                    if (!cProg.modules) cProg.modules = {};
+                    cProg.modules[modKey] = {
+                        status: 'completed',
+                        score: finalScorePct,
+                        xp: session.sessionXP || 300,
+                        completedAt: new Date().toISOString()
+                    };
+                    localStorage.setItem(progKey, JSON.stringify(cProg));
+                } catch (_) {}
+            }
 
             // Advance active unit ID if in MCER
             if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
@@ -12703,10 +13415,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
         }
 
-        // Update UI
-        updateDuoHudUI();
+        // Remember last completed unit so outside map highlights & scrolls cleanly
+        window._lastFinishedDuoUnitId = session.unit.id;
+        window._lastFinishedDuoToast = `✓ Section "${session.stepMeta.title}" finished & saved (${finalScorePct}% · +${session.sessionXP} XP)!`;
 
-        // Render Victory Screen inside Stage
+        // Update UI outside & inside
+        updateDuoHudUI();
+        if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
+
         const stage = document.getElementById('duo-exercise-stage');
         const drawer = document.getElementById('duo-feedback-drawer');
         const progressFill = document.getElementById('duo-runner-progress-fill');
@@ -12718,38 +13434,67 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const psUrl = session.unit && session.unit.isEsp
                 ? `powersheet.html?esp=${encodeURIComponent(`${session.unit.trackId || 'it-mecatronica'}:${session.unit.modId || session.unit.id}`)}`
                 : `powersheet.html?lesson=${encodeURIComponent(session.unit.id)}`;
+
+            const checklistHtml = DUO_STEPS_META.map((st, idx) => {
+                const sNum = idx + 1;
+                const rec = duoProgress[`${session.unit.id}-step${sNum}`];
+                const isDone = !!(rec && rec.completed);
+                const isCur = sNum === session.stepNum;
+                return `<span class="duo-victory-check-item${isDone ? ' done' : ''}${isCur ? ' current' : ''}">
+                            <i class="fa-solid ${isDone ? 'fa-circle-check' : st.icon}"></i>
+                            ${st.shortLabel}${rec && typeof rec.score === 'number' ? ` ${rec.score}%` : ''}
+                        </span>`;
+            }).join('');
+
+            const nextStepMeta = session.stepNum < DUO_STEPS_META.length ? DUO_STEPS_META[session.stepNum] : null;
+            const nextBtnLabel = nextStepMeta
+                ? `NEXT SECTION (${session.stepNum + 1}/${DUO_STEPS_META.length}): ${nextStepMeta.title} →`
+                : 'UNLOCK NEXT UNIT IN PATH →';
+
             stage.innerHTML = `
                 <div class="duo-victory-card">
+                    <div class="duo-victory-badge">
+                        <i class="fa-solid fa-circle-check"></i>
+                        SECTION ${session.stepNum} OF ${DUO_STEPS_META.length} COMPLETED &amp; SAVED
+                    </div>
                     <div class="duo-victory-trophy">
                         <i class="fa-solid fa-trophy"></i>
                     </div>
-                    <h2 class="duo-victory-title">¡Lección Completada!</h2>
-                    <p class="duo-victory-subtitle">Has dominado "${session.stepMeta.title}" con excelencia técnica.</p>
+                    <h2 class="duo-victory-title">Section Completed!</h2>
+                    <p class="duo-victory-subtitle"><strong>${session.stepMeta.title}</strong> (${session.unit.title || session.unit.id}) is saved to your progress.</p>
 
                     <div class="duo-victory-rewards">
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#ca8a04;">+${bonusXP + 60}</span>
-                            <span class="duo-reward-lbl">Total XP</span>
+                            <span class="duo-reward-val" style="color:#ca8a04;">+${session.sessionXP} XP</span>
+                            <span class="duo-reward-lbl">XP Earned</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#ea580c;">🔥 ${newStreak}</span>
-                            <span class="duo-reward-lbl">Días de Racha</span>
+                            <span class="duo-reward-val" style="color:${finalScorePct >= 70 ? '#16a34a' : '#d97706'};">${finalScorePct}%</span>
+                            <span class="duo-reward-lbl">Saved Score</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#16a34a;">+18 min</span>
-                            <span class="duo-reward-lbl">Práctica Duo</span>
+                            <span class="duo-reward-val" style="color:#e11d48;">❤️ ${session.hearts}/5</span>
+                            <span class="duo-reward-lbl">Hearts Left</span>
+                        </div>
+                        <div class="duo-reward-item">
+                            <span class="duo-reward-val" style="color:#0284c7;">${doneStepsCount}/${DUO_STEPS_META.length} ✓</span>
+                            <span class="duo-reward-lbl">Unit Progress</span>
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary" onclick="window.advanceToNextDuoLesson()" style="width:100%; padding:14px 28px; font-size:1.05rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer;">
-                        SIGUIENTE RETO EN LA RUTA &bull; +XP
+                    <div class="duo-victory-checklist" aria-label="Completed unit sections">
+                        ${checklistHtml}
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="window.finishAndCloseDuoLesson()" style="width:100%; padding:14px 28px; font-size:1rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fa-solid fa-circle-check"></i> FINISH &amp; SEE PROGRESS ON PATH
                     </button>
-                    <a href="${psUrl}" target="_blank" rel="noopener" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; width:100%; margin-top:10px; padding:11px 20px; font-size:0.9rem; font-weight:800; border-radius:14px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; text-decoration:none;">
-                        <i class="fa-solid fa-print"></i> Descargar / Imprimir Power Sheet (1 Hoja)
+                    <button type="button" onclick="window.advanceToNextDuoLesson()" style="width:100%; margin-top:10px; padding:12px 24px; font-size:0.92rem; font-weight:800; border-radius:14px; background:#f0f9ff; color:#0284c7; border:1.5px solid #7dd3fc; cursor:pointer;">
+                        ${nextBtnLabel}
+                    </button>
+                    <a href="${psUrl}" target="_blank" rel="noopener" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; width:100%; margin-top:10px; padding:10px 20px; font-size:0.86rem; font-weight:800; border-radius:14px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; text-decoration:none;">
+                        <i class="fa-solid fa-print"></i> Printable Power Sheet (1 Page)
                     </a>
-                    <button type="button" onclick="window.closeDuoLessonRunner()" style="width:100%; margin-top:6px; padding:10px 20px; font-size:0.88rem; font-weight:700; border-radius:12px; background:transparent; color:#64748b; border:none; cursor:pointer;">
-                        Ver Progreso en la Ruta (Snake)
-                    </button>
                 </div>
             `;
         }
@@ -12856,9 +13601,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
             exercises: exercises,
             currentIdx: 0,
             hearts: 5,
+            sessionXP: 0,
+            questionResults: {},
+            isValidating: false,
             selectedSlotWords: [],
             availableBankWords: [],
             selectedPairLeft: null,
+            selectedPairFirst: null,
             selectedMcqIdx: null,
             matchedPairsCount: 0,
             isAnswerChecked: false
