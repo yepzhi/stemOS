@@ -4742,11 +4742,28 @@
   function shuffleDrillDeterministic(d, seed) {
     if (!d || !Array.isArray(d.opts) || d.opts.length < 2) return d;
     const correctIdx = (typeof d.ans === 'number' && d.ans >= 0 && d.ans < d.opts.length) ? d.ans : 0;
-    const correctVal = d.opts[correctIdx];
-    const items = d.opts.map((opt, i) => ({ opt, hash: ((i + 1) * 37 + seed * 13 + String(opt).length * 7 + String(d.q || '').length) % 97 }));
-    items.sort((a, b) => a.hash - b.hash);
-    const newOpts = items.map((x) => x.opt);
-    const newAns = newOpts.indexOf(correctVal);
+    const tagged = d.opts.map((opt, i) => ({ opt, isCorrect: i === correctIdx }));
+    // Unbiased FNV-1a hash + Mulberry32 PRNG seeded Fisher-Yates shuffle
+    const keyStr = `${seed || 0}|${d.q || ''}|${d.opts.join('|')}`;
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < keyStr.length; i++) {
+      h ^= keyStr.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    const nextRand = () => {
+      h = (h + 0x6D2B79F5) >>> 0;
+      let t = Math.imul(h ^ (h >>> 15), 1 | h);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    for (let i = tagged.length - 1; i > 0; i--) {
+      const j = Math.floor(nextRand() * (i + 1));
+      const tmp = tagged[i];
+      tagged[i] = tagged[j];
+      tagged[j] = tmp;
+    }
+    const newOpts = tagged.map((x) => x.opt);
+    const newAns = tagged.findIndex((x) => x.isCorrect);
     return Object.assign({}, d, {
       opts: newOpts,
       ans: newAns >= 0 ? newAns : 0

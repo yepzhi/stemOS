@@ -1778,6 +1778,18 @@ document.addEventListener('DOMContentLoaded', () => {
         quizQuestionsArea.innerHTML = '';
         if (reading.questions && reading.questions.length > 0) {
             reading.questions.forEach((qObj, qIdx) => {
+                if (Array.isArray(qObj.options) && qObj.options.length > 1) {
+                    const safeAns = (typeof qObj.answer === 'number' && qObj.answer >= 0 && qObj.answer < qObj.options.length) ? qObj.answer : 0;
+                    const tagged = qObj.options.map((opt, idx) => ({ opt, isCorrect: idx === safeAns }));
+                    for (let i = tagged.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        const tmp = tagged[i];
+                        tagged[i] = tagged[j];
+                        tagged[j] = tmp;
+                    }
+                    qObj.options = tagged.map((t) => t.opt);
+                    qObj.answer = Math.max(0, tagged.findIndex((t) => t.isCorrect));
+                }
                 const qBox = document.createElement('div');
                 qBox.className = 'quiz-question-box';
                 
@@ -12214,13 +12226,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 if (!unique.some((u) => u.toLowerCase() === cand.toLowerCase())) unique.push(cand);
             }
             const opts = unique.slice(0, 4);
-            const ranked = opts.map((opt, idx) => ({
-                opt,
-                score: ((idx + 1) * 31 + seed * 19 + opt.length * 7) % 97
-            }));
-            ranked.sort((a, b) => a.score - b.score);
-            const shuffled = ranked.map((r) => r.opt);
-            return { options: shuffled, correctIdx: Math.max(0, shuffled.indexOf(cleanCorrect)) };
+            // True unbiased Fisher-Yates shuffle so the correct answer is uniformly distributed across A/B/C/D
+            const tagged = opts.map((opt, idx) => ({ opt, isCorrect: idx === 0 }));
+            for (let i = tagged.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = tagged[i];
+                tagged[i] = tagged[j];
+                tagged[j] = tmp;
+            }
+            const shuffled = tagged.map((r) => r.opt);
+            return { options: shuffled, correctIdx: Math.max(0, tagged.findIndex((r) => r.isCorrect)) };
         };
 
         const makeDistractorsForSentence = (sentence) => {
@@ -12275,9 +12290,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const addDrillAsMcq = (drillObj, cat, heading, subtext, extraFields = {}) => {
             if (!drillObj) return false;
-            const opts = drillObj.opts || drillObj.options || [];
-            if (opts.length < 2) return false;
-            const cIdx = (typeof drillObj.ans === 'number') ? drillObj.ans : (typeof drillObj.answer === 'number' ? drillObj.answer : 0);
+            const rawOpts = drillObj.opts || drillObj.options || [];
+            if (rawOpts.length < 2) return false;
+            const rawIdx = (typeof drillObj.ans === 'number') ? drillObj.ans : (typeof drillObj.answer === 'number' ? drillObj.answer : 0);
+            const safeIdx = (rawIdx >= 0 && rawIdx < rawOpts.length) ? rawIdx : 0;
+            const tagged = rawOpts.map((opt, idx) => ({ opt, isCorrect: idx === safeIdx }));
+            for (let i = tagged.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = tagged[i];
+                tagged[i] = tagged[j];
+                tagged[j] = tmp;
+            }
+            const opts = tagged.map((t) => t.opt);
+            const cIdx = Math.max(0, tagged.findIndex((t) => t.isCorrect));
             return pushEx(Object.assign({
                 type: 'mcq_gap',
                 category: cat,
@@ -14261,14 +14286,23 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const titleText = document.getElementById('exam-track-title')?.textContent || 'Track Certification Exam';
 
         const exercises = currentExamQuestions.map((q, idx) => {
+            const rawOpts = Array.isArray(q.options) ? q.options : [];
+            const rawAns = (typeof q.answer === 'number' && q.answer >= 0 && q.answer < rawOpts.length) ? q.answer : 0;
+            const tagged = rawOpts.map((opt, oIdx) => ({ opt, isCorrect: oIdx === rawAns }));
+            for (let i = tagged.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = tagged[i];
+                tagged[i] = tagged[j];
+                tagged[j] = tmp;
+            }
             return {
                 type: 'mcq_gap',
                 category: `👑 Maratón de Certificación (${idx + 1}/${currentExamQuestions.length})`,
                 heading: q.q,
                 subtext: `Reactivo técnico de especialidad · ${q.readTitle || tagText}`,
                 prompt: q.q,
-                options: q.options || [],
-                correctIdx: q.answer,
+                options: tagged.map((t) => t.opt),
+                correctIdx: Math.max(0, tagged.findIndex((t) => t.isCorrect)),
                 hint: `Consulta la norma técnica relacionada en ${q.readTitle || tagText}`
             };
         });
