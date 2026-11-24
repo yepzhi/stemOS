@@ -550,6 +550,9 @@
         createAuditLog: function (institutionId, logData) {
             try {
                 const logs = JSON.parse(localStorage.getItem(STORAGE_KEY_AUDIT) || '[]');
+                const fbUser = (window.firebase && typeof window.firebase.auth === 'function')
+                    ? window.firebase.auth().currentUser
+                    : null;
                 const entry = {
                     id: 'audit-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 5),
                     institutionId: institutionId || 'tecnm-saltillo',
@@ -558,7 +561,8 @@
                     entityId: logData.entityId || null,
                     details: logData.details || '',
                     timestamp: new Date().toISOString(),
-                    actor: logData.actor || 'system'
+                    actor: logData.actor || (fbUser && (fbUser.email || fbUser.uid)) || 'system',
+                    actorUid: (fbUser && fbUser.uid) || (authUser && authUser.uid) || null
                 };
                 logs.unshift(entry);
                 localStorage.setItem(STORAGE_KEY_AUDIT, JSON.stringify(logs.slice(0, 200)));

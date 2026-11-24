@@ -2740,15 +2740,30 @@
             const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 
             let found = Object.values(DEMO_TEACHERS).find(t => t.email.toLowerCase() === email.toLowerCase());
-            const isDemoLogin = found && pass === 'stemOS-Teacher-2026';
+            const isDemoLogin = isLocal && found && pass === 'stemOS-Teacher-2026';
 
             if (!isDemoLogin && window.firebase && typeof window.firebase.auth === 'function') {
                 try {
                     const cred = await window.firebase.auth().signInWithEmailAndPassword(email, pass);
+                    const idToken = await cred.user.getIdToken();
+                    const roleRes = await fetch('/api/auth/verify-role', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
+                        body: JSON.stringify({ requestedRole: 'teacher' })
+                    });
+                    const roleData = await roleRes.json().catch(() => ({}));
+                    if (!roleRes.ok || !roleData.verified) {
+                        alert(roleData.error || 'Your account is not registered as institutional faculty.');
+                        await window.firebase.auth().signOut();
+                        return;
+                    }
                     found = found || {
                         id: cred.user.uid,
+                        uid: cred.user.uid,
                         name: cred.user.displayName || 'Faculty Instructor',
                         email: cred.user.email || email,
+                        role: roleData.role || 'teacher',
+                        institutionId: roleData.institutionId || 'tecnm-saltillo',
                         department: 'Engineering Department',
                         careerId: 'it-mecatronica',
                         careerName: 'Ingeniería Mecatrónica',
@@ -2760,8 +2775,8 @@
                         return;
                     }
                 }
-            } else if (!isDemoLogin && !isLocal) {
-                alert('Please sign in with verified institutional faculty credentials or select a sandbox demo profile.');
+            } else if (!isLocal) {
+                alert('Please sign in with verified institutional faculty credentials.');
                 return;
             }
 
@@ -2800,16 +2815,20 @@
                     const roleRes = await fetch('/api/auth/verify-role', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
-                        body: JSON.stringify({ uid: user.uid, email: user.email, requestedRole: 'teacher' })
+                        body: JSON.stringify({ requestedRole: 'teacher' })
                     });
-                    const roleData = await roleRes.json();
+                    const roleData = await roleRes.json().catch(() => ({}));
                     if (!roleRes.ok || !roleData.verified) {
                         alert(roleData.error || 'Your Google account is not registered as institutional faculty.');
                         await window.firebase.auth().signOut();
                         return;
                     }
                     if (roleData.institutionId) verifiedInstitutionId = roleData.institutionId;
-                } catch (_) {}
+                } catch (verifyErr) {
+                    alert('Could not verify faculty permissions with the server. Please try again.');
+                    await window.firebase.auth().signOut().catch(() => {});
+                    return;
+                }
 
                 const matchedDemo = Object.values(DEMO_TEACHERS).find(t => t.email.toLowerCase() === (user.email || '').toLowerCase());
                 state.auth = matchedDemo || {
@@ -2838,17 +2857,23 @@
         }
 
         function fillTeacherDemo(teacherId) {
+            const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+            if (!isLocal) {
+                alert('Demo presets are only available in local development.');
+                return;
+            }
             const t = DEMO_TEACHERS[teacherId] || DEMO_TEACHERS.t1;
             document.getElementById('login-email').value = t.email;
             document.getElementById('login-password').value = 'stemOS-Teacher-2026';
-            state.auth = t;
-            localStorage.setItem(STORAGE_KEY_TEACHER_AUTH, JSON.stringify(t));
         }
 
         function handleTeacherSignOut() {
             if (confirm('Sign out of Teacher & Faculty Portal?')) {
                 state.auth = null;
                 localStorage.removeItem(STORAGE_KEY_TEACHER_AUTH);
+                if (window.firebase && typeof window.firebase.auth === 'function') {
+                    window.firebase.auth().signOut().catch(() => {});
+                }
                 showView('login');
             }
         }
@@ -3056,10 +3081,24 @@
             const classObj = (state.auth.classes || []).find(c => c.id === state.activeClassId) || state.auth.classes[0];
             const roster = INITIAL_STUDENT_ROSTERS[state.activeClassId] || INITIAL_STUDENT_ROSTERS.c1;
             
+            const csvCell = (val) => {
+                let s = String(val ?? '');
+                if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+                return '"' + s.replace(/"/g, '""') + '"';
+            };
             let csv = '\uFEFF'; // UTF-8 BOM
             csv += 'Student Name,Student ID,Class,Progress (%),XP Earned,Modules Completed,Current Module,Last Active\n';
             roster.forEach(s => {
-                csv += `"${s.name}","${s.matricula}","${classObj ? classObj.name : 'Engineering Cohort'}",${s.progress},${s.xp},${s.modulesDone}/16,"${s.currentModule}","${s.lastActive}"\n`;
+                csv += [
+                    csvCell(s.name),
+                    csvCell(s.matricula),
+                    csvCell(classObj ? classObj.name : 'Engineering Cohort'),
+                    Number(s.progress) || 0,
+                    Number(s.xp) || 0,
+                    csvCell(`${s.modulesDone}/16`),
+                    csvCell(s.currentModule),
+                    csvCell(s.lastActive)
+                ].join(',') + '\n';
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

@@ -770,25 +770,7 @@
                     renderInvalidCard(data.error || 'La firma criptográfica no coincide o el folio no existe en el registro.', data.folio || params.folio);
                 }
             } catch (err) {
-                // Client-side fallback check if edge API is unreachable
-                if (params.folio) {
-                    const fallbackValid = /^(STEMOS|UTYP|UPMXL|UPBC|TECNM|CACEI)-[A-Z0-9-]{4,40}$/i.test(params.folio);
-                    if (fallbackValid) {
-                        renderValidCard({
-                            valid: true,
-                            folio: params.folio,
-                            recipientName: params.name || 'Estudiante stemOS Acreditado',
-                            matricula: params.matricula || '2026-STEM',
-                            cefrLevel: params.level || 'B2',
-                            accreditedHours: Number(params.hours) || 240,
-                            careerName: params.career || 'Ingeniería / Tecnología Nearshoring',
-                            issuedOn: params.issuedOn || new Date().toISOString(),
-                            proofValue: params.sig || 'ed25519-offline-verified-signature'
-                        });
-                        return;
-                    }
-                }
-                renderInvalidCard('No se pudo establecer conexión con el nodo de verificación en el borde.', err.message);
+                renderInvalidCard('No se pudo establecer conexión con el nodo de verificación criptográfica. La verificación requiere respuesta firmada del servidor.', err && err.message ? err.message : '');
             }
         }
 
@@ -835,6 +817,15 @@
             `;
         }
 
+        function escHtml(val) {
+            return String(val ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         function renderValidCard(data, rawJson) {
             const container = document.getElementById('result-container');
             container.style.display = 'block';
@@ -847,6 +838,7 @@
             const folio = data.folio || 'STEMOS-OB3-VERIFIED';
             const dateStr = data.issuedOn ? new Date(data.issuedOn).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) : new Date().toLocaleDateString('es-MX');
             const proofVal = data.proofValue || data.sig || (rawJson && rawJson.proof && rawJson.proof.proofValue) || 'ed25519-verified-signature';
+            const jsonText = rawJson ? JSON.stringify(rawJson, null, 2) : JSON.stringify(data, null, 2);
 
             container.innerHTML = `
                 <div class="certificate-card">
@@ -855,22 +847,22 @@
                             <div class="cert-status-badge">
                                 <i class="fa-solid fa-circle-check"></i> Firma Criptográfica Verificada (W3C Open Badges 3.0)
                             </div>
-                            <h2 class="cert-student-name" style="margin-top:12px;">${name}</h2>
+                            <h2 class="cert-student-name" style="margin-top:12px;">${escHtml(name)}</h2>
                             <div class="cert-student-sub">
-                                <span><i class="fa-solid fa-id-card"></i> Matrícula: <strong>${matricula}</strong></span>
-                                <span><i class="fa-solid fa-graduation-cap"></i> ${career}</span>
+                                <span><i class="fa-solid fa-id-card"></i> Matrícula: <strong>${escHtml(matricula)}</strong></span>
+                                <span><i class="fa-solid fa-graduation-cap"></i> ${escHtml(career)}</span>
                             </div>
                         </div>
                         <div class="cert-level-stamp">
                             <span>MCER</span>
-                            <span>${level}</span>
+                            <span>${escHtml(level)}</span>
                         </div>
                     </div>
 
                     <div class="cert-grid">
                         <div>
                             <div class="cert-field-label">Horas de Práctica</div>
-                            <div class="cert-field-val">${hours}.0 Horas Curriculares</div>
+                            <div class="cert-field-val">${escHtml(hours)}.0 Horas Curriculares</div>
                         </div>
                         <div>
                             <div class="cert-field-label">Estándar Técnico</div>
@@ -878,11 +870,11 @@
                         </div>
                         <div>
                             <div class="cert-field-label">Fecha de Emisión</div>
-                            <div class="cert-field-val">${dateStr}</div>
+                            <div class="cert-field-val">${escHtml(dateStr)}</div>
                         </div>
                         <div>
                             <div class="cert-field-label">Folio Digital stemOS</div>
-                            <div class="cert-field-val mono">${folio}</div>
+                            <div class="cert-field-val mono">${escHtml(folio)}</div>
                         </div>
                     </div>
 
@@ -890,26 +882,34 @@
                         <i class="fa-solid fa-fingerprint"></i> Prueba Criptográfica de Integridad (Ed25519 / HMAC-SHA256)
                     </div>
                     <div class="cert-proof-box">
-                        ${proofVal}
+                        ${escHtml(proofVal)}
                     </div>
 
                     <div class="cert-actions">
-                        <button type="button" class="btn-cert-action" onclick="copyVerificationLink('${folio}')">
+                        <button type="button" class="btn-cert-action" id="btn-copy-verify-link">
                             <i class="fa-solid fa-link"></i> Copiar Enlace
                         </button>
-                        <button type="button" class="btn-cert-action" onclick="toggleRawJson()">
+                        <button type="button" class="btn-cert-action" id="btn-toggle-raw-json">
                             <i class="fa-solid fa-code"></i> Ver JSON-LD
                         </button>
-                        <button type="button" class="btn-cert-action btn-cert-primary" onclick="window.print()">
+                        <button type="button" class="btn-cert-action btn-cert-primary" id="btn-print-cert">
                             <i class="fa-solid fa-print"></i> Imprimir Constancia Oficial
                         </button>
                     </div>
 
                     <div id="raw-json-viewer" style="display:none; margin-top:16px;">
-                        <pre style="background:#050b18; padding:16px; border-radius:10px; font-family:var(--font-mono); font-size:0.75rem; color:#38bdf8; overflow-x:auto;">${rawJson ? JSON.stringify(rawJson, null, 2) : JSON.stringify(data, null, 2)}</pre>
+                        <pre id="raw-json-pre" style="background:#050b18; padding:16px; border-radius:10px; font-family:var(--font-mono); font-size:0.75rem; color:#38bdf8; overflow-x:auto;"></pre>
                     </div>
                 </div>
             `;
+            const preEl = document.getElementById('raw-json-pre');
+            if (preEl) preEl.textContent = jsonText;
+            const copyBtn = document.getElementById('btn-copy-verify-link');
+            if (copyBtn) copyBtn.addEventListener('click', () => copyVerificationLink(folio));
+            const toggleBtn = document.getElementById('btn-toggle-raw-json');
+            if (toggleBtn) toggleBtn.addEventListener('click', toggleRawJson);
+            const printBtn = document.getElementById('btn-print-cert');
+            if (printBtn) printBtn.addEventListener('click', () => window.print());
         }
 
         function renderInvalidCard(message, detail) {
@@ -921,8 +921,8 @@
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <h2 style="font-family:var(--font-heading); color:#ffffff; font-size:1.5rem; margin-bottom:8px;">Credencial No Verificada</h2>
-                    <p style="color:#fca5a5; max-width:540px; margin:0 auto 16px; line-height:1.5;">${message}</p>
-                    ${detail ? `<div style="font-family:var(--font-mono); font-size:0.8rem; color:#94a3b8; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px; display:inline-block;">Ref: ${detail}</div>` : ''}
+                    <p style="color:#fca5a5; max-width:540px; margin:0 auto 16px; line-height:1.5;">${escHtml(message)}</p>
+                    ${detail ? `<div style="font-family:var(--font-mono); font-size:0.8rem; color:#94a3b8; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:8px; display:inline-block;">Ref: ${escHtml(detail)}</div>` : ''}
                 </div>
             `;
         }

@@ -8,17 +8,17 @@ service cloud.firestore {
     //
     // - /careers/{careerId}: Curricular catalog (read-only public, write for admin)
     // - /career_paths/{careerId}: Deterministic 16-station paths (read-only public, write for admin)
-    // - /placement_tests/{testId}: Diagnostic placement results (owner/teacher/admin read, authenticated create, admin update/delete)
-    // - /diagnostic_passports/{passportId}: Accredited CEFR diagnostic passports (authenticated read/create, admin update/delete)
-    // - /users/{userId}: User profiles with RBAC role/admin field lockdown
-    // - /institutions/{institutionId}: Multi-tenant institution metadata & subcollections:
+    // - /placement_tests/{testId}: Diagnostic placement results (owner / same-institution teacher / admin read, authenticated create, admin update/delete)
+    // - /diagnostic_passports/{passportId}: Accredited CEFR diagnostic passports (owner / same-institution teacher / admin read, owner create with schema validation, admin update/delete)
+    // - /users/{userId}: User profiles with RBAC role/admin field lockdown (owner / same-institution teacher / admin read)
+    // - /institutions/{institutionId}: Multi-tenant institution metadata (institution members & admin read) & subcollections:
     //   - /placement_tests/{testId}: Institutional diagnostic records
-    //   - /classes/{classId} & /submissions/{submissionId}: Cohort management & Hito submissions
+    //   - /classes/{classId} & /submissions/{submissionId}: Cohort management (teacher ownership enforced on create, bounded +1 studentsCount increment) & Hito submissions (no pre-graded fields)
     //     - /curriculum_config/{trackKey}: Cohort 50m sequence ordering, visibility & unlocks (institution read, class owner/admin write)
     //     - /assignments/{assignmentId}: Cohort assignments & due metadata (institution read, class owner/admin write)
     //   - /teachers/{teacherId}: Faculty roster scoped to institution
-    //   - /students/{studentId}, /station_progress/{stationId}, /mcer_progress/{unitId}: Student portfolios & progress
-    //   - /audit_logs/{logId}: Immutable ISO 9001:2015 audit trail
+    //   - /students/{studentId}, /station_progress/{stationId}, /mcer_progress/{unitId}: Institution-scoped student portfolios & validated progress
+    //   - /audit_logs/{logId}: Immutable ISO 9001:2015 audit trail (institution-scoped, actor-bound, size-bounded)
     // ===============================================================
 
     // Helper functions for authentication & role verification
@@ -47,7 +47,10 @@ service cloud.firestore {
     }
 
     function belongsToInstitution(institutionId) {
-      return isAuthenticated() && (request.auth.token.get('institutionId', '') == institutionId || isAdmin());
+      return isAuthenticated() &&
+             institutionId is string &&
+             institutionId.size() > 0 &&
+             (request.auth.token.get('institutionId', '') == institutionId || isAdmin());
     }
 
     // Check if the authenticated teacher owns the parent class document
@@ -133,6 +136,130 @@ service cloud.firestore {
              (!('submissions' in data) || (data.submissions is map && data.submissions.size() <= 200));
     }
 
+    // Domain Validator: Accredited CEFR diagnostic passport
+    function isValidDiagnosticPassport(data) {
+      return data.keys().hasOnly([
+               'uid', 'institutionId', 'folio', 'level', 'cefrLevel',
+               'score', 'percentage', 'sectionScores', 'student',
+               'issuedAt', 'verifiedAt', 'createdAt', 'waived',
+               'fastTrackEligible', 'recommendedTrackId'
+             ]) &&
+             'uid' in data &&
+             data.uid is string && data.uid.size() > 0 && data.uid.size() <= 128 &&
+             isValidOptionalStringBound(data, 'institutionId', 128) &&
+             isValidOptionalStringBound(data, 'folio', 128) &&
+             (!('level' in data) || (data.level is string && data.level in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])) &&
+             (!('cefrLevel' in data) || (data.cefrLevel is string && data.cefrLevel in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])) &&
+             (!('score' in data) || (data.score is number && data.score >= 0 && data.score <= 1000)) &&
+             (!('percentage' in data) || (data.percentage is number && data.percentage >= 0 && data.percentage <= 100)) &&
+             (!('sectionScores' in data) || (data.sectionScores is map && data.sectionScores.size() <= 20)) &&
+             (!('student' in data) || (data.student is map && data.student.size() <= 30)) &&
+             isValidOptionalTimestampOrIso(data, 'issuedAt') &&
+             isValidOptionalTimestampOrIso(data, 'verifiedAt') &&
+             isValidOptionalTimestampOrIso(data, 'createdAt') &&
+             (!('waived' in data) || data.waived is bool) &&
+             (!('fastTrackEligible' in data) || data.fastTrackEligible is bool) &&
+             isValidOptionalStringBound(data, 'recommendedTrackId', 100);
+    }
+
+    // Domain Validator: Student submission create (forbids pre-populating graded fields)
+    function isValidSubmissionCreate(data, institutionId) {
+      return data.keys().size() <= 30 &&
+             !data.keys().hasAny(['score', 'grade', 'gradedAt', 'gradedBy', 'teacherFeedback', 'xpAwarded']) &&
+             data.get('studentId', '') == request.auth.uid &&
+             data.get('institutionId', '') == institutionId &&
+             (!('status' in data) || (data.status is string && data.status in ['submitted', 'pending'])) &&
+             isValidOptionalStringBound(data, 'assignmentId', 128) &&
+             isValidOptionalStringBound(data, 'classId', 128) &&
+             isValidOptionalStringBound(data, 'studentName', 150) &&
+             isValidOptionalStringBound(data, 'content', 10000) &&
+             isValidOptionalStringBound(data, 'notes', 2000) &&
+             (!('answers' in data) || ((data.answers is map && data.answers.size() <= 100) || (data.answers is list && data.answers.size() <= 100))) &&
+             isValidOptionalTimestampOrIso(data, 'submittedAt') &&
+             isValidOptionalTimestampOrIso(data, 'createdAt') &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt');
+    }
+
+    // Domain Validator: Teacher/admin grading update on submission
+    function isValidSubmissionUpdate(data, existing, institutionId) {
+      return data.keys().size() <= 35 &&
+             data.get('studentId', '') == existing.get('studentId', '') &&
+             data.get('institutionId', '') == institutionId &&
+             (!('score' in data) || (data.score is number && data.score >= 0 && data.score <= 1000)) &&
+             (!('xpAwarded' in data) || (data.xpAwarded is number && data.xpAwarded >= 0 && data.xpAwarded <= 10000)) &&
+             isValidOptionalStringBound(data, 'status', 40) &&
+             isValidOptionalStringBound(data, 'teacherFeedback', 4000) &&
+             isValidOptionalStringBound(data, 'gradedBy', 128) &&
+             isValidOptionalTimestampOrIso(data, 'gradedAt') &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt');
+    }
+
+    // Domain Validator: Student station progress document
+    function isValidStationProgress(data) {
+      return data.keys().hasOnly([
+               'stationId', 'careerId', 'trackId', 'title', 'status',
+               'score', 'progress', 'xpEarned', 'hoursCompleted', 'attempts',
+               'passed', 'completed', 'completedAt', 'startedAt', 'updatedAt',
+               'syncedAt', 'notes'
+             ]) &&
+             isValidOptionalStringBound(data, 'stationId', 128) &&
+             isValidOptionalStringBound(data, 'careerId', 128) &&
+             isValidOptionalStringBound(data, 'trackId', 128) &&
+             isValidOptionalStringBound(data, 'title', 200) &&
+             isValidOptionalStringBound(data, 'status', 40) &&
+             (!('score' in data) || (data.score is number && data.score >= 0 && data.score <= 1000)) &&
+             (!('progress' in data) || (data.progress is number && data.progress >= 0 && data.progress <= 100)) &&
+             (!('xpEarned' in data) || (data.xpEarned is number && data.xpEarned >= 0 && data.xpEarned <= 10000)) &&
+             (!('hoursCompleted' in data) || (data.hoursCompleted is number && data.hoursCompleted >= 0 && data.hoursCompleted <= 500)) &&
+             (!('attempts' in data) || (data.attempts is int && data.attempts >= 0 && data.attempts <= 1000)) &&
+             (!('passed' in data) || data.passed is bool) &&
+             (!('completed' in data) || data.completed is bool) &&
+             isValidOptionalTimestampOrIso(data, 'completedAt') &&
+             isValidOptionalTimestampOrIso(data, 'startedAt') &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt') &&
+             isValidOptionalTimestampOrIso(data, 'syncedAt') &&
+             isValidOptionalStringBound(data, 'notes', 1000);
+    }
+
+    // Domain Validator: Student MCER unit progress document
+    function isValidMcerProgress(data) {
+      return data.keys().hasOnly([
+               'unitId', 'unitTitle', 'cefr', 'level', 'score', 'passed',
+               'xpEarned', 'progress', 'attempts', 'completedAt', 'updatedAt', 'syncedAt'
+             ]) &&
+             isValidOptionalStringBound(data, 'unitId', 128) &&
+             isValidOptionalStringBound(data, 'unitTitle', 200) &&
+             (!('cefr' in data) || (data.cefr is string && data.cefr in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])) &&
+             isValidOptionalStringBound(data, 'level', 20) &&
+             (!('score' in data) || (data.score is number && data.score >= 0 && data.score <= 1000)) &&
+             (!('passed' in data) || data.passed is bool) &&
+             (!('xpEarned' in data) || (data.xpEarned is number && data.xpEarned >= 0 && data.xpEarned <= 10000)) &&
+             (!('progress' in data) || (data.progress is number && data.progress >= 0 && data.progress <= 100)) &&
+             (!('attempts' in data) || (data.attempts is int && data.attempts >= 0 && data.attempts <= 1000)) &&
+             isValidOptionalTimestampOrIso(data, 'completedAt') &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt') &&
+             isValidOptionalTimestampOrIso(data, 'syncedAt');
+    }
+
+    // Domain Validator: Immutable ISO 9001:2015 audit log entry
+    function isValidAuditLog(data, institutionId) {
+      return data.keys().hasOnly([
+               'id', 'institutionId', 'action', 'entity', 'entityId',
+               'details', 'timestamp', 'actor', 'actorUid', 'metadata'
+             ]) &&
+             data.get('institutionId', institutionId) == institutionId &&
+             (data.get('actorUid', '') == request.auth.uid || data.get('actor', '') == request.auth.uid) &&
+             isValidOptionalStringBound(data, 'id', 128) &&
+             'action' in data && data.action is string && data.action.size() > 0 && data.action.size() <= 80 &&
+             isValidOptionalStringBound(data, 'entity', 64) &&
+             (!('entityId' in data) || data.entityId == null || (data.entityId is string && data.entityId.size() <= 128)) &&
+             isValidOptionalStringBound(data, 'details', 1000) &&
+             isValidOptionalTimestampOrIso(data, 'timestamp') &&
+             isValidOptionalStringBound(data, 'actor', 128) &&
+             isValidOptionalStringBound(data, 'actorUid', 128) &&
+             (!('metadata' in data) || (data.metadata is map && data.metadata.size() <= 20));
+    }
+
     // Public / Curricular Catalogs (Read-only for all, write for admin)
     match /careers/{careerId} {
       allow read: if true;
@@ -148,18 +275,28 @@ service cloud.firestore {
     match /placement_tests/{testId} {
       allow create: if isAuthenticated() &&
                        (!('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid);
-      allow read: if isAuthenticated() &&
-                     (resource.data.get('uid', '') == request.auth.uid || isTeacher() || isAdmin());
+      allow read: if isAdmin() ||
+                     (isAuthenticated() && resource.data.get('uid', '') == request.auth.uid) ||
+                     (isTeacher() && 'institutionId' in resource.data && belongsToInstitution(resource.data.institutionId));
       allow update, delete: if isAdmin();
     }
 
     match /diagnostic_passports/{passportId} {
-      allow create, read: if isAuthenticated();
-      allow update, delete: if isAdmin();
+      allow read: if isAdmin() ||
+                     (isAuthenticated() && resource.data.get('uid', '') == request.auth.uid) ||
+                     (isTeacher() && 'institutionId' in resource.data && belongsToInstitution(resource.data.institutionId));
+      allow create: if isAuthenticated() &&
+                       request.resource.data.get('uid', '') == request.auth.uid &&
+                       (!('institutionId' in request.resource.data) || belongsToInstitution(request.resource.data.institutionId)) &&
+                       isValidDiagnosticPassport(request.resource.data);
+      allow update: if isAdmin() && isValidDiagnosticPassport(request.resource.data);
+      allow delete: if isAdmin();
     }
 
     match /users/{userId} {
-      allow read: if isUser(userId) || isTeacher() || isAdmin();
+      allow read: if isUser(userId) ||
+                     (isTeacher() && 'institutionId' in resource.data && belongsToInstitution(resource.data.institutionId)) ||
+                     isAdmin();
       allow create: if isUser(userId) &&
                        (!('role' in request.resource.data) || request.resource.data.role == 'student') &&
                        (!('admin' in request.resource.data) || request.resource.data.admin == false);
@@ -171,7 +308,7 @@ service cloud.firestore {
 
     // Multi-tenant Institution Scope
     match /institutions/{institutionId} {
-      allow read: if belongsToInstitution(institutionId) || isAuthenticated();
+      allow read: if isAdmin() || belongsToInstitution(institutionId);
       allow write: if isAdmin() && belongsToInstitution(institutionId);
 
       // Institutional Placement Tests & Baseline Diagnostics
@@ -187,23 +324,33 @@ service cloud.firestore {
       // Classes & Cohorts
       match /classes/{classId} {
         allow read: if belongsToInstitution(institutionId);
-        allow create: if isTeacher() && belongsToInstitution(institutionId);
-        allow update: if (isTeacher() && belongsToInstitution(institutionId) && (resource.data.teacherId == request.auth.uid || isAdmin())) ||
-                         (isAuthenticated() &&
+        allow create: if belongsToInstitution(institutionId) &&
+                         (isAdmin() || (isTeacher() && request.resource.data.get('teacherId', '') == request.auth.uid)) &&
+                         request.resource.data.get('institutionId', institutionId) == institutionId &&
+                         request.resource.data.keys().size() <= 40;
+        allow update: if (belongsToInstitution(institutionId) &&
+                          (isAdmin() ||
+                           (isTeacher() &&
+                            resource.data.get('teacherId', '') == request.auth.uid &&
+                            request.resource.data.get('teacherId', '') == resource.data.get('teacherId', '') &&
+                            request.resource.data.get('institutionId', institutionId) == institutionId))) ||
+                         (belongsToInstitution(institutionId) &&
                           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['studentsCount', 'updatedAt']) &&
-                          request.resource.data.studentsCount == resource.data.studentsCount + 1);
+                          request.resource.data.studentsCount is int &&
+                          resource.data.get('studentsCount', 0) is int &&
+                          request.resource.data.studentsCount == resource.data.get('studentsCount', 0) + 1 &&
+                          isValidOptionalTimestampOrIso(request.resource.data, 'updatedAt'));
         allow delete: if isAdmin() && belongsToInstitution(institutionId);
 
         // Submissions & Hito Milestones
         match /submissions/{submissionId} {
-          allow read: if isUser(resource.data.studentId) ||
+          allow read: if (isUser(resource.data.get('studentId', '')) && belongsToInstitution(institutionId)) ||
                          (isTeacher() && belongsToInstitution(institutionId)) ||
                          (isAdmin() && belongsToInstitution(institutionId));
-          allow create: if isAuthenticated() &&
-                           request.resource.data.studentId == request.auth.uid &&
-                           request.resource.data.institutionId == institutionId;
-          allow update: if (isTeacher() && belongsToInstitution(institutionId)) ||
-                           (isAdmin() && belongsToInstitution(institutionId));
+          allow create: if belongsToInstitution(institutionId) &&
+                           isValidSubmissionCreate(request.resource.data, institutionId);
+          allow update: if ((isTeacher() || isAdmin()) && belongsToInstitution(institutionId)) &&
+                           isValidSubmissionUpdate(request.resource.data, resource.data, institutionId);
           allow delete: if isAdmin() && belongsToInstitution(institutionId);
         }
 
@@ -241,44 +388,58 @@ service cloud.firestore {
 
       // Students & Learning Portfolios
       match /students/{studentId} {
-        allow read: if isUser(studentId) ||
-                       (isStudent() && resource.data.get('uid', '') == request.auth.uid) ||
-                       (isTeacher() && belongsToInstitution(institutionId)) ||
-                       (isAdmin() && belongsToInstitution(institutionId));
-        allow create: if ((isUser(studentId) || (isStudent() && request.resource.data.get('uid', '') == request.auth.uid)) &&
-                          (!('role' in request.resource.data) || request.resource.data.role == 'student')) ||
-                         ((isTeacher() || isAdmin()) && belongsToInstitution(institutionId));
-        allow update: if ((isUser(studentId) || (isStudent() && resource.data.get('uid', '') == request.auth.uid && request.resource.data.get('uid', '') == request.auth.uid)) &&
-                          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'admin', 'institutionId'])) ||
-                         ((isTeacher() || isAdmin()) && belongsToInstitution(institutionId));
+        allow read: if belongsToInstitution(institutionId) &&
+                       (isUser(studentId) ||
+                        (isStudent() && resource.data.get('uid', '') == request.auth.uid) ||
+                        isTeacher() ||
+                        isAdmin());
+        allow create: if belongsToInstitution(institutionId) &&
+                         (!('institutionId' in request.resource.data) || request.resource.data.institutionId == institutionId) &&
+                         (
+                           ((isUser(studentId) || (isStudent() && request.resource.data.get('uid', '') == request.auth.uid)) &&
+                            (!('role' in request.resource.data) || request.resource.data.role == 'student') &&
+                            (!('admin' in request.resource.data) || request.resource.data.admin == false)) ||
+                           (isTeacher() &&
+                            (!('role' in request.resource.data) || request.resource.data.role == 'student') &&
+                            (!('admin' in request.resource.data) || request.resource.data.admin == false)) ||
+                           isAdmin()
+                         );
+        allow update: if belongsToInstitution(institutionId) &&
+                         (
+                           ((isUser(studentId) || (isStudent() && resource.data.get('uid', '') == request.auth.uid && request.resource.data.get('uid', '') == request.auth.uid)) &&
+                            !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'admin', 'institutionId'])) ||
+                           (isTeacher() &&
+                            !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'admin', 'institutionId'])) ||
+                           isAdmin()
+                         );
         allow delete: if isAdmin() && belongsToInstitution(institutionId);
 
         // Student station progress subcollection
         match /station_progress/{stationId} {
-          allow read: if isUser(studentId) ||
-                         (isTeacher() && belongsToInstitution(institutionId)) ||
-                         (isAdmin() && belongsToInstitution(institutionId));
-          allow write: if isUser(studentId) ||
-                          (isTeacher() && belongsToInstitution(institutionId)) ||
-                          (isAdmin() && belongsToInstitution(institutionId));
+          allow read: if belongsToInstitution(institutionId) &&
+                         (isUser(studentId) || isTeacher() || isAdmin());
+          allow create, update: if belongsToInstitution(institutionId) &&
+                                   (isUser(studentId) || isTeacher() || isAdmin()) &&
+                                   isValidStationProgress(request.resource.data);
+          allow delete: if isAdmin() && belongsToInstitution(institutionId);
         }
 
         // Student MCER unit progress subcollection
         match /mcer_progress/{unitId} {
-          allow read: if isUser(studentId) ||
-                         (isTeacher() && belongsToInstitution(institutionId)) ||
-                         (isAdmin() && belongsToInstitution(institutionId));
-          allow write: if isUser(studentId) ||
-                          (isTeacher() && belongsToInstitution(institutionId)) ||
-                          (isAdmin() && belongsToInstitution(institutionId));
+          allow read: if belongsToInstitution(institutionId) &&
+                         (isUser(studentId) || isTeacher() || isAdmin());
+          allow create, update: if belongsToInstitution(institutionId) &&
+                                   (isUser(studentId) || isTeacher() || isAdmin()) &&
+                                   isValidMcerProgress(request.resource.data);
+          allow delete: if isAdmin() && belongsToInstitution(institutionId);
         }
       }
 
       // Audit Logs & ISO 9001 Compliance Records
       match /audit_logs/{logId} {
         allow read: if (isTeacher() || isAdmin()) && belongsToInstitution(institutionId);
-        allow create: if isAuthenticated() &&
-                         request.resource.data.get('institutionId', institutionId) == institutionId;
+        allow create: if belongsToInstitution(institutionId) &&
+                         isValidAuditLog(request.resource.data, institutionId);
         allow update, delete: if false; // Immutable audit log
       }
     }

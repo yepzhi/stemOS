@@ -462,6 +462,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Never cache dynamic/authenticated API responses in the Service Worker
+  if (url.pathname.startsWith('/api/')) {
+    return;
+  }
+
   // TIER 2: Same-Origin Network-First with Instant Cache Fallback (HTML Documents & Dynamic Scripts)
   event.respondWith(
     fetch(event.request)

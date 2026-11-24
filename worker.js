@@ -46,6 +46,73 @@ const TEACHER_EMAIL_ALLOWLIST = new Set([
   'teacher@stemos.org'
 ]);
 
+const DEFAULT_FIREBASE_PROJECT_ID = 'stemos-org';
+let FIREBASE_JWKS_CACHE = { keys: null, fetchedAt: 0 };
+
+function base64UrlToUint8Array(str) {
+  const padded = str.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - (str.length % 4)) % 4);
+  const bin = atob(padded);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function getFirebaseJwks(forceRefresh = false) {
+  const now = Date.now();
+  if (!forceRefresh && FIREBASE_JWKS_CACHE.keys && (now - FIREBASE_JWKS_CACHE.fetchedAt < 3600000)) {
+    return FIREBASE_JWKS_CACHE.keys;
+  }
+  const res = await fetch('https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com');
+  if (!res.ok) throw new Error('Failed to fetch Firebase JWKS');
+  const data = await res.json();
+  FIREBASE_JWKS_CACHE = { keys: data.keys || [], fetchedAt: now };
+  return FIREBASE_JWKS_CACHE.keys;
+}
+
+async function verifyFirebaseIdToken(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  if (!authHeader.startsWith('Bearer ')) return null;
+  const token = authHeader.slice(7).trim();
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+
+  try {
+    const header = JSON.parse(new TextDecoder().decode(base64UrlToUint8Array(parts[0])));
+    const payload = JSON.parse(new TextDecoder().decode(base64UrlToUint8Array(parts[1])));
+    if (header.alg !== 'RS256' || !header.kid) return null;
+
+    const projectId = (env && env.FIREBASE_PROJECT_ID) || DEFAULT_FIREBASE_PROJECT_ID;
+    const nowSec = Math.floor(Date.now() / 1000);
+    if (!payload.sub || typeof payload.sub !== 'string') return null;
+    if (payload.aud !== projectId) return null;
+    if (payload.iss !== `https://securetoken.google.com/${projectId}`) return null;
+    if (typeof payload.exp !== 'number' || payload.exp <= nowSec) return null;
+    if (typeof payload.iat !== 'number' || payload.iat > nowSec + 300) return null;
+
+    let keys = await getFirebaseJwks(false);
+    let jwk = keys.find(k => k.kid === header.kid);
+    if (!jwk) {
+      keys = await getFirebaseJwks(true);
+      jwk = keys.find(k => k.kid === header.kid);
+    }
+    if (!jwk) return null;
+
+    const cryptoKey = await crypto.subtle.importKey(
+      'jwk',
+      jwk,
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+      false,
+      ['verify']
+    );
+    const sigBytes = base64UrlToUint8Array(parts[2]);
+    const signingInput = new TextEncoder().encode(`${parts[0]}.${parts[1]}`);
+    const valid = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', cryptoKey, sigBytes, signingInput);
+    return valid ? payload : null;
+  } catch (_) {
+    return null;
+  }
+}
+
 function corsHeaders(origin) {
   const allowedOrigin = (origin && (/^https:\/\/([a-z0-9-]+\.)?stemos\.org$/i.test(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)))
     ? origin
@@ -426,9 +493,20 @@ async function handleTtsProxy(request, env, origin, clientIp) {
   const cacheKey = new Request(cacheKeyUrl, { method: 'GET' });
   const cache = caches.default;
 
+  const wrapTtsResponse = (buf, contentType) => new Response(buf, {
+    status: 200,
+    headers: {
+      ...corsHeaders(origin),
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=604800',
+      'Vary': 'Origin'
+    }
+  });
+
   const cachedResponse = await cache.match(cacheKey);
   if (cachedResponse) {
-    return cachedResponse;
+    const buf = await cachedResponse.arrayBuffer();
+    return wrapTtsResponse(buf, cachedResponse.headers.get('Content-Type') || 'audio/mpeg');
   }
 
   const ttsGateway = env.TTS_GATEWAY_URL || '';
@@ -441,16 +519,13 @@ async function handleTtsProxy(request, env, origin, clientIp) {
       });
       if (upstreamRes.ok) {
         const audioBuffer = await upstreamRes.arrayBuffer();
-        const response = new Response(audioBuffer, {
+        const ct = upstreamRes.headers.get('Content-Type') || 'audio/wav';
+        const cacheable = new Response(audioBuffer, {
           status: 200,
-          headers: {
-            'Content-Type': upstreamRes.headers.get('Content-Type') || 'audio/wav',
-            'Cache-Control': 'public, max-age=604800, s-maxage=604800',
-            ...corsHeaders(origin)
-          }
+          headers: { 'Content-Type': ct, 'Cache-Control': 'public, max-age=604800, s-maxage=604800' }
         });
-        await cache.put(cacheKey, response.clone());
-        return response;
+        await cache.put(cacheKey, cacheable);
+        return wrapTtsResponse(audioBuffer, ct);
       }
     } catch (_) {}
   }
@@ -466,16 +541,12 @@ async function handleTtsProxy(request, env, origin, clientIp) {
     if (neuralRes.ok) {
       const audioBuffer = await neuralRes.arrayBuffer();
       if (audioBuffer && audioBuffer.byteLength > 200) {
-        const response = new Response(audioBuffer, {
+        const cacheable = new Response(audioBuffer, {
           status: 200,
-          headers: {
-            'Content-Type': 'audio/mpeg',
-            'Cache-Control': 'public, max-age=604800, s-maxage=604800',
-            ...corsHeaders(origin)
-          }
+          headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'public, max-age=604800, s-maxage=604800' }
         });
-        await cache.put(cacheKey, response.clone());
-        return response;
+        await cache.put(cacheKey, cacheable);
+        return wrapTtsResponse(audioBuffer, 'audio/mpeg');
       }
     }
   } catch (_) {}
@@ -500,32 +571,34 @@ async function handleVerifyRole(request, env, origin, clientIp) {
     return jsonResponse({ error: 'Too many role verification requests' }, 429, origin);
   }
 
-  let body;
+  const verifiedToken = await verifyFirebaseIdToken(request, env);
+  if (!verifiedToken || !verifiedToken.email) {
+    return jsonResponse({ verified: false, error: 'Valid Firebase ID token is required' }, 401, origin);
+  }
+  if (verifiedToken.email_verified !== true) {
+    return jsonResponse({ verified: false, error: 'Verified email address is required' }, 403, origin);
+  }
+
+  let body = {};
   try {
     body = await request.json();
-  } catch (_) {
-    return jsonResponse({ error: 'Invalid JSON body' }, 400, origin);
-  }
+  } catch (_) {}
 
-  const email = String(body.email || '').trim().toLowerCase();
+  const email = String(verifiedToken.email).trim().toLowerCase();
   const requestedRole = String(body.requestedRole || 'teacher').trim().toLowerCase();
-  const uid = String(body.uid || '').trim().slice(0, 128);
-
-  if (!email || !email.includes('@')) {
-    return jsonResponse({ verified: false, error: 'Valid institutional email is required' }, 400, origin);
-  }
+  const uid = String(verifiedToken.sub).trim().slice(0, 128);
 
   const domain = email.split('@')[1] || '';
   const matchedInst = INSTITUTIONAL_DOMAINS[domain] ||
-    (domain.endsWith('.tecnm.mx') ? INSTITUTIONAL_DOMAINS['tecnm.mx'] : null) ||
-    (domain.endsWith('.edu.mx') ? { institutionId: 'tecnm-saltillo', institutionName: 'Institución Educativa (.edu.mx)', system: 'it' } : null);
+    (domain.endsWith('.tecnm.mx') ? INSTITUTIONAL_DOMAINS['tecnm.mx'] : null);
 
-  const isExplicitAdmin = ADMIN_EMAIL_ALLOWLIST.has(email) ||
-    (env.ADMIN_EMAILS && env.ADMIN_EMAILS.toLowerCase().split(',').map(s => s.trim()).includes(email));
-  const isExplicitTeacher = TEACHER_EMAIL_ALLOWLIST.has(email) || isExplicitAdmin || Boolean(matchedInst);
+  const envAdmins = (env.ADMIN_EMAILS || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+  const envTeachers = (env.TEACHER_EMAILS || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+  const isExplicitAdmin = ADMIN_EMAIL_ALLOWLIST.has(email) || envAdmins.includes(email) || verifiedToken.role === 'admin' || verifiedToken.admin === true;
+  const isExplicitTeacher = TEACHER_EMAIL_ALLOWLIST.has(email) || envTeachers.includes(email) || isExplicitAdmin || verifiedToken.role === 'teacher' || Boolean(matchedInst);
 
   if (requestedRole === 'admin') {
-    if (!isExplicitAdmin && !email.startsWith('director@') && !email.startsWith('coordinacion@') && !email.startsWith('rectoria@')) {
+    if (!isExplicitAdmin) {
       return jsonResponse({
         verified: false,
         role: 'student',
@@ -547,7 +620,7 @@ async function handleVerifyRole(request, env, origin, clientIp) {
     return jsonResponse({
       verified: false,
       role: 'student',
-      error: 'Faculty Portal requires a verified institutional email (.edu.mx, .tecnm.mx, utyp.edu.mx, uttijuana.edu.mx) or allowlisted instructor account.'
+      error: 'Faculty Portal requires an allowlisted institutional faculty account.'
     }, 403, origin);
   }
 
@@ -575,6 +648,16 @@ async function handleSignCredential(request, env, origin, clientIp) {
     return jsonResponse({ error: 'Rate limit exceeded for credential signing' }, 429, origin);
   }
 
+  const verifiedToken = await verifyFirebaseIdToken(request, env);
+  if (!verifiedToken) {
+    return jsonResponse({ error: 'Authentication required to sign credentials' }, 401, origin);
+  }
+
+  const signingSecret = env.CREDENTIAL_SIGNING_SECRET || env.WEBCERT_SERVER_SECRET;
+  if (!signingSecret) {
+    return jsonResponse({ error: 'Credential signing service is not configured' }, 503, origin);
+  }
+
   let body;
   try {
     body = await request.json();
@@ -592,7 +675,6 @@ async function handleSignCredential(request, env, origin, clientIp) {
 
   const canonicalPayload = `${folio}|${recipientName}|${matricula}|${cefrLevel}|${accreditedHours}|${careerName}|${issuedOn}`;
   const payloadHash = await sha256Hex(canonicalPayload);
-  const signingSecret = env.CREDENTIAL_SIGNING_SECRET || env.WEBCERT_SERVER_SECRET || 'stemos_ob3_edge_integrity_v6_9';
   const proofValue = await hmacSha256Hex(signingSecret, canonicalPayload);
 
   const credential = {
@@ -687,9 +769,18 @@ async function handleVerifyCredential(request, env, origin) {
     }, 400, origin);
   }
 
+  const signingSecret = env.CREDENTIAL_SIGNING_SECRET || env.WEBCERT_SERVER_SECRET;
+  if (!signingSecret) {
+    return jsonResponse({
+      valid: false,
+      folio,
+      issuer: 'https://stemos.org/issuer',
+      error: 'Credential verification service is not configured'
+    }, 503, origin);
+  }
+
   if (sig && recipientName && issuedOn) {
     const canonicalPayload = `${folio}|${recipientName}|${matricula}|${cefrLevel}|${accreditedHours}|${careerName}|${issuedOn}`;
-    const signingSecret = env.CREDENTIAL_SIGNING_SECRET || env.WEBCERT_SERVER_SECRET || 'stemos_ob3_edge_integrity_v6_9';
     const expectedSig = await hmacSha256Hex(signingSecret, canonicalPayload);
     const valid = timingSafeEqualHex(expectedSig, sig);
     return jsonResponse({
@@ -706,15 +797,13 @@ async function handleVerifyCredential(request, env, origin) {
     }, valid ? 200 : 400, origin);
   }
 
-  // Format check for deterministic stemOS folios when queried by folio ID alone
-  const isValidFormat = /^(STEMOS|UTYP|UPMXL|UPBC|TECNM|ACTA)-[A-Z0-9-]{4,40}$/i.test(folio);
   return jsonResponse({
-    valid: isValidFormat,
+    valid: false,
     folio,
     issuer: 'https://stemos.org/issuer',
     standard: 'W3C Open Badges 3.0',
-    publicKeyJwk: { kty: 'OKP', crv: 'Ed25519', x: env.OPEN_BADGES_PUBLIC_KEY_X || DEFAULT_ISSUER_PUBLIC_KEY_X }
-  }, isValidFormat ? 200 : 400, origin);
+    error: 'Cryptographic signature (sig), recipientName, and issuedOn are required for verification'
+  }, 400, origin);
 }
 
 export default {

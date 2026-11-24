@@ -3315,19 +3315,35 @@
             }
 
             const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-            const isDemoPreset = pass === 'stemOS-Director-2026' && state.isDemoPresetSelected === true;
+            const isDemoPreset = isLocal && pass === 'stemOS-Director-2026' && state.isDemoPresetSelected === true;
 
             if (window.firebase && typeof window.firebase.auth === 'function' && !isDemoPreset) {
                 try {
                     const cred = await window.firebase.auth().signInWithEmailAndPassword(email, pass);
                     const idToken = await cred.user.getIdToken();
+                    let verifiedInstitutionId = state.institution.id || 'tecnm-saltillo';
+                    let verifiedInstitutionName = state.institution.name || 'TecNM Campus Saltillo';
+                    const roleRes = await fetch('/api/auth/verify-role', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
+                        body: JSON.stringify({ requestedRole: 'admin' })
+                    });
+                    const roleData = await roleRes.json().catch(() => ({}));
+                    if (!roleRes.ok || !roleData.verified) {
+                        alert(roleData.error || 'Your account is not authorized for the Academic Director / Admin Portal.');
+                        await window.firebase.auth().signOut();
+                        return;
+                    }
+                    if (roleData.institutionId) verifiedInstitutionId = roleData.institutionId;
+                    if (roleData.institutionName) verifiedInstitutionName = roleData.institutionName;
+                    state.institution.id = verifiedInstitutionId;
+                    state.institution.name = verifiedInstitutionName;
                     state.auth = {
                         uid: cred.user.uid,
                         email: cred.user.email || email,
                         name: cred.user.displayName || state.institution.adminName || 'Academic Director',
                         role: 'admin',
-                        institutionId: state.institution.id,
-                        token: idToken
+                        institutionId: verifiedInstitutionId
                     };
                 } catch (authErr) {
                     if (!isLocal) {
@@ -3335,7 +3351,7 @@
                         return;
                     }
                 }
-            } else if (!isLocal && !isDemoPreset) {
+            } else if (!isLocal) {
                 alert('Institutional SSO or verified administrator credentials are required in production.');
                 return;
             }
@@ -3374,9 +3390,9 @@
                     const roleRes = await fetch('/api/auth/verify-role', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
-                        body: JSON.stringify({ uid: user.uid, email: user.email, requestedRole: 'admin' })
+                        body: JSON.stringify({ requestedRole: 'admin' })
                     });
-                    const roleData = await roleRes.json();
+                    const roleData = await roleRes.json().catch(() => ({}));
                     if (!roleRes.ok || !roleData.verified) {
                         alert(roleData.error || 'Your Google account is not authorized for the Academic Director / Admin Portal.');
                         await window.firebase.auth().signOut();
@@ -3384,7 +3400,11 @@
                     }
                     if (roleData.institutionId) verifiedInstitutionId = roleData.institutionId;
                     if (roleData.institutionName) verifiedInstitutionName = roleData.institutionName;
-                } catch (_) {}
+                } catch (verifyErr) {
+                    alert('Could not verify administrator permissions with the server. Please try again.');
+                    await window.firebase.auth().signOut().catch(() => {});
+                    return;
+                }
 
                 state.institution.id = verifiedInstitutionId;
                 state.institution.name = verifiedInstitutionName;
@@ -3393,8 +3413,7 @@
                     email: user.email,
                     name: user.displayName || state.institution.adminName || 'Academic Director',
                     role: 'admin',
-                    institutionId: verifiedInstitutionId,
-                    token: idToken
+                    institutionId: verifiedInstitutionId
                 };
                 if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.setAuthUser === 'function') {
                     window.STEMOS_FIREBASE.setAuthUser(state.auth);
@@ -3434,6 +3453,9 @@
             if (confirm('Are you sure you want to sign out of the Admin Portal?')) {
                 state.auth = null;
                 localStorage.removeItem(STORAGE_KEY_AUTH);
+                if (window.firebase && typeof window.firebase.auth === 'function') {
+                    window.firebase.auth().signOut().catch(() => {});
+                }
                 showView('login');
             }
         }
