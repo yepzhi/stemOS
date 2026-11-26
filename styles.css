@@ -1452,7 +1452,8 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 .academic-card {
     max-width: 900px;
     width: 95vw;
-    height: 85vh;
+    height: 85dvh;
+    max-height: 92dvh;
     display: flex;
     flex-direction: column;
     background: rgba(11, 15, 25, 0.95) !important;
@@ -2028,7 +2029,8 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 /* Responsiveness adjustments for smaller viewports (like iPad 768px) */
 @media (max-width: 900px) {
     .academic-card {
-        height: 95vh;
+        height: 94dvh;
+        max-height: 96dvh;
         width: 98vw;
     }
     .vocab-grid {
@@ -2037,18 +2039,36 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 }
 
 @media (max-width: 600px) {
+    #academic-modal {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100dvh;
+        max-height: 100dvh;
+        margin: 0;
+        border-radius: 0;
+    }
+    .academic-card {
+        width: 100vw;
+        height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0 !important;
+    }
     .vocab-grid {
         grid-template-columns: 1fr;
     }
     .academic-timeline {
-        padding: 12px;
+        padding: 10px 12px;
+        flex-wrap: wrap;
+        gap: 6px;
     }
     .timeline-step .step-lbl {
-        display: none;
+        white-space: normal;
+        font-size: 0.72rem;
+        line-height: 1.2;
     }
     .timeline-line {
-        width: 25px;
-        margin: 0 6px;
+        width: 16px;
+        margin: 0 4px;
     }
     .screen-footer {
         flex-wrap: wrap;
@@ -2096,8 +2116,9 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 /* --- Container & Base --- */
 .dashboard-container.ed-theme-container {
     display: flex;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    height: 100dvh;
     background-color: #f1f3f7;
     color: #1e293b;
     overflow: hidden;
@@ -3373,8 +3394,9 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
         gap: 6px;
     }
     .ed-filter-chip {
-        font-size: 0.74rem;
-        padding: 5px 12px;
+        min-height: 44px;
+        font-size: 0.8rem;
+        padding: 8px 14px;
     }
     .ed-unit-card-img-wrapper {
         height: 140px;
@@ -4286,7 +4308,7 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
   .main-content,
   #view-glossary .glass-panel,
   #view-units-detail {
-    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important;
   }
 
   /* Touch targets >= 44px to 48px */
@@ -5393,6 +5415,17 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 768px) {
+    .stemos-sync-toast {
+        bottom: calc(84px + env(safe-area-inset-bottom));
+        left: 12px;
+        right: 12px;
+        max-width: none;
+        width: auto;
+        justify-content: center;
+    }
+}
+
 /* Stepper Track with Arrows */
 .mcer-stepper-container {
     flex-shrink: 0;
@@ -5763,10 +5796,10 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 
 @media (max-width: 839px) {
     .ed-header-help-btn {
-        padding: 0 10px;
-        min-height: 36px;
-        min-width: 36px;
-        font-size: 0.82rem;
+        padding: 0 12px;
+        min-height: 44px;
+        min-width: 44px;
+        font-size: 0.85rem;
     }
     .ed-header-help-btn .help-btn-text {
         display: none;
@@ -6368,6 +6401,189 @@ details.help-faq-item:not([open])::details-content {
     .help-footer-actions {
         width: 100%;
         justify-content: flex-end;
+    }
+}
+
+/* ── Mobile Navigation, Responsive Disclosure & Modal Utility System ── */
+.show-on-mobile {
+    display: none;
+}
+
+.modal-close {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mcer-mobile-tools-disclosure {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mcer-tools-summary {
+    display: none;
+    list-style: none;
+    cursor: pointer;
+}
+.mcer-tools-summary::-webkit-details-marker {
+    display: none;
+}
+
+.ed-dock-btn .dock-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+.ed-dock-btn .dock-icon-outline {
+    display: block;
+}
+.ed-dock-btn .dock-icon-filled {
+    display: none;
+}
+.ed-dock-btn.active .dock-icon-outline,
+.ed-dock-btn[aria-current="page"] .dock-icon-outline {
+    display: none;
+}
+.ed-dock-btn.active .dock-icon-filled,
+.ed-dock-btn[aria-current="page"] .dock-icon-filled {
+    display: block;
+    color: #0284c7;
+}
+.ed-dock-btn.active .ed-dock-label,
+.ed-dock-btn[aria-current="page"] .ed-dock-label {
+    font-weight: 800;
+    color: #0284c7;
+}
+.ed-dock-btn .ed-dock-indicator {
+    position: absolute;
+    top: 2px;
+    width: 24px;
+    height: 3px;
+    border-radius: 999px;
+    background: #0284c7;
+    opacity: 0;
+    transform: scaleX(0.4);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.ed-dock-btn.active .ed-dock-indicator,
+.ed-dock-btn[aria-current="page"] .ed-dock-indicator {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+    .show-on-mobile {
+        display: inline !important;
+    }
+
+    .ed-top-header-wrapper {
+        padding: 0 10px !important;
+        top: max(6px, env(safe-area-inset-top)) !important;
+        margin-bottom: 10px !important;
+    }
+    .ed-top-header {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 52px !important;
+        padding: 6px 10px !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+        border-radius: 18px !important;
+    }
+    .ed-header-left,
+    .ed-header-right {
+        gap: 6px !important;
+        min-width: 0;
+    }
+    .ed-header-icon-btn {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .ed-mobile-bottom-dock {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        align-items: center !important;
+        padding: 6px 4px max(8px, env(safe-area-inset-bottom)) !important;
+        gap: 2px !important;
+        height: auto !important;
+    }
+    .ed-dock-btn {
+        min-height: 48px !important;
+        min-width: 44px !important;
+        width: 100% !important;
+        padding: 6px 2px 4px !important;
+        position: relative;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+    }
+    .ed-dock-label {
+        font-size: 0.68rem !important;
+        line-height: 1.1 !important;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .ed-hero-banner {
+        padding: 16px 14px !important;
+        margin-bottom: 14px !important;
+    }
+    .dual-world-switcher {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .mcer-mobile-tools-disclosure {
+        position: relative;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .mcer-tools-summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 12px;
+        border-radius: 10px;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+    .mcer-tools-tray {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding-top: 8px;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 640px) {
+    .modal-grid-2col,
+    .modal-grid-3col {
+        grid-template-columns: 1fr !important;
+    }
+    .modal-grid-4col {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
 

@@ -54,7 +54,7 @@
             label: 'Theory',
             badge: 'THEORY 3.5h',
             icon: 'fa-book-open',
-            glyph: '📖',
+            glyph: '<i class="fa-solid fa-book-open"></i>',
             color: '#38bdf8', // sky-400
             glow: 'rgba(56, 189, 248, 0.45)',
             defaultHours: 3.5,
@@ -65,7 +65,7 @@
             label: 'English B1',
             badge: 'ENGLISH B1 3.5h',
             icon: 'fa-language',
-            glyph: '🇬🇧',
+            glyph: '<i class="fa-solid fa-language"></i>',
             color: '#10b981', // emerald-500
             glow: 'rgba(16, 185, 129, 0.45)',
             defaultHours: 3.5,
@@ -76,7 +76,7 @@
             label: 'Practical Lab',
             badge: 'LAB SIM 4.0h',
             icon: 'fa-flask',
-            glyph: '🔬',
+            glyph: '<i class="fa-solid fa-flask"></i>',
             color: '#f59e0b', // amber-500
             glow: 'rgba(245, 158, 11, 0.45)',
             defaultHours: 4.0,
@@ -87,7 +87,7 @@
             label: 'Checkpoint',
             badge: 'CHECKPOINT 4.0h',
             icon: 'fa-trophy',
-            glyph: '🎯',
+            glyph: '<i class="fa-solid fa-trophy"></i>',
             color: '#ef4444', // red-500
             glow: 'rgba(239, 68, 68, 0.5)',
             defaultHours: 4.0,
@@ -700,7 +700,7 @@
                         category: career.clusterId || 'engineering',
                         modules: [pathMod || mod],
                         icon: typeConfig.icon || (isCheckpoint ? 'fa-award' : (DEFAULT_TRACK_ICONS[career.primaryTrackId] || 'fa-microchip')),
-                        glyph: typeConfig.glyph || '⚙️',
+                        glyph: typeConfig.glyph || '<i class="fa-solid fa-gear"></i>',
                         color: typeConfig.color || '#38bdf8',
                         glow: typeConfig.glow || 'rgba(56, 189, 248, 0.4)',
                         // Deterministic coordinates from career seed
@@ -882,16 +882,19 @@
                     this.isDragging = false;
                     vp.classList.remove('dragging');
                 }
-                if (isClick && this.hoveredNode) {
-                    const node = this.hoveredNode;
-                    const gatingStatus = this.getNodeGatingStatus(node);
-                    if (gatingStatus === 'locked') {
-                        this.sound.playBlip(220, 0.12);
-                        this.showLockedToast(node);
-                        return;
+                if (isClick) {
+                    const hitNode = this.hoveredNode || (typeof this.findClosestNode === 'function' ? this.findClosestNode(clientX, clientY, 44) : null);
+                    if (hitNode) {
+                        this.hideTooltip();
+                        const gatingStatus = this.getNodeGatingStatus(hitNode);
+                        if (gatingStatus === 'locked') {
+                            this.sound.playBlip(220, 0.12);
+                            this.showLockedToast(hitNode);
+                            return;
+                        }
+                        this.sound.playWarp();
+                        this.openWorldPath(hitNode.trackId || hitNode.id, hitNode);
                     }
-                    this.sound.playWarp();
-                    this.openWorldPath(node.trackId || node.id, node);
                 }
             };
 
@@ -1051,14 +1054,14 @@
             this.autoRotate = false;
         }
 
-        checkHover(clientX, clientY) {
-            if (!this.canvas || this.isDragging) return;
+        findClosestNode(clientX, clientY, hitRadius = 34) {
+            if (!this.canvas) return null;
             const rect = this.canvas.getBoundingClientRect();
             const mouseX = clientX - rect.left;
             const mouseY = clientY - rect.top;
 
             let closest = null;
-            let minDist = 34; // hit radius
+            let minDist = hitRadius;
 
             for (let i = 0; i < this.nodes.length; i++) {
                 const node = this.nodes[i];
@@ -1071,6 +1074,13 @@
                     closest = node;
                 }
             }
+            return closest;
+        }
+
+        checkHover(clientX, clientY) {
+            if (!this.canvas || this.isDragging) return;
+            const rect = this.canvas.getBoundingClientRect();
+            const closest = this.findClosestNode(clientX, clientY, 34);
 
             if (closest !== this.hoveredNode) {
                 this.hoveredNode = closest;
@@ -1104,8 +1114,15 @@
             document.getElementById('wtt-modules-count').innerHTML = `<i class="fa-solid fa-cubes"></i> ${trackMods.length} Módulos`;
             document.getElementById('wtt-stars-count').innerHTML = `<i class="fa-solid fa-star" style="color:#fbbf24;"></i> ${completedCount} / ${trackMods.length} Aprobados`;
 
-            tip.style.left = `${node.sx}px`;
-            tip.style.top = `${node.sy}px`;
+            const rect = canvasRect || (this.canvas ? this.canvas.getBoundingClientRect() : null);
+            const boundsW = rect ? rect.width : window.innerWidth;
+            const boundsH = rect ? rect.height : window.innerHeight;
+            const padX = Math.min(120, Math.max(70, boundsW * 0.25));
+            const clampedX = Math.max(padX, Math.min(boundsW - padX, node.sx));
+            const clampedY = Math.max(96, Math.min(boundsH - 28, node.sy));
+
+            tip.style.left = `${clampedX}px`;
+            tip.style.top = `${clampedY}px`;
             tip.classList.add('visible');
         }
 
@@ -1571,8 +1588,16 @@
 
             // 1. Teacher override check from localStorage
             try {
-                const unlocks = JSON.parse(localStorage.getItem('stemos_teacher_unlocks') || '[]');
-                if (unlocks.includes(moduleId) || unlocks.includes(`${careerId}:${moduleId}`) || unlocks.includes('*')) {
+                const rawUnlocks = localStorage.getItem('stemos_teacher_unlocks') || '[]';
+                const parsed = JSON.parse(rawUnlocks);
+                const unlockSet = new Set(
+                    Array.isArray(parsed)
+                        ? parsed.map(x => String(x).toUpperCase())
+                        : (parsed && typeof parsed === 'object'
+                            ? Object.keys(parsed).filter(k => parsed[k]).map(x => String(x).toUpperCase())
+                            : String(parsed).split(',').map(x => x.trim().toUpperCase()).filter(Boolean))
+                );
+                if (unlockSet.has(String(moduleId).toUpperCase()) || unlockSet.has(`${careerId}:${moduleId}`.toUpperCase()) || unlockSet.has('*')) {
                     return 'unlocked';
                 }
             } catch (e) {}
@@ -1712,11 +1737,18 @@
             // If locked: draw lock icon
             // If unlocked: draw step number / module ID
             if (isLocked) {
-                ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.85))}px sans-serif`;
+                const r = Math.max(4, node.screenRadius * 0.34);
+                ctx.save();
+                ctx.strokeStyle = '#64748b';
                 ctx.fillStyle = '#64748b';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('🔒', node.sx, node.sy + 0.5);
+                ctx.lineWidth = Math.max(1.4, r * 0.28);
+                ctx.beginPath();
+                ctx.arc(node.sx, node.sy - r * 0.35, r * 0.58, Math.PI, 0, false);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.roundRect(node.sx - r * 0.85, node.sy - r * 0.25, r * 1.7, r * 1.35, 2);
+                ctx.fill();
+                ctx.restore();
             } else {
                 ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.80))}px Outfit, 'Plus Jakarta Sans', sans-serif`;
                 ctx.fillStyle = nodeColor;
@@ -1855,13 +1887,26 @@
                 if (stdBadge) stdBadge.innerHTML = `CEFR B1 Technical Immersion &bull; ${career.standards ? career.standards[0] : 'ISO / IEEE Standards'}`;
                 if (titleEl) titleEl.textContent = `${career.name} (60.0h Track)`;
                 
-                // Progress from cohort / career path
+                // Progress from cohort / career path (combine career map + user progress)
+                const mergedDoneIds = new Set(Object.keys(prog.completedModules || {}));
+                try {
+                    const rawCareerProg = localStorage.getItem('stemos_progress_' + career.id);
+                    if (rawCareerProg) {
+                        const cp = JSON.parse(rawCareerProg);
+                        if (cp && cp.modules) {
+                            Object.entries(cp.modules).forEach(([k, v]) => {
+                                if (v && (v.status === 'completed' || v.completed)) mergedDoneIds.add(k);
+                            });
+                        }
+                    }
+                } catch (_) {}
                 const pathProgress = (typeof window.STEMOS_CAREER_PATHS !== 'undefined')
-                    ? window.STEMOS_CAREER_PATHS.calculateCohortProgress(career.id, Object.keys(prog.completedModules || {}))
+                    ? window.STEMOS_CAREER_PATHS.calculateCohortProgress(career.id, Array.from(mergedDoneIds))
                     : null;
+                const totalStations = (careerPath && Array.isArray(careerPath.modules) && careerPath.modules.length) ? careerPath.modules.length : 16;
                 const completedCount = pathProgress ? pathProgress.completedCount : 0;
                 if (statProg) {
-                    statProg.textContent = `${completedCount}/16 Curricular Stations Completed (${pathProgress ? pathProgress.progressPercent : 0}% · ${pathProgress ? pathProgress.earnedXP : 0}/5,600 XP)`;
+                    statProg.textContent = `${completedCount}/${totalStations} Curricular Stations Completed (${pathProgress ? pathProgress.progressPercent : 0}% · ${pathProgress ? pathProgress.earnedXP : 0}/5,600 XP)`;
                 }
 
                 // Render Career 16-Module Path
@@ -2190,8 +2235,12 @@
                             window.openAcademicModal(careerPath.primaryTrackId, mod);
                         }
                     } else {
-                        if (typeof window.openDrawer === 'function') {
-                            window.openDrawer(careerPath.primaryTrackId || 'robotics-automation', mod.id, this.courses);
+                        if (typeof window.openAcademicModal === 'function') {
+                            window.openAcademicModal(careerPath.primaryTrackId || 'robotics-automation', mod);
+                        } else if (typeof window.startDuoLessonForUnit === 'function') {
+                            window.startDuoLessonForUnit(mod.id, 1);
+                        } else if (typeof window.openUnitDetail === 'function') {
+                            window.openUnitDetail(careerPath.primaryTrackId || 'robotics-automation');
                         }
                     }
                 };
@@ -2223,13 +2272,17 @@
 
             // Sync XP
             if (isNowCompleted) {
-                let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                currentXP += xpReward;
-                localStorage.setItem('stemos_student_xp', String(currentXP));
-                this.sound.playCoin();
-                if (typeof window.updateStudentXPHUD === 'function') {
-                    window.updateStudentXPHUD(currentXP);
+                if (typeof window.awardStemOSXp === 'function') {
+                    window.awardStemOSXp(xpReward || 300);
+                } else {
+                    let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+                    currentXP = (isNaN(currentXP) ? 0 : currentXP) + (xpReward || 300);
+                    localStorage.setItem('stemos_student_xp', String(currentXP));
+                    if (typeof window.updateStudentXPHUD === 'function') {
+                        window.updateStudentXPHUD(currentXP);
+                    }
                 }
+                this.sound.playCoin();
             }
 
             // Sync with STEMOS_FIREBASE Multi-Tenant Adapter
@@ -2467,8 +2520,8 @@
                     this.launchModuleCallback(trackId, mod);
                 } else if (typeof window.openAcademicModal === 'function') {
                     window.openAcademicModal(trackId, mod);
-                } else if (typeof window.openDrawer === 'function') {
-                    window.openDrawer(trackId, mod.id, this.courses);
+                } else if (typeof window.openUnitDetail === 'function') {
+                    window.openUnitDetail(trackId);
                 }
             };
 
@@ -2540,9 +2593,8 @@
             this.closeDrawer();
 
             // Notify stemOS dashboard if functions exist
-            if (typeof window.loadProgress === 'function') window.loadProgress();
-            if (typeof window.renderSegmentedProgressBar === 'function') window.renderSegmentedProgressBar();
             if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
+            if (typeof window.updateActivePathCardUI === 'function') window.updateActivePathCardUI();
         }
 
         setCareer(careerId) {

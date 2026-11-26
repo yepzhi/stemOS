@@ -553,6 +553,7 @@
                 const fbUser = (window.firebase && typeof window.firebase.auth === 'function')
                     ? window.firebase.auth().currentUser
                     : null;
+                const authUser = this.getAuthUser();
                 const entry = {
                     id: 'audit-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 5),
                     institutionId: institutionId || 'tecnm-saltillo',
@@ -914,29 +915,30 @@
                 }
                 if (!uid) return false;
 
-                const payload = Object.assign({}, progressData, {
+                // Strip top-level protected RBAC fields (`role`, `admin`, `institutionId`)
+                // so firestore.rules /users/{uid} and student mirror updates never trip on protected keys
+                const userPayload = Object.assign({}, progressData, {
                     uid: uid,
                     updatedAt: new Date().toISOString()
                 });
+                delete userPayload.role;
+                delete userPayload.admin;
+                delete userPayload.institutionId;
 
-                // Atomic batch write to both primary /users/{uid} and multi-tenant mirror
-                const instId = progressData.institutionId || progressData.subsystem || 'tecnm-saltillo';
-                const docId = uid;
+                // 1. Authoritative cloud backup under /users/{uid}
+                await db.collection('users').doc(uid).set(userPayload, { merge: true });
 
-                if (typeof db.batch === 'function') {
-                    const batch = db.batch();
-                    batch.set(db.collection('users').doc(uid), payload, { merge: true });
-                    batch.set(db.collection('institutions').doc(instId).collection('students').doc(docId), payload, { merge: true });
-                    await batch.commit();
-                } else {
-                    await Promise.all([
-                        db.collection('users').doc(uid).set(payload, { merge: true }),
-                        db.collection('institutions').doc(instId).collection('students').doc(docId).set(payload, { merge: true })
-                    ]);
+                // 2. Best-effort multi-tenant mirror (never rolls back /users/{uid} if user lacks custom JWT institution claim)
+                const instId = (progressData.profile && progressData.profile.institutionId) || progressData.institutionId || 'campus-demo';
+                try {
+                    const instPayload = Object.assign({}, userPayload);
+                    await db.collection('institutions').doc(instId).collection('students').doc(uid).set(instPayload, { merge: true });
+                } catch (_) {
+                    // Expected when user does not carry custom institutionId JWT claim; /users/{uid} already succeeded
                 }
 
                 localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
-                this._broadcastStateChange('cloud_progress_saved', payload);
+                this._broadcastStateChange('cloud_progress_saved', userPayload);
                 return true;
             } catch (err) {
                 console.warn('[stemOS Firebase] Cloud progress sync error:', err.message || err);
@@ -975,30 +977,73 @@
                 caceiHours: 0.0,
                 level: 'A1',
                 activeLevel: 'A1',
+                activeMcerLevel: 'A1',
                 duoProgress: {},
-                userProgress: { xp: 0, nodeStatuses: {} },
+                activityScores: {},
+                careerProgress: {},
+                mcerUnits: {},
+                activeUnitId: null,
+                activeStepMap: {},
+                userProgress: { xp: 0, completedReadings: {}, completedModules: {}, completedTracks: {}, nodeStatuses: {} },
                 placementTest: null,
                 placementCompleted: false,
+                placementWaived: false,
+                diagnosticPassport: null,
+                diagFolio: '',
                 lastResetAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
 
-            // 1. Reset Local Storage
+            // 1. Reset Local Storage thoroughly
             try {
                 localStorage.setItem('stemos_student_xp', '0');
                 localStorage.setItem('stemos_daily_streak', '1');
                 localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
-                localStorage.setItem('stemos_user_level', 'A1');
-                localStorage.setItem('stemos_active_mcer_level', 'A1');
                 localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
-                localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
-                localStorage.removeItem('stemos_placement_test');
-                localStorage.removeItem('stemos_placement_completed');
-                localStorage.removeItem('stemos_diag_folio');
-                localStorage.removeItem('stemos_diag_status');
+                localStorage.setItem('stemos_activity_scores', JSON.stringify({}));
+                localStorage.setItem('stemos_user_progress', JSON.stringify({
+                    xp: 0,
+                    completedReadings: {},
+                    completedModules: {},
+                    completedTracks: {},
+                    nodeStatuses: {}
+                }));
+                const exactRemovals = [
+                    'stemos_user_level',
+                    'stemos_active_mcer_level',
+                    'stemos_cefr_level',
+                    'stemos_placement_test',
+                    'stemos_placement_result',
+                    'stemos_user_placement_result',
+                    'stemos_placement_completed',
+                    'stemos_placement_waived',
+                    'stemos_diagnostic_passport',
+                    'stemos_diag_folio',
+                    'stemos_diag_status',
+                    'stemos_active_unit_id'
+                ];
+                exactRemovals.forEach(function (k) {
+                    localStorage.removeItem(k);
+                });
+                const prefixRemovals = [
+                    'stemos_mcer_unit_',
+                    'stemos_unit_completed_',
+                    'stemos_crucible_',
+                    'stemos_mcer_',
+                    'stemos_active_step_',
+                    'stemos_progress_',
+                    'stemos_writing_',
+                    'stemos_socratic_'
+                ];
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const k = localStorage.key(i);
+                    if (k && prefixRemovals.some(function (p) { return k.startsWith(p); })) {
+                        localStorage.removeItem(k);
+                    }
+                }
             } catch(_) {}
 
-            // 2. Reset in Cloud Firestore if user is authenticated
+            // 2. Reset in Cloud Firestore if user is authenticated (without protected RBAC fields)
             if (this.isCloudActive() && uid) {
                 try {
                     const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||

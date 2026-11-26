@@ -942,14 +942,21 @@
     }
     .btn-close-zoom-modal {
       position: absolute;
-      top: 18px;
-      right: 18px;
+      top: 14px;
+      right: 14px;
       background: transparent;
       border: none;
       color: #94a3b8;
       font-size: 1.25rem;
       cursor: pointer;
-      padding: 4px;
+      min-width: 44px;
+      min-height: 44px;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
     }
     .btn-close-zoom-modal:hover {
       color: #ffffff;
@@ -1054,17 +1061,19 @@
       .nav-placement-pill {
         display: inline-flex !important;
         align-items: center !important;
+        justify-content: center !important;
         gap: 4px !important;
         background: rgba(245, 158, 11, 0.14) !important;
         border: 1px solid rgba(245, 158, 11, 0.45) !important;
         color: #f59e0b !important;
-        padding: 5px 9px !important;
+        padding: 6px 10px !important;
         border-radius: 9999px !important;
         font-size: 0.76rem !important;
         font-weight: 800 !important;
         text-decoration: none !important;
-        height: 32px !important;
-        min-height: 32px !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
+        height: auto !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
         transition: all 0.2s ease !important;
@@ -1081,20 +1090,20 @@
         display: inline-flex !important;
         align-items: center !important;
         gap: 2px !important;
-        height: 32px !important;
-        min-height: 32px !important;
+        min-height: 44px !important;
+        height: auto !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
         margin: 0 !important;
       }
       .lang-btn {
-        padding: 4px 7px !important;
+        padding: 6px 8px !important;
         font-size: 0.78rem !important;
         font-weight: 800 !important;
         color: #94a3b8 !important;
         border-radius: 9999px !important;
         line-height: 1 !important;
-        min-height: 24px !important;
+        min-height: 38px !important;
         border: none !important;
         background: transparent !important;
         cursor: pointer !important;
@@ -1112,19 +1121,19 @@
         color: rgba(255, 255, 255, 0.3) !important;
       }
       .btn-signup-pill {
-        padding: 5px 10px !important;
-        font-size: 0.70rem !important;
+        padding: 6px 12px !important;
+        font-size: 0.72rem !important;
         font-weight: 800 !important;
         gap: 4px !important;
-        min-height: 30px !important;
-        height: 30px !important;
+        min-height: 44px !important;
+        height: auto !important;
         white-space: nowrap !important;
         flex-shrink: 0 !important;
-        margin: 0 0 0 8px !important;
+        margin: 0 0 0 4px !important;
         border-radius: 9999px !important;
       }
       .btn-signup-pill span.shiny-text {
-        font-size: 0.70rem !important;
+        font-size: 0.72rem !important;
         white-space: nowrap !important;
         line-height: 1 !important;
       }
@@ -1132,11 +1141,11 @@
         font-size: 0.60rem !important;
       }
       .supaste-mobile-nav-toggle {
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
-        min-height: 32px !important;
-        border-radius: 8px !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        border-radius: 10px !important;
         padding: 0 !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
@@ -2425,7 +2434,7 @@
         <div class="supaste-brand-name">
           <span class="brand-stem">stem</span><span class="brand-os">OS</span>
         </div>
-        <button class="drawer-close-btn" aria-label="Cerrar Menú Móvil" onclick="toggleMobileNav(false)">
+        <button class="drawer-close-btn" aria-label="Cerrar Menú Móvil" onclick="toggleMobileNav(false)" style="min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>

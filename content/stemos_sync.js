@@ -182,6 +182,42 @@
         });
     }
 
+    // Helper: Resolve active userId and institutionId accurately (Firebase auth().currentUser lacks .institutionId)
+    function resolveAuthContext() {
+        var fbUser = null;
+        if (typeof window !== 'undefined' && typeof window.firebase !== 'undefined' && window.firebase.auth) {
+            try { fbUser = window.firebase.auth().currentUser; } catch (_) {}
+        }
+        var adapterUser = (typeof window !== 'undefined' && window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function')
+            ? window.STEMOS_FIREBASE.getAuthUser()
+            : null;
+        var profile = null;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                var rawProf = localStorage.getItem('stemos_student_profile');
+                if (rawProf) profile = JSON.parse(rawProf);
+            }
+        } catch (_) {}
+
+        var userId = (fbUser && fbUser.uid) ||
+                     (adapterUser && (adapterUser.uid || adapterUser.id || adapterUser.matricula)) ||
+                     (profile && (profile.uid || profile.studentId)) ||
+                     'student-local';
+        var instId = (profile && (profile.institutionId || profile.subsystem || profile.system)) ||
+                     (adapterUser && adapterUser.institutionId) ||
+                     'tecnm-saltillo';
+        return { userId: userId, instId: instId, fbUser: fbUser };
+    }
+
+    // Helper: Normalize CEFR code to satisfy firestore.rules isValidMcerProgress (`A1`..`C2`)
+    function normalizeCefrCode(raw) {
+        var code = String(raw || 'A1').toUpperCase().trim();
+        if (code === 'C1-C2' || code === 'C1_C2' || code.indexOf('C1') === 0) return 'C1';
+        if (code.indexOf('C2') === 0) return 'C2';
+        if (['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].indexOf(code) !== -1) return code;
+        return 'A1';
+    }
+
     // Built-in Firebase Firestore Sender for MCER Progression
     function defaultFirestoreSender(mutation) {
         if (typeof window === 'undefined') return Promise.resolve(mutation);
@@ -193,15 +229,9 @@
             try { db = window.firebase.firestore(); } catch (_) {}
         }
 
-        var currentUser = null;
-        if (typeof window.firebase !== 'undefined' && window.firebase.auth) {
-            try { currentUser = window.firebase.auth().currentUser; } catch (_) {}
-        }
-        if (!currentUser && window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
-            currentUser = window.STEMOS_FIREBASE.getAuthUser();
-        }
-        var userId = (currentUser && (currentUser.uid || currentUser.id || currentUser.matricula)) || 'student-local';
-        var instId = (currentUser && currentUser.institutionId) || 'tecnm-saltillo';
+        var ctx = resolveAuthContext();
+        var userId = ctx.userId;
+        var instId = ctx.instId;
 
         if (!db) {
             // Air-gapped fallback: update local Firebase Adapter state
@@ -219,26 +249,29 @@
 
         if (mutation.entityType === 'MCER_UNIT_PROGRESS') {
             var p = mutation.payload || {};
+            var cefrVal = normalizeCefrCode(p.cefr || p.level);
             return db.collection('institutions').doc(instId)
                 .collection('students').doc(userId)
                 .collection('mcer_progress').doc(p.unitId || 'unit-unknown')
                 .set({
                     unitId: p.unitId,
                     unitTitle: p.unitTitle || '',
-                    cefr: p.cefr || 'A1',
+                    cefr: cefrVal,
+                    level: cefrVal,
                     score: p.score || 0,
                     passed: Boolean(p.passed),
                     xpEarned: p.xpEarned || 0,
                     completedAt: p.completedAt || new Date().toISOString(),
+                    updatedAt: p.updatedAt || new Date().toISOString(),
                     syncedAt: new Date().toISOString()
                 }, { merge: true })
                 .then(function () {
                     if (p.xpEarned && typeof window.firebase !== 'undefined' && window.firebase.firestore && window.firebase.firestore.FieldValue) {
                         try {
-                            db.collection('institutions').doc(instId).collection('students').doc(userId).update({
+                            db.collection('institutions').doc(instId).collection('students').doc(userId).set({
                                 xp: window.firebase.firestore.FieldValue.increment(p.xpEarned),
                                 lastActiveAt: new Date().toISOString()
-                            });
+                            }, { merge: true }).catch(function () {});
                         } catch (_) {}
                     }
                     return mutation;
@@ -347,63 +380,59 @@
                 }
 
                 if (!customSender && db && typeof db.batch === 'function') {
-                    var currentUser = null;
-                    if (typeof window.firebase !== 'undefined' && window.firebase.auth) {
-                        try { currentUser = window.firebase.auth().currentUser; } catch (_) {}
-                    }
-                    if (!currentUser && window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
-                        currentUser = window.STEMOS_FIREBASE.getAuthUser();
-                    }
-                    var userId = (currentUser && (currentUser.uid || currentUser.id || currentUser.matricula)) || 'student-local';
-                    var instId = (currentUser && currentUser.institutionId) || 'tecnm-saltillo';
+                    var ctx = resolveAuthContext();
+                    var userId = ctx.userId;
+                    var instId = ctx.instId;
 
                     var batch = db.batch();
                     var totalXp = 0;
                     var processedMutations = [];
+                    var remainingMutations = [];
 
                     pending.forEach(function (m) {
                         if (m.entityType === 'MCER_UNIT_PROGRESS' && m.payload) {
                             var p = m.payload;
+                            var cefrVal = normalizeCefrCode(p.cefr || p.level);
                             var docRef = db.collection('institutions').doc(instId)
                                 .collection('students').doc(userId)
                                 .collection('mcer_progress').doc(p.unitId || 'unit-unknown');
                             batch.set(docRef, {
                                 unitId: p.unitId,
                                 unitTitle: p.unitTitle || '',
-                                cefr: p.cefr || 'A1',
+                                cefr: cefrVal,
+                                level: cefrVal,
                                 score: p.score || 0,
                                 passed: Boolean(p.passed),
                                 xpEarned: p.xpEarned || 0,
                                 completedAt: p.completedAt || new Date().toISOString(),
+                                updatedAt: p.updatedAt || new Date().toISOString(),
                                 syncedAt: new Date().toISOString()
                             }, { merge: true });
 
                             if (p.xpEarned) totalXp += p.xpEarned;
                             processedMutations.push(m);
+                        } else {
+                            remainingMutations.push(m);
                         }
                     });
 
-                    if (totalXp > 0 && typeof window.firebase !== 'undefined' && window.firebase.firestore && window.firebase.firestore.FieldValue) {
-                        try {
-                            var studentRef = db.collection('institutions').doc(instId).collection('students').doc(userId);
-                            batch.update(studentRef, {
-                                xp: window.firebase.firestore.FieldValue.increment(totalXp),
-                                lastActiveAt: new Date().toISOString()
-                            });
-                        } catch (_) {}
-                    }
-
                     if (processedMutations.length > 0) {
                         return batch.commit().then(function () {
+                            if (totalXp > 0 && typeof window.firebase !== 'undefined' && window.firebase.firestore && window.firebase.firestore.FieldValue) {
+                                try {
+                                    var studentRef = db.collection('institutions').doc(instId).collection('students').doc(userId);
+                                    studentRef.set({
+                                        xp: window.firebase.firestore.FieldValue.increment(totalXp),
+                                        lastActiveAt: new Date().toISOString()
+                                    }, { merge: true }).catch(function () {});
+                                } catch (_) {}
+                            }
                             return getDB().then(function (idb) {
                                 if (!idb) {
                                     memoryQueue = memoryQueue.filter(function (m) {
                                         return !processedMutations.some(function (pm) { return pm.id === m.id; });
                                     });
-                                    isSyncing = false;
-                                    notifyListeners('sync_complete', { synced: processedMutations.length });
-                                    notifyListeners('firestore_synced', { synced: processedMutations.length });
-                                    return { synced: processedMutations.length, total: pending.length };
+                                    return processedMutations.length;
                                 }
                                 return new Promise(function (res) {
                                     var tx = idb.transaction(STORE_NAME, 'readwrite');
@@ -411,18 +440,21 @@
                                     processedMutations.forEach(function (pm) {
                                         store.delete(pm.id);
                                     });
-                                    tx.oncomplete = function () {
-                                        isSyncing = false;
-                                        notifyListeners('sync_complete', { synced: processedMutations.length });
-                                        notifyListeners('firestore_synced', { synced: processedMutations.length });
-                                        res({ synced: processedMutations.length, total: pending.length });
-                                    };
-                                    tx.onerror = function () {
-                                        isSyncing = false;
-                                        res({ synced: processedMutations.length, total: pending.length });
-                                    };
+                                    tx.oncomplete = function () { res(processedMutations.length); };
+                                    tx.onerror = function () { res(processedMutations.length); };
                                 });
                             });
+                        }).then(function (batchSyncedCount) {
+                            if (remainingMutations.length > 0) {
+                                return sequentialFlush(remainingMutations, defaultFirestoreSender).then(function (seqRes) {
+                                    var totalSynced = batchSyncedCount + (seqRes ? seqRes.synced : 0);
+                                    return { synced: totalSynced, total: pending.length };
+                                });
+                            }
+                            isSyncing = false;
+                            notifyListeners('sync_complete', { synced: batchSyncedCount });
+                            notifyListeners('firestore_synced', { synced: batchSyncedCount });
+                            return { synced: batchSyncedCount, total: pending.length };
                         }).catch(function (batchErr) {
                             console.warn('[stemOS Sync] Batch commit error, falling back to sequential retry:', batchErr);
                             return sequentialFlush(pending, defaultFirestoreSender);

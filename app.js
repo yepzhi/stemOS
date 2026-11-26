@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const skillsData = {
         "lxp-foundation": {
             title: "Tech Skills Foundation",
-            status: "completed",
+            status: "active",
             desc: "Fundamentos de habilidades técnicas y LXP. Conceptos base y desarrollo de metodologías en el entorno tecnológico.",
             prereq: "Ninguno",
             standard: "Fundamentos Técnicos / LXP",
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         semiconductors: {
             title: "STEM: Semiconductores",
-            status: "completed",
+            status: "active",
             desc: "Habilidades técnicas para la fabricación y ensamblaje de circuitos integrados. Conceptos clave sobre cleanrooms, obleas de silicio (wafers) y fotolitografía.",
             prereq: "Tech Skills Foundation",
             standard: "CONOCER EC1338 / Nivel Avanzado",
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         aerospace: {
             title: "STEM: Manufactura Aeronáutica",
             status: "locked",
-            desc: "Esqueleto de manufactura aeronáutica. Fundamentos de fuselajes, aviónica, motores de propulsión y materiales compuestos avanzados.",
+            desc: "Esqueleto de manufactura aeronáutica. Fundamentos de fuselajes, aviónica, motores de propión y materiales compuestos avanzados.",
             prereq: "STEM: Electromovilidad & Innovación TI",
             standard: "Manufactura de Alta Precisión",
             xp: 300,
@@ -73,12 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    let globalXP = 450;
-    let globalCompleted = 3;
+    let globalXP = 0;
+    let globalCompleted = 0;
     const statCompleted = document.getElementById('stat-completed');
     const statPoints = document.getElementById('stat-points');
 
-    // ── Gated Access: Placement Diagnostic Status & Modals ──
+    // ── Gated Access: Placement Diagnostic Status & Effective Level Helper ──
     function hasCompletedPlacement() {
         try {
             const passport = localStorage.getItem('stemos_diagnostic_passport');
@@ -98,6 +98,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
     window.hasCompletedPlacement = hasCompletedPlacement;
+
+    function getEffectivePlacementLevel() {
+        const normalizeLvl = (raw) => {
+            if (!raw) return '';
+            const up = String(raw).toUpperCase().trim();
+            if (up.startsWith('C1') || up.startsWith('C2')) return 'C1';
+            if (['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(up)) return up;
+            return '';
+        };
+        try {
+            const passRaw = localStorage.getItem('stemos_diagnostic_passport');
+            if (passRaw) {
+                const p = JSON.parse(passRaw);
+                const l = normalizeLvl(p && (p.assignedLevel || p.cefrLevel || p.level));
+                if (l) return l;
+            }
+        } catch (_) {}
+        try {
+            const resRaw = localStorage.getItem('stemos_placement_result') || localStorage.getItem('stemos_placement_test');
+            if (resRaw) {
+                const parsed = JSON.parse(resRaw);
+                const r = parsed && (parsed.result || parsed);
+                const l = normalizeLvl(r && (r.assignedLevel || r.level));
+                if (l) return l;
+            }
+        } catch (_) {}
+        return normalizeLvl(localStorage.getItem('stemos_cefr_level')) ||
+               normalizeLvl(localStorage.getItem('stemos_active_mcer_level')) ||
+               normalizeLvl(localStorage.getItem('stemos_user_level')) ||
+               'A1';
+    }
+    window.getEffectivePlacementLevel = getEffectivePlacementLevel;
 
     function showPlacementRequiredModal(unit) {
         const modal = document.getElementById('modal-placement-required');
@@ -248,15 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const coursesData = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
     const phrasesData = (typeof STEMOS_PHRASES !== 'undefined') ? STEMOS_PHRASES : [];
 
-    // Category metadata for styling and labels
+    // Category metadata for styling and labels (no raw emojis in UI badges)
     const CATEGORY_META = {
-        technology: { label: 'TECHNOLOGY', color: '#0ea5e9', icon: 'fa-microchip', emoji: '🔵' },
-        engineering: { label: 'ENGINEERING & INDUSTRY', color: '#f97316', icon: 'fa-gear', emoji: '🟠' },
-        science: { label: 'SCIENCE & FUTURE TECH', color: '#a855f7', icon: 'fa-flask', emoji: '🟣' },
-        career: { label: 'AVIATION & CAREER', color: '#22c55e', icon: 'fa-briefcase', emoji: '🟢' }
+        technology: { label: 'TECHNOLOGY', color: '#0ea5e9', icon: 'fa-microchip', emoji: '' },
+        engineering: { label: 'ENGINEERING & INDUSTRY', color: '#f97316', icon: 'fa-gear', emoji: '' },
+        science: { label: 'SCIENCE & FUTURE TECH', color: '#a855f7', icon: 'fa-flask', emoji: '' },
+        career: { label: 'AVIATION & CAREER', color: '#22c55e', icon: 'fa-briefcase', emoji: '' }
     };
 
-    // Track icon mapping
+    // Track icon mapping (all 34 ESP tracks)
     const TRACK_ICONS = {
         'cybersecurity': 'fa-shield-halved',
         'it-innovation': 'fa-cloud',
@@ -264,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'telecom-iot': 'fa-tower-cell',
         'software-dev': 'fa-code',
         'data-analytics': 'fa-chart-column',
+        'embedded-firmware-edge-ai': 'fa-memory',
         'semiconductors': 'fa-microchip',
         'electromobility': 'fa-car-battery',
         'aerospace': 'fa-plane-up',
@@ -272,6 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'advanced-manufacturing': 'fa-industry',
         'industrial-operations': 'fa-truck-fast',
         'mechatronics': 'fa-gears',
+        'automotive-lean': 'fa-car-side',
+        'medical-devices': 'fa-stethoscope',
+        'logistics-compliance': 'fa-boxes-stacked',
+        'quality-ehs': 'fa-helmet-safety',
+        'energy-data-centers': 'fa-server',
         'biotechnology': 'fa-dna',
         'space-satellite': 'fa-satellite',
         'environmental-sustainability': 'fa-leaf',
@@ -284,19 +322,21 @@ document.addEventListener('DOMContentLoaded', () => {
         'business-leadership': 'fa-chart-line',
         'project-management': 'fa-diagram-project',
         'entrepreneurship': 'fa-lightbulb',
-        'web-dev-agentic': 'fa-solid fa-code'
+        'advanced-supply-chain-reshoring': 'fa-globe',
+        'web-dev-agentic': 'fa-code'
     };
 
-    // Track order for consistent unit numbering
+    // Track order for consistent unit numbering (all 34 ESP tracks)
     const TRACK_ORDER = [
         'web-dev-agentic',
-        'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics',
+        'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics', 'embedded-firmware-edge-ai',
         'semiconductors', 'electromobility', 'aerospace', 'robotics-automation', 'energy-renewables',
         'advanced-manufacturing', 'industrial-operations', 'mechatronics',
+        'automotive-lean', 'medical-devices', 'logistics-compliance', 'quality-ehs', 'energy-data-centers',
         'biotechnology', 'space-satellite', 'environmental-sustainability', 'healthcare-tech',
         'materials-nanotech', 'food-science',
         'aviation-english', 'airforce-aerospace', 'hospitality-food', 'business-leadership',
-        'project-management', 'entrepreneurship'
+        'project-management', 'entrepreneurship', 'advanced-supply-chain-reshoring'
     ];
 
     let activeFilterCategory = 'all';
@@ -336,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* --- State Management and Progress Persistence --- */
     let userProgress = {
-        xp: 450,
+        xp: 0,
         completedReadings: {},
         completedModules: {},
         completedTracks: {},
@@ -355,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof userProgress.quizStreak !== 'number') userProgress.quizStreak = 0;
 
                 const storedStudentXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
-                const baseXp = (typeof userProgress.xp === 'number') ? userProgress.xp : 450;
+                const baseXp = (typeof userProgress.xp === 'number') ? userProgress.xp : 0;
                 globalXP = Math.max(baseXp, storedStudentXp);
                 if (statPoints) statPoints.textContent = globalXP;
 
@@ -383,28 +423,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Error loading progress", e);
             }
         } else {
-            // Set initial state
+            // Clean Day-1 initial state (zero fake progress / XP pre-seeding, no premature cloud write)
+            globalXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
             userProgress = {
                 xp: globalXP,
                 completedReadings: {},
-                completedModules: {
-                    "semi-m1": true,
-                    "semi-m2": true,
-                    "semi-m3": true,
-                    "semi-m4": true,
-                    "semi-m5": true,
-                    "semi-m6": true
-                },
-                completedTracks: {
-                    "lxp-foundation": true,
-                    "semiconductors": true
-                },
-                nodeStatuses: {}
+                completedModules: {},
+                completedTracks: {},
+                nodeStatuses: {},
+                quizStreak: 0
             };
             for (let key in skillsData) {
                 userProgress.nodeStatuses[key] = skillsData[key].status;
             }
-            saveProgress();
+            try {
+                localStorage.setItem('stemos_user_progress', JSON.stringify(userProgress));
+            } catch (_) {}
         }
         updateProgressBar();
         if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
@@ -412,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof renderBadgesWall === 'function') renderBadgesWall();
     }
 
-    function saveProgress() {
+    function saveProgress(skipCloudSync = false) {
         userProgress.xp = globalXP;
         if (!userProgress.nodeStatuses) userProgress.nodeStatuses = {};
         for (let key in skillsData) {
@@ -421,16 +455,19 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('stemos_user_progress', JSON.stringify(userProgress));
         if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
         if (typeof renderSegmentedProgressBar === 'function') renderSegmentedProgressBar();
-        if (typeof renderAllUnitsGrid === 'function' && typeof activeFilterCategory !== 'undefined') {
+
+        const sectionEsp = document.getElementById('section-world-esp');
+        if (typeof renderAllUnitsGrid === 'function' && typeof activeFilterCategory !== 'undefined' && sectionEsp && sectionEsp.style.display !== 'none') {
             renderAllUnitsGrid(activeFilterCategory);
         }
-        if (typeof renderBadgesWall === 'function') {
+        const badgesView = document.getElementById('view-micro-badges');
+        if (typeof renderBadgesWall === 'function' && badgesView && badgesView.classList.contains('active')) {
             renderBadgesWall();
         }
-        if (window.StemOSWorldMap && typeof window.StemOSWorldMap.syncProgress === 'function') {
+        if (window.StemOSWorldMap && window.StemOSWorldMap.initialized && typeof window.StemOSWorldMap.syncProgress === 'function') {
             window.StemOSWorldMap.syncProgress();
         }
-        if (typeof window.syncStudentProgressToFirestore === 'function') {
+        if (!skipCloudSync && typeof window.syncStudentProgressToFirestore === 'function') {
             window.syncStudentProgressToFirestore();
         }
     }
@@ -1014,6 +1051,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.getActivityScores = getActivityScores;
 
+    let _syncFlushTimer = null;
+
     function recordActivityScore(entry) {
         if (!entry || !entry.unitId) return null;
         const scores = getActivityScores();
@@ -1048,12 +1087,16 @@ document.addEventListener('DOMContentLoaded', () => {
             awardXP(entry.xpAwarded);
         }
 
-        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
+        // Only enqueue & debounced-flush to Firestore on step/quiz completion, NOT on every individual MCQ click
+        if (entry.syncToCloud !== false && window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
             try {
+                const rawCefr = entry.cefr || (entry.unitId.match(/^(a1|a2|b1|b2|c1|c2)/i)?.[1] || 'A1').toUpperCase();
                 window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_ACTIVITY_SCORE', {
                     unitId: entry.unitId,
                     sectionKey: sectionKey,
                     sectionTitle: entry.sectionTitle || sectionKey,
+                    unitTitle: entry.sectionTitle || sectionKey,
+                    cefr: rawCefr,
                     score: numericScore,
                     bestScore: bestScore,
                     passed: passed,
@@ -1062,12 +1105,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     updatedAt: new Date().toISOString()
                 }, { strategy: 'LAST_WRITE_WINS' });
                 if (navigator.onLine) {
-                    window.STEMOS_SYNC.flushQueue().catch(() => {});
+                    if (_syncFlushTimer) clearTimeout(_syncFlushTimer);
+                    _syncFlushTimer = setTimeout(() => {
+                        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.flushQueue === 'function') {
+                            window.STEMOS_SYNC.flushQueue().catch(() => {});
+                        }
+                    }, 5000);
                 }
             } catch (_) {}
         }
 
-        if (typeof window.syncStudentProgressToFirestore === 'function') {
+        if (entry.syncToCloud !== false && typeof window.syncStudentProgressToFirestore === 'function') {
             window.syncStudentProgressToFirestore();
         }
         if (typeof window.updateKPIMetrics === 'function') {
@@ -1088,7 +1136,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevDisabled = btn.disabled;
         btn.disabled = true;
         btn.setAttribute('aria-busy', 'true');
-        btn.innerHTML = `<progress aria-label="${loadingLabel || 'Validating'}" class="loading-spinner duo-btn-spinner"></progress><span>${loadingLabel || 'Validating...'}</span>`;
+        const spinnerHtml = `<progress aria-label="${loadingLabel || 'Validating'}" class="loading-spinner duo-btn-spinner"></progress><span>${loadingLabel || 'Validating...'}</span>`;
+        btn.innerHTML = spinnerHtml;
 
         if (window.DuoSound && typeof window.DuoSound.playValidate === 'function') {
             window.DuoSound.playValidate();
@@ -1100,8 +1149,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 btn.dataset.stemosBusy = 'false';
                 btn.removeAttribute('aria-busy');
-                btn.disabled = prevDisabled;
-                btn.innerHTML = originalHtml;
+                // Preserve intentional label/disabled updates made inside taskFn
+                if (btn.innerHTML === spinnerHtml) {
+                    btn.disabled = prevDisabled;
+                    btn.innerHTML = originalHtml;
+                }
             }
         }, delayMs);
     }
@@ -1922,13 +1974,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!userProgress.completedTracks) userProgress.completedTracks = {};
             userProgress.completedTracks[activeTrackId] = true;
 
-            globalXP += 100;
-            if (statPoints) statPoints.textContent = globalXP;
+            awardXP(100);
 
             globalCompleted++;
             if (statCompleted) statCompleted.textContent = globalCompleted;
 
-            alert(`¡Excelente trabajo! Has completado exitosamente la especialidad: ${track.titleEN || track.title}. (+100 XP Bonus y Credencial Desbloqueada)`);
+            if (typeof showSyncToast === 'function') {
+                showSyncToast(`¡Track "${track.titleEN || track.title}" completado! +100 XP y Credencial desbloqueada.`, 'success');
+            }
 
             checkUnlocks();
             updateGraphUI();
@@ -1944,28 +1997,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (skillsData["electromobility"].status === 'completed' && skillsData["it-innovation"].status === 'completed') {
                 if (skillsData["aerospace"] && skillsData["aerospace"].status === 'locked') {
                     skillsData["aerospace"].status = 'active';
-                    alert("¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast('¡Habilidad Desbloqueada! Ya puedes acceder a Manufactura Aeronáutica.', 'success');
+                    }
                 }
             }
         }
         if (skillsData["aerospace"] && skillsData["aerospace"].status === 'completed') {
             if (skillsData["socratic-capstone"] && skillsData["socratic-capstone"].status === 'locked') {
                 skillsData["socratic-capstone"].status = 'active';
-                alert("¡Habilidad Final Desbloqueada! Comienza el Socratic Capstone Assessment.");
+                if (typeof showSyncToast === 'function') {
+                    showSyncToast('¡Habilidad Final Desbloqueada! Comienza el Socratic Capstone Assessment.', 'success');
+                }
             }
         }
     }
 
     function updateProgressBar() {
-        const totalModules = 30;
+        const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
+        let totalModules = 0;
+        orderedTracks.forEach(id => {
+            totalModules += (coursesData[id] && Array.isArray(coursesData[id].modules)) ? coursesData[id].modules.length : 0;
+        });
+        totalModules = totalModules || 196;
         let completedCount = 0;
         for (let key in userProgress.completedModules) {
             if (userProgress.completedModules[key] === true) {
                 completedCount++;
             }
         }
-        const percent = Math.min(100, Math.round(16.6 + (completedCount / totalModules) * 83.4));
-        
+        const percent = Math.min(100, Math.round((completedCount / totalModules) * 100));
+
         const elPercent = document.getElementById('progress-percent');
         if (elPercent) elPercent.textContent = `${percent}%`;
         const elFillBar = document.getElementById('progress-fill-bar');
@@ -2028,8 +2090,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!userProgress.completedReadings[reading.id]) {
             userProgress.completedReadings[reading.id] = true;
-            globalXP += 25;
-            if (statPoints) statPoints.textContent = globalXP;
+            awardXP(25);
         }
 
         const allReadingsCompleted = activeModule.readings.every(r => userProgress.completedReadings[r.id] === true);
@@ -2048,6 +2109,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (typeof renderBadgesWall === 'function') {
             renderBadgesWall();
+        }
+
+        // Wire Next Lesson button inside congrats screen so completion isn't a dead end
+        const nextBtn = document.getElementById('btn-academic-next-lesson');
+        if (nextBtn) {
+            const track = coursesData[activeTrackId];
+            const mods = (track && Array.isArray(track.modules)) ? track.modules : [];
+            const nextReadingIdx = activeReadingIndex + 1;
+            const modIdx = mods.findIndex(m => m.id === activeModule.id);
+            const hasNextReading = nextReadingIdx < activeModule.readings.length;
+            const nextMod = (!hasNextReading && modIdx >= 0 && modIdx + 1 < mods.length) ? mods[modIdx + 1] : null;
+            if (hasNextReading) {
+                nextBtn.style.display = 'inline-flex';
+                nextBtn.innerHTML = '<span>Siguiente Lectura</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+                nextBtn.onclick = () => {
+                    activeReadingIndex = nextReadingIdx;
+                    switchScreen('reading');
+                    renderCurrentReading();
+                };
+            } else if (nextMod) {
+                nextBtn.style.display = 'inline-flex';
+                nextBtn.innerHTML = '<span>Siguiente Módulo</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+                nextBtn.onclick = () => {
+                    academicModal.close();
+                    openAcademicModal(activeTrackId, nextMod);
+                };
+            } else {
+                nextBtn.style.display = 'none';
+                nextBtn.onclick = null;
+            }
         }
         switchScreen('congrats');
     }
@@ -2154,7 +2245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalCount: reading.questions.length,
                 scorePct: readingScorePct,
                 passed: allCorrect,
-                xpAwarded: allCorrect ? 0 : 10
+                xpAwarded: 0
             });
 
             if (allCorrect) {
@@ -2174,7 +2265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fa-solid fa-circle-check"></i> <strong>Passed &amp; Saved! (${correctCount}/${reading.questions.length} · ${readingScorePct}%)</strong>
                             <div style="font-size: 0.8rem; margin-top: 2px;">Technical comprehension and vocabulary validated at 100%.</div>
                         </div>
-                        ${streak > 1 ? `<span class="quiz-streak-badge"><i class="fa-solid fa-fire"></i> Streak x${streak} 🔥 +${streakBonus} XP</span>` : ''}
+                        ${streak > 1 ? `<span class="quiz-streak-badge"><i class="fa-solid fa-fire"></i> Streak x${streak} +${streakBonus} XP</span>` : ''}
                     `;
                 }
 
@@ -2192,13 +2283,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     feedbackBanner.innerHTML = `
                         <div>
                             <i class="fa-solid fa-circle-exclamation"></i> <strong>${correctCount}/${reading.questions.length} correct (${readingScorePct}%) · Score Saved</strong>
-                            <div style="font-size: 0.8rem; margin-top: 2px;">Review the rationales below (+10 XP practice credit saved) and retry when ready.</div>
+                            <div style="font-size: 0.8rem; margin-top: 2px;">Revisa la justificación debajo de cada pregunta e inténtalo de nuevo para aprobar.</div>
                         </div>
                     `;
                     feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
                 btnSubmitQuiz.disabled = false;
-                btnSubmitQuiz.innerHTML = 'Retry Validation <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>';
+                btnSubmitQuiz.innerHTML = 'Reintentar Evaluación <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>';
             }
         });
     });
@@ -2382,23 +2473,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Update active state on sidebar buttons & mobile dock buttons
+        // Update active state on sidebar buttons & mobile dock buttons (including aria-current="page")
         const isAtWorkActive = (viewName === 'atwork-lab' || viewName === 'output-lab' || viewName === 'escalation-email' || viewName === 'email-builder');
         edRailBtns.forEach(btn => {
             const btnView = btn.dataset.view;
-            if (isAtWorkActive && (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.toggle('active', btnView === viewName);
-            }
+            const active = isAtWorkActive
+                ? (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')
+                : (btnView === viewName);
+            btn.classList.toggle('active', active);
+            if (active) btn.setAttribute('aria-current', 'page');
+            else btn.removeAttribute('aria-current');
         });
         document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
             const btnView = btn.dataset.view;
-            if (isAtWorkActive && (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.toggle('active', btnView === viewName);
-            }
+            const active = isAtWorkActive
+                ? (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')
+                : (btnView === viewName);
+            btn.classList.toggle('active', active);
+            if (active) btn.setAttribute('aria-current', 'page');
+            else btn.removeAttribute('aria-current');
         });
 
         // Dynamic View-Specific Renderers & Initializers
@@ -2698,7 +2791,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (detailTitle) detailTitle.textContent = track.titleEN || track.title;
         if (detailDesc) detailDesc.textContent = track.title || '';
         if (detailCatPill) {
-            detailCatPill.textContent = `${catMeta.emoji} ${catMeta.label}`;
+            detailCatPill.innerHTML = `<i class="fa-solid ${catMeta.icon}" aria-hidden="true"></i> ${catMeta.label}`;
             detailCatPill.style.background = `${catMeta.color}18`;
             detailCatPill.style.color = catMeta.color;
             detailCatPill.style.borderColor = `${catMeta.color}40`;
@@ -3052,11 +3145,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /* --- 6. KPI METRICS --- */
+    /* --- 6. KPI METRICS & UNIFIED HOURS HELPER --- */
+    window.getRealPracticeHours = function() {
+        const storedHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0') || 0;
+        let completedReadings = 0;
+        if (userProgress && userProgress.completedReadings) {
+            completedReadings = Object.values(userProgress.completedReadings).filter(Boolean).length;
+        }
+        let duoCompletedCount = 0;
+        try {
+            const duoProg = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
+            Object.values(duoProg).forEach(rec => {
+                if (rec && rec.completed) duoCompletedCount++;
+            });
+        } catch (_) {}
+        const totalMinutes = (completedReadings * 10) + (duoCompletedCount * 5);
+        return Math.max(storedHours, totalMinutes / 60);
+    };
+
     window.updateKPIMetrics = function() {
         const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
 
-        // Course Completion %
         let totalReadings = 0;
         let completedReadings = 0;
         orderedTracks.forEach(id => {
@@ -3065,10 +3174,11 @@ document.addEventListener('DOMContentLoaded', () => {
             completedReadings += p.completedReadings;
         });
 
+        let duoProg = {};
         let duoCompletedCount = 0;
         const scoreValues = [];
         try {
-            const duoProg = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
+            duoProg = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
             Object.values(duoProg).forEach(rec => {
                 if (!rec || typeof rec !== 'object') return;
                 if (rec.completed) duoCompletedCount++;
@@ -3087,13 +3197,56 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (_) {}
 
-        const courseCompletion = totalReadings > 0
-            ? Math.min(100, Math.round(((completedReadings + duoCompletedCount) / totalReadings) * 100))
-            : Math.min(100, duoCompletedCount * 2);
+        // Scope-aware Course Completion %
+        const scope = localStorage.getItem('stemos_active_path_scope') || 'mcer';
+        const stepsPerUnit = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META)) ? DUO_STEPS_META.length : 7;
+        let courseCompletion = 0;
+
+        if (scope === 'mcer' && window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getClassesByLevel === 'function') {
+            const lvlFilter = (window.activeMcerLevelFilter || 'all').toUpperCase();
+            const levels = (lvlFilter === 'ALL')
+                ? ['A1', 'A2', 'B1', 'B2']
+                : ((lvlFilter === 'C1' || lvlFilter === 'C2' || lvlFilter === 'C1-C2') ? ['C1-C2'] : [lvlFilter]);
+            let totalPossibleSteps = 0;
+            let doneStepsTotal = 0;
+            levels.forEach(lvl => {
+                const clsList = window.STEMOS_MCER_CLASSES.getClassesByLevel(lvl) || [];
+                clsList.forEach(cls => {
+                    totalPossibleSteps += stepsPerUnit;
+                    const clsDone = (localStorage.getItem('stemos_mcer_unit_' + cls.id) === 'passed') ||
+                                    (localStorage.getItem('stemos_crucible_' + cls.id) === 'completed') ||
+                                    (localStorage.getItem('stemos_unit_completed_' + cls.id) === 'true') ||
+                                    (cls.unitId && localStorage.getItem('stemos_mcer_unit_' + cls.unitId) === 'passed');
+                    if (clsDone) {
+                        doneStepsTotal += stepsPerUnit;
+                    } else {
+                        for (let s = 1; s <= stepsPerUnit; s++) {
+                            if (duoProg[`${cls.id}-step${s}`] && duoProg[`${cls.id}-step${s}`].completed) {
+                                doneStepsTotal++;
+                            }
+                        }
+                    }
+                });
+            });
+            courseCompletion = totalPossibleSteps > 0 ? Math.min(100, Math.round((doneStepsTotal / totalPossibleSteps) * 100)) : 0;
+        } else {
+            const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+            let careerCompleted = 0;
+            try {
+                const cp = JSON.parse(localStorage.getItem('stemos_progress_' + activeCareerId) || '{}');
+                if (cp && cp.modules) {
+                    careerCompleted = Object.values(cp.modules).filter(m => m && (m.status === 'completed' || m.completed)).length;
+                }
+            } catch (_) {}
+            const readingPct = totalReadings > 0 ? Math.round((completedReadings / totalReadings) * 100) : 0;
+            const careerPct = Math.round((careerCompleted / 16) * 100);
+            courseCompletion = Math.min(100, Math.max(readingPct, careerPct));
+        }
+
         const kpiCourse = document.getElementById('kpi-course-completion');
         if (kpiCourse) kpiCourse.textContent = `${courseCompletion}%`;
 
-        // Average Test Score — real average across all saved activity & interactive runner attempts (passed or wrong)
+        // Average Test Score — real average across saved attempts
         let avgScore = '--';
         if (scoreValues.length > 0) {
             const sum = scoreValues.reduce((acc, s) => acc + s, 0);
@@ -3104,8 +3257,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const kpiAvg = document.getElementById('kpi-avg-score');
         if (kpiAvg) kpiAvg.textContent = (avgScore === '--') ? '--' : `${avgScore}%`;
 
-        // Time on Task — counts completed readings + interactive lessons
-        const totalMinutes = (completedReadings * 10) + (duoCompletedCount * 5);
+        // Time on Task — unified across Hero KPI, HUD & Profile
+        const totalMinutes = Math.round(window.getRealPracticeHours() * 60);
         const hours = Math.floor(totalMinutes / 60);
         const mins = totalMinutes % 60;
         const kpiHours = document.getElementById('kpi-time-hours');
@@ -3113,7 +3266,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (kpiHours) kpiHours.textContent = String(hours).padStart(2, '0');
         if (kpiMins) kpiMins.textContent = String(mins).padStart(2, '0');
 
-        // Curricular XP & Student Engineering Level (Fase 53)
         if (typeof window.updateStudentXPHUD === 'function') {
             window.updateStudentXPHUD();
         }
@@ -3121,15 +3273,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ─── XP & GAMIFICATION ENGINE (FASE 53) ─────────────────────── */
     const STUDENT_LEVELS = [
-        { level: 1, title: 'Aprendiz', minXP: 0, icon: '🟢', badge: 'XP 1 · Aprendiz' },
-        { level: 2, title: 'Técnico', minXP: 500, icon: '🔵', badge: 'XP 2 · Técnico' },
-        { level: 3, title: 'Especialista', minXP: 1200, icon: '🟣', badge: 'XP 3 · Especialista' },
-        { level: 4, title: 'Ingeniero', minXP: 2200, icon: '🟠', badge: 'XP 4 · Ingeniero' },
-        { level: 5, title: 'Ing. Senior', minXP: 3500, icon: '🔴', badge: 'XP 5 · Senior' },
-        { level: 6, title: 'Líder', minXP: 5000, icon: '⭐', badge: 'XP 6 · Líder' },
-        { level: 7, title: 'Fellow', minXP: 6500, icon: '💎', badge: 'XP 7 · Fellow' },
-        { level: 8, title: 'Master Fellow', minXP: 8000, icon: '👑', badge: 'XP 8 · Master' }
+        { level: 1, title: 'Aprendiz', minXP: 0, icon: 'fa-seedling', badge: 'XP 1 · Aprendiz' },
+        { level: 2, title: 'Técnico', minXP: 500, icon: 'fa-wrench', badge: 'XP 2 · Técnico' },
+        { level: 3, title: 'Especialista', minXP: 1200, icon: 'fa-microchip', badge: 'XP 3 · Especialista' },
+        { level: 4, title: 'Ingeniero', minXP: 2200, icon: 'fa-gears', badge: 'XP 4 · Ingeniero' },
+        { level: 5, title: 'Ing. Senior', minXP: 3500, icon: 'fa-shield-halved', badge: 'XP 5 · Senior' },
+        { level: 6, title: 'Líder', minXP: 5000, icon: 'fa-star', badge: 'XP 6 · Líder' },
+        { level: 7, title: 'Fellow', minXP: 6500, icon: 'fa-award', badge: 'XP 7 · Fellow' },
+        { level: 8, title: 'Master Fellow', minXP: 8000, icon: 'fa-crown', badge: 'XP 8 · Master' }
     ];
+    window.STUDENT_LEVELS = STUDENT_LEVELS;
 
     window.getStudentLevelForXP = function(xp) {
         let current = STUDENT_LEVELS[0];
@@ -3462,7 +3615,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (_syncDebounceTimer) clearTimeout(_syncDebounceTimer);
             _syncDebounceTimer = setTimeout(() => {
                 window.syncStudentProgressToFirestore(true);
-            }, 1200);
+            }, 3500);
             return;
         }
 
@@ -3486,20 +3639,57 @@ document.addEventListener('DOMContentLoaded', () => {
             userProg = JSON.parse(localStorage.getItem('stemos_user_progress') || '{}');
         } catch(e) {}
 
+        let activityScores = {};
+        try {
+            activityScores = JSON.parse(localStorage.getItem('stemos_activity_scores') || '{}');
+        } catch(e) {}
+
         let placementTest = null;
         try {
             const rawP = localStorage.getItem('stemos_placement_test');
             if (rawP) placementTest = JSON.parse(rawP);
         } catch(e) {}
 
-        const xp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
-        const streak = parseInt(localStorage.getItem('stemos_daily_streak') || '1', 10);
-        const caceiHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
-        const level = localStorage.getItem('stemos_user_level') || 'A1';
+        let diagnosticPassport = null;
+        try {
+            const rawPass = localStorage.getItem('stemos_diagnostic_passport');
+            if (rawPass) diagnosticPassport = JSON.parse(rawPass);
+        } catch(e) {}
+
+        // Collect per-career station progress, MCER unit states, and resume step pointers
+        const careerProgress = {};
+        const mcerUnits = {};
+        const activeStepMap = {};
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (!k) continue;
+                if (k.startsWith('stemos_progress_')) {
+                    const cid = k.slice('stemos_progress_'.length);
+                    careerProgress[cid] = JSON.parse(localStorage.getItem(k) || '{}');
+                } else if (k.startsWith('stemos_mcer_unit_') && localStorage.getItem(k) === 'passed') {
+                    mcerUnits[k.slice('stemos_mcer_unit_'.length)] = 'passed';
+                } else if (k.startsWith('stemos_crucible_') && localStorage.getItem(k) === 'completed') {
+                    const uid = k.slice('stemos_crucible_'.length);
+                    if (!mcerUnits[uid]) mcerUnits[uid] = 'completed';
+                } else if (k.startsWith('stemos_active_step_')) {
+                    activeStepMap[k.slice('stemos_active_step_'.length)] = localStorage.getItem(k);
+                }
+            }
+        } catch(e) {}
+
+        const xp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
+        const streak = parseInt(localStorage.getItem('stemos_daily_streak') || '1', 10) || 1;
+        const caceiHours = typeof window.getRealPracticeHours === 'function'
+            ? window.getRealPracticeHours()
+            : (parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0') || 0);
+        const level = (typeof getEffectivePlacementLevel === 'function') ? getEffectivePlacementLevel() : (localStorage.getItem('stemos_user_level') || 'A1');
         const activeMcerLevel = localStorage.getItem('stemos_active_mcer_level') || level;
         const ttsSpeed = localStorage.getItem('stemos_tts_playback_rate') || '1.0';
         const diagFolio = localStorage.getItem('stemos_diag_folio') || '';
         const placementCompleted = localStorage.getItem('stemos_placement_completed') === 'true';
+        const placementWaived = localStorage.getItem('stemos_placement_waived') === 'true';
+        const activeUnitId = localStorage.getItem('stemos_active_unit_id') || null;
 
         const payload = {
             profile: profile,
@@ -3510,13 +3700,19 @@ document.addEventListener('DOMContentLoaded', () => {
             level: level,
             activeMcerLevel: activeMcerLevel,
             duoProgress: duoProgress,
+            activityScores: activityScores,
+            careerProgress: careerProgress,
+            mcerUnits: mcerUnits,
+            activeUnitId: activeUnitId,
+            activeStepMap: activeStepMap,
             userProgress: userProg,
             placementTest: placementTest,
+            diagnosticPassport: diagnosticPassport,
             placementCompleted: placementCompleted,
+            placementWaived: placementWaived,
             diagFolio: diagFolio,
             ttsSpeed: ttsSpeed,
-            onboardingCompleted: true,
-            institutionId: (profile && (profile.subsystem || profile.system)) || 'tecnm-saltillo'
+            onboardingCompleted: true
         };
 
         const success = await window.STEMOS_FIREBASE.saveStudentFullProgressToCloud(payload);
@@ -3539,13 +3735,17 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Sincronizando...`;
         }
         try {
-            await window.syncStudentProgressToFirestore(true);
+            const ok = await window.syncStudentProgressToFirestore(true);
             if (btn) {
-                btn.innerHTML = `<i class="fa-solid fa-check" style="color:#10b981;"></i> ¡Sincronizado!`;
+                if (ok) {
+                    btn.innerHTML = `<i class="fa-solid fa-check" style="color:#10b981;"></i> ¡Sincronizado!`;
+                } else {
+                    btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up" style="color:#f59e0b;"></i> Inicia sesión para nube`;
+                }
                 setTimeout(() => {
                     btn.innerHTML = origHtml;
                     btn.disabled = false;
-                }, 2000);
+                }, 2200);
             }
         } catch(e) {
             if (btn) {
@@ -3553,7 +3753,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     btn.innerHTML = origHtml;
                     btn.disabled = false;
-                }, 2000);
+                }, 2200);
             }
         }
     };
@@ -3617,19 +3817,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // Reset local storage student state
+        // Reset local storage student state completely
         localStorage.setItem('stemos_student_xp', '0');
         localStorage.setItem('stemos_daily_streak', '1');
         localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
-        localStorage.setItem('stemos_user_level', 'A1');
-        localStorage.setItem('stemos_active_mcer_level', 'A1');
         localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
-        localStorage.removeItem('stemos_activity_scores');
-        localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
-        localStorage.removeItem('stemos_placement_test');
-        localStorage.removeItem('stemos_placement_completed');
-        localStorage.removeItem('stemos_diag_folio');
-        localStorage.removeItem('stemos_diag_status');
+        localStorage.setItem('stemos_activity_scores', JSON.stringify({}));
+        localStorage.setItem('stemos_user_progress', JSON.stringify({
+            xp: 0,
+            completedReadings: {},
+            completedModules: {},
+            completedTracks: {},
+            nodeStatuses: {}
+        }));
+        [
+            'stemos_user_level',
+            'stemos_active_mcer_level',
+            'stemos_cefr_level',
+            'stemos_placement_test',
+            'stemos_placement_result',
+            'stemos_user_placement_result',
+            'stemos_placement_completed',
+            'stemos_placement_waived',
+            'stemos_diagnostic_passport',
+            'stemos_diag_folio',
+            'stemos_diag_status',
+            'stemos_active_unit_id'
+        ].forEach(k => localStorage.removeItem(k));
+        const resetPrefixes = [
+            'stemos_mcer_unit_', 'stemos_unit_completed_', 'stemos_crucible_',
+            'stemos_mcer_', 'stemos_active_step_', 'stemos_progress_',
+            'stemos_writing_', 'stemos_socratic_'
+        ];
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            if (k && resetPrefixes.some(p => k.startsWith(p))) {
+                localStorage.removeItem(k);
+            }
+        }
 
         alert('¡Tu progreso ha sido reiniciado a cero con éxito! La plataforma se recargará para que puedas empezar tu ruta desde cero.');
         window.location.replace('/app');
@@ -3738,10 +3963,12 @@ document.addEventListener('DOMContentLoaded', () => {
             streakEl.textContent = `${sData.streak} ${sData.streak === 1 ? 'Día' : 'Días'}`;
         }
 
-        // CACEI Hours KPI
+        // CACEI Hours KPI (Unified across Dashboard, Duo HUD & Profile)
         const hoursEl = document.getElementById('sp-modal-kpi-hours');
         if (hoursEl) {
-            const hrs = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
+            const hrs = typeof window.getRealPracticeHours === 'function'
+                ? window.getRealPracticeHours()
+                : (parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0') || 0);
             hoursEl.textContent = `${hrs.toFixed(1)} hrs`;
         }
 
@@ -3959,27 +4186,161 @@ document.addEventListener('DOMContentLoaded', () => {
                         role: 'student'
                     }));
 
+    // Monotonic cloud progress hydrator (merges cloud & local progress without losing offline or ESP data)
+    function hydrateCloudProgressMonotonic(cloudData) {
+        if (!cloudData || typeof cloudData !== 'object') return;
+
+        // 1. Scalar KPIs (XP, streak, hours)
+        if (typeof cloudData.xp === 'number') {
+            const localXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0;
+            const mergedXp = Math.max(localXp, cloudData.xp);
+            localStorage.setItem('stemos_student_xp', String(mergedXp));
+            if (typeof globalXP !== 'undefined') globalXP = mergedXp;
+        }
+        if (typeof cloudData.streak === 'number') {
+            const localStreak = parseInt(localStorage.getItem('stemos_daily_streak') || '1', 10) || 1;
+            localStorage.setItem('stemos_daily_streak', String(Math.max(localStreak, cloudData.streak)));
+        }
+        if (cloudData.lastStudyDate) {
+            localStorage.setItem('stemos_last_study_date', cloudData.lastStudyDate);
+        }
+        if (typeof cloudData.caceiHours === 'number' || typeof cloudData.caceiHours === 'string') {
+            const localH = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0') || 0;
+            const cloudH = parseFloat(cloudData.caceiHours) || 0;
+            localStorage.setItem('stemos_cacei_accredited_hours', Math.max(localH, cloudH).toFixed(2));
+        }
+        if (cloudData.level) localStorage.setItem('stemos_user_level', cloudData.level);
+        if (cloudData.activeMcerLevel) localStorage.setItem('stemos_active_mcer_level', cloudData.activeMcerLevel);
+
+        // 2. Monotonic merge of Duo step progress (never overwrites newer/completed local work)
+        if (cloudData.duoProgress && typeof cloudData.duoProgress === 'object') {
+            let localDuo = {};
+            try { localDuo = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}'); } catch (_) {}
+            const mergedDuo = Object.assign({}, localDuo);
+            Object.keys(cloudData.duoProgress).forEach(k => {
+                const c = cloudData.duoProgress[k];
+                const l = localDuo[k];
+                if (!l) {
+                    mergedDuo[k] = c;
+                } else if (c && typeof c === 'object') {
+                    const useCloud = (c.updatedAt || 0) > (l.updatedAt || 0);
+                    const base = useCloud ? c : l;
+                    mergedDuo[k] = Object.assign({}, base, {
+                        completed: Boolean(l.completed || c.completed),
+                        bestScore: Math.max(l.bestScore || l.score || 0, c.bestScore || c.score || 0),
+                        score: Math.max(l.score || 0, c.score || 0)
+                    });
+                }
+            });
+            localStorage.setItem('stemos_duo_progress', JSON.stringify(mergedDuo));
+        }
+
+        // 3. Monotonic merge of activityScores
+        if (cloudData.activityScores && typeof cloudData.activityScores === 'object') {
+            let localAct = {};
+            try { localAct = JSON.parse(localStorage.getItem('stemos_activity_scores') || '{}'); } catch (_) {}
+            const mergedAct = Object.assign({}, localAct);
+            Object.keys(cloudData.activityScores).forEach(k => {
+                const c = cloudData.activityScores[k];
+                const l = localAct[k];
+                if (!l) {
+                    mergedAct[k] = c;
+                } else if (c && typeof c === 'object') {
+                    const useCloud = (c.updatedAt || 0) > (l.updatedAt || 0);
+                    mergedAct[k] = Object.assign({}, useCloud ? c : l, {
+                        passed: Boolean(l.passed || c.passed),
+                        bestScore: Math.max(l.bestScore || 0, c.bestScore || 0)
+                    });
+                }
+            });
+            localStorage.setItem('stemos_activity_scores', JSON.stringify(mergedAct));
+        }
+
+        // 4. Restore & merge ESP userProgress (completedReadings, completedModules, completedTracks, nodeStatuses)
+        if (cloudData.userProgress && typeof cloudData.userProgress === 'object') {
+            let localUp = {};
+            try { localUp = JSON.parse(localStorage.getItem('stemos_user_progress') || '{}'); } catch (_) {}
+            const cUp = cloudData.userProgress;
+            const mergedUp = {
+                xp: Math.max(localUp.xp || 0, cUp.xp || 0, globalXP || 0),
+                completedReadings: Object.assign({}, localUp.completedReadings || {}, cUp.completedReadings || {}),
+                completedModules: Object.assign({}, localUp.completedModules || {}, cUp.completedModules || {}),
+                completedTracks: Object.assign({}, localUp.completedTracks || {}, cUp.completedTracks || {}),
+                nodeStatuses: Object.assign({}, localUp.nodeStatuses || {}, cUp.nodeStatuses || {}),
+                quizStreak: Math.max(localUp.quizStreak || 0, cUp.quizStreak || 0)
+            };
+            localStorage.setItem('stemos_user_progress', JSON.stringify(mergedUp));
+        }
+
+        // 5. Restore & merge 16-station Career progress & per-unit MCER flags + resume pointers
+        if (cloudData.careerProgress && typeof cloudData.careerProgress === 'object') {
+            Object.keys(cloudData.careerProgress).forEach(cid => {
+                const key = 'stemos_progress_' + cid;
+                let localCp = {};
+                try { localCp = JSON.parse(localStorage.getItem(key) || '{}'); } catch (_) {}
+                const cCp = cloudData.careerProgress[cid] || {};
+                const mergedMods = Object.assign({}, localCp.modules || {});
+                Object.keys(cCp.modules || {}).forEach(mId => {
+                    const cMod = cCp.modules[mId];
+                    const lMod = mergedMods[mId];
+                    if (!lMod || (cMod && cMod.status === 'completed' && lMod.status !== 'completed')) {
+                        mergedMods[mId] = cMod;
+                    }
+                });
+                localStorage.setItem(key, JSON.stringify({ modules: mergedMods }));
+            });
+        }
+        if (cloudData.mcerUnits && typeof cloudData.mcerUnits === 'object') {
+            Object.keys(cloudData.mcerUnits).forEach(uid => {
+                const val = cloudData.mcerUnits[uid];
+                if (val === 'passed') {
+                    localStorage.setItem('stemos_mcer_unit_' + uid, 'passed');
+                    localStorage.setItem('stemos_unit_completed_' + uid, 'true');
+                } else if (val === 'completed') {
+                    localStorage.setItem('stemos_crucible_' + uid, 'completed');
+                    localStorage.setItem('stemos_unit_completed_' + uid, 'true');
+                }
+            });
+        }
+        if (cloudData.activeUnitId && !localStorage.getItem('stemos_active_unit_id')) {
+            localStorage.setItem('stemos_active_unit_id', cloudData.activeUnitId);
+        }
+        if (cloudData.activeStepMap && typeof cloudData.activeStepMap === 'object') {
+            Object.keys(cloudData.activeStepMap).forEach(uid => {
+                if (!localStorage.getItem('stemos_active_step_' + uid)) {
+                    localStorage.setItem('stemos_active_step_' + uid, cloudData.activeStepMap[uid]);
+                }
+            });
+        }
+
+        // 6. Placement, Passport, Audio Speed & Profile
+        if (cloudData.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudData.placementTest));
+        if (cloudData.diagnosticPassport) localStorage.setItem('stemos_diagnostic_passport', JSON.stringify(cloudData.diagnosticPassport));
+        if (cloudData.placementCompleted !== undefined) localStorage.setItem('stemos_placement_completed', String(cloudData.placementCompleted));
+        if (cloudData.placementWaived !== undefined) localStorage.setItem('stemos_placement_waived', String(cloudData.placementWaived));
+        if (cloudData.diagFolio) localStorage.setItem('stemos_diag_folio', cloudData.diagFolio);
+        if (cloudData.ttsSpeed) {
+            localStorage.setItem('stemos_tts_playback_rate', String(cloudData.ttsSpeed));
+            if (window.STEMOS_TTS && typeof window.STEMOS_TTS.setSpeed === 'function') {
+                window.STEMOS_TTS.setSpeed(parseFloat(cloudData.ttsSpeed));
+            }
+        }
+        if (cloudData.profile) {
+            localStorage.setItem('stemos_student_profile', JSON.stringify(cloudData.profile));
+            if (cloudData.profile.name) localStorage.setItem('stemos_student_name', cloudData.profile.name);
+        }
+        localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+
+        if (typeof loadProgress === 'function') loadProgress();
+    }
+
                     // Check for existing progress in Cloud Firestore!
                     if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
                         try {
                             const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(user.uid);
                             if (cloudData) {
-                                if (typeof cloudData.xp === 'number') {
-                                    localStorage.setItem('stemos_student_xp', String(cloudData.xp));
-                                    if (typeof globalXP !== 'undefined') globalXP = cloudData.xp;
-                                }
-                                if (cloudData.streak) localStorage.setItem('stemos_daily_streak', String(cloudData.streak));
-                                if (cloudData.caceiHours) localStorage.setItem('stemos_cacei_accredited_hours', String(cloudData.caceiHours));
-                                if (cloudData.level) localStorage.setItem('stemos_user_level', cloudData.level);
-                                if (cloudData.activeMcerLevel) localStorage.setItem('stemos_active_mcer_level', cloudData.activeMcerLevel);
-                                if (cloudData.duoProgress) localStorage.setItem('stemos_duo_progress', JSON.stringify(cloudData.duoProgress));
-                                if (cloudData.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudData.placementTest));
-                                if (cloudData.placementCompleted !== undefined) localStorage.setItem('stemos_placement_completed', String(cloudData.placementCompleted));
-                                if (cloudData.diagFolio) localStorage.setItem('stemos_diag_folio', cloudData.diagFolio);
-                                if (cloudData.ttsSpeed) localStorage.setItem('stemos_tts_playback_rate', String(cloudData.ttsSpeed));
-                                localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+                                hydrateCloudProgressMonotonic(cloudData);
                             } else {
-                                // Sync initial state to cloud
                                 window.syncStudentProgressToFirestore && window.syncStudentProgressToFirestore(true);
                             }
                         } catch(e) {
@@ -3987,23 +4348,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-                    if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.registerStudent === 'function') {
-                        window.STEMOS_FIREBASE.registerStudent({
-                            name: realName,
-                            email: realEmail,
-                            matricula: matricula,
-                            careerId: careerId,
-                            careerName: careerName,
-                            campus: campus
-                        });
-                    }
-
                     window.initStudentProfileBridge();
                     if (typeof updateStudentXPHUD === 'function') updateStudentXPHUD();
+                    if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
                     if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
+                    if (typeof updateActivePathCardUI === 'function') updateActivePathCardUI();
                     if (typeof syncUserPlacementBadge === 'function') syncUserPlacementBadge();
                     if (typeof renderDuoLearningPath === 'function') renderDuoLearningPath();
-                    alert(`¡Bienvenido, ${realName}! Has iniciado sesión con tu cuenta de Google.`);
+                    if (typeof renderMcerUnitsGrid === 'function') renderMcerUnitsGrid(activeMcerLevelFilter);
+                    if (typeof renderAllUnitsGrid === 'function') renderAllUnitsGrid(activeFilterCategory);
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast(`¡Bienvenido, ${realName}! Progreso sincronizado.`, 'success');
+                    }
                 }).catch((err) => {
                     console.warn('Google sign-in popup error:', err);
                     if (err.code === 'auth/popup-blocked') {
@@ -4049,37 +4405,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch(e) {}
             }
 
-            // 3. Clear student session identifiers & profiles
-            const sessionKeys = [
-                'stemos_student_profile',
-                'stemos_student_name',
-                'stemos_auth_user',
-                'stemos_user_session',
-                'stemos_admin_auth',
-                'stemos_teacher_auth',
-                'stemos_active_student_uid'
-            ];
-            sessionKeys.forEach(k => {
-                try { localStorage.removeItem(k); } catch(e) {}
-            });
-
-            // 4. Remove cached firebase auth keys in localStorage
+            // 3. Clear ALL student-scoped stemos_* keys to prevent cross-student leakage on shared lab PCs
             try {
+                const preservedKeys = new Set(['stemos_tts_playback_rate', 'stemos_backdoor']);
                 for (let i = localStorage.length - 1; i >= 0; i--) {
                     const key = localStorage.key(i);
-                    if (key && (key.startsWith('firebase:authUser') || key.startsWith('firebase:host'))) {
+                    if (key && key.startsWith('stemos_') && !preservedKeys.has(key)) {
+                        localStorage.removeItem(key);
+                    } else if (key && (key.startsWith('firebase:authUser') || key.startsWith('firebase:host'))) {
                         localStorage.removeItem(key);
                     }
                 }
             } catch(e) {}
 
-            // 5. Purge sessionStorage completely
+            // 4. Purge sessionStorage completely
             try { sessionStorage.clear(); } catch(e) {}
         } catch (err) {
             console.error('[stemOS] Error during sign out:', err);
         }
 
-        // 6. Navigate directly to home /, leaving /app and ?view=profile
+        // 5. Navigate directly to home /, leaving /app and ?view=profile
         window.location.replace('/');
     };
 
@@ -4105,41 +4450,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         try {
                             const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(user.uid);
                             if (cloudData) {
-                                if (typeof cloudData.xp === 'number') {
-                                    const localXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
-                                    const mergedXp = Math.max(localXp, cloudData.xp);
-                                    localStorage.setItem('stemos_student_xp', String(mergedXp));
-                                    if (typeof globalXP !== 'undefined') globalXP = mergedXp;
-                                }
-                                if (cloudData.streak) localStorage.setItem('stemos_daily_streak', String(cloudData.streak));
-                                if (cloudData.lastStudyDate) localStorage.setItem('stemos_last_study_date', cloudData.lastStudyDate);
-                                if (cloudData.caceiHours) localStorage.setItem('stemos_cacei_accredited_hours', String(cloudData.caceiHours));
-                                if (cloudData.level) localStorage.setItem('stemos_user_level', cloudData.level);
-                                if (cloudData.activeMcerLevel) localStorage.setItem('stemos_active_mcer_level', cloudData.activeMcerLevel);
-                                if (cloudData.duoProgress) localStorage.setItem('stemos_duo_progress', JSON.stringify(cloudData.duoProgress));
-                                if (cloudData.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudData.placementTest));
-                                if (cloudData.placementCompleted !== undefined) localStorage.setItem('stemos_placement_completed', String(cloudData.placementCompleted));
-                                if (cloudData.diagFolio) localStorage.setItem('stemos_diag_folio', cloudData.diagFolio);
-                                if (cloudData.ttsSpeed) {
-                                    localStorage.setItem('stemos_tts_playback_rate', String(cloudData.ttsSpeed));
-                                    if (window.STEMOS_TTS && typeof window.STEMOS_TTS.setSpeed === 'function') {
-                                        window.STEMOS_TTS.setSpeed(parseFloat(cloudData.ttsSpeed));
-                                    }
-                                }
-                                if (cloudData.profile) {
-                                    localStorage.setItem('stemos_student_profile', JSON.stringify(cloudData.profile));
-                                    if (cloudData.profile.name) localStorage.setItem('stemos_student_name', cloudData.profile.name);
-                                }
-                                localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
-
-                                window.initStudentProfileBridge();
-                                if (typeof updateStudentXPHUD === 'function') updateStudentXPHUD();
-                                if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
-                                if (typeof syncUserPlacementBadge === 'function') syncUserPlacementBadge();
-                                if (typeof renderDuoLearningPath === 'function') renderDuoLearningPath();
+                                hydrateCloudProgressMonotonic(cloudData);
                             } else {
-                                // User has no cloud doc yet -> upload current local state!
-                                if (typeof window.syncStudentProgressToFirestore === 'function') {
+                                // Only upload non-empty local state for brand new cloud users
+                                const hasAnyLocal = (parseInt(localStorage.getItem('stemos_student_xp') || '0', 10) || 0) > 0 ||
+                                    Object.keys(JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}')).length > 0 ||
+                                    hasCompletedPlacement();
+                                if (hasAnyLocal && typeof window.syncStudentProgressToFirestore === 'function') {
                                     window.syncStudentProgressToFirestore(true);
                                 }
                             }
@@ -4147,6 +4464,30 @@ document.addEventListener('DOMContentLoaded', () => {
                             console.warn('[stemOS] Auth state cloud sync error:', e);
                         }
                     }
+
+                    // Hydrate teacher's remote curriculum sequence config if student belongs to a cohort class
+                    if (window.STEMOS_CURRICULUM_CONFIG && typeof window.STEMOS_CURRICULUM_CONFIG.loadRemoteConfig === 'function') {
+                        try {
+                            const classId = window.STEMOS_CURRICULUM_CONFIG.getActiveStudentClassId();
+                            if (classId && classId !== 'DEFAULT') {
+                                const prof = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                                const instId = (prof && (prof.institutionId || prof.subsystem)) || 'tecnm-saltillo';
+                                const lvl = (typeof getEffectivePlacementLevel === 'function') ? getEffectivePlacementLevel() : 'A1';
+                                const trackKey = window.STEMOS_CURRICULUM_CONFIG.getTrackKey('mcer', lvl);
+                                await window.STEMOS_CURRICULUM_CONFIG.loadRemoteConfig(instId, classId, trackKey);
+                            }
+                        } catch (_) {}
+                    }
+
+                    window.initStudentProfileBridge();
+                    if (typeof updateStudentXPHUD === 'function') updateStudentXPHUD();
+                    if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
+                    if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
+                    if (typeof updateActivePathCardUI === 'function') updateActivePathCardUI();
+                    if (typeof syncUserPlacementBadge === 'function') syncUserPlacementBadge();
+                    if (typeof renderDuoLearningPath === 'function') renderDuoLearningPath();
+                    if (typeof renderMcerUnitsGrid === 'function') renderMcerUnitsGrid(activeMcerLevelFilter);
+                    if (typeof renderAllUnitsGrid === 'function') renderAllUnitsGrid(activeFilterCategory);
                 }
             });
         } catch(e) {}
@@ -4168,14 +4509,14 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
 
         const phraseCatLabels = {
-            'workplace': { label: '💼 Workplace & Projects', color: '#0ea5e9' },
-            'technical_debate': { label: '🔬 Technical Debate', color: '#a855f7' },
-            'conflict_resolution': { label: '🤝 Conflict Resolution', color: '#f97316' },
-            'small_talk': { label: '💬 Small Talk & Icebreakers', color: '#22c55e' },
-            'metrics': { label: '📊 Metrics & Reporting', color: '#ef4444' },
-            'meetings': { label: '📅 Meetings & Strategy', color: '#6366f1' },
-            'problem_solving': { label: '🛠️ Problem Solving', color: '#d97706' },
-            'soft_skills': { label: '🌱 Soft Skills', color: '#10b981' }
+            'workplace': { label: 'Workplace & Projects', icon: 'fa-briefcase', color: '#0ea5e9' },
+            'technical_debate': { label: 'Technical Debate', icon: 'fa-microscope', color: '#a855f7' },
+            'conflict_resolution': { label: 'Conflict Resolution', icon: 'fa-handshake', color: '#f97316' },
+            'small_talk': { label: 'Small Talk & Icebreakers', icon: 'fa-comments', color: '#22c55e' },
+            'metrics': { label: 'Metrics & Reporting', icon: 'fa-chart-bar', color: '#ef4444' },
+            'meetings': { label: 'Meetings & Strategy', icon: 'fa-calendar-days', color: '#6366f1' },
+            'problem_solving': { label: 'Problem Solving', icon: 'fa-screwdriver-wrench', color: '#d97706' },
+            'soft_skills': { label: 'Soft Skills', icon: 'fa-seedling', color: '#10b981' }
         };
 
         let visibleCount = 0;
@@ -4217,7 +4558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                    <span style="font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:6px;background:${catInfo.color}12;color:${catInfo.color};text-transform:uppercase;letter-spacing:0.03em;">${catInfo.label}</span>
+                    <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:6px;background:${catInfo.color}12;color:${catInfo.color};text-transform:uppercase;letter-spacing:0.03em;"><i class="fa-solid ${catInfo.icon}" aria-hidden="true"></i> ${catInfo.label}</span>
                     <button class="glossary-audio-btn" title="Escuchar pronunciación nativa">
                         <i class="fa-solid fa-volume-high"></i>
                     </button>
@@ -4567,7 +4908,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentCardIndex = 0;
                 renderActiveCard();
                 if (typeof showSyncToast === 'function') {
-                    showSyncToast("⚡ 10 cartas listas para revisión.", "success");
+                    showSyncToast("10 cartas listas para revisión.", "success");
                 }
             });
         }
@@ -4813,27 +5154,29 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 localStorage.setItem('stemos_8d_' + reportId, JSON.stringify(payload));
                 if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.queueMutation === 'function') {
-                    window.STEMOS_SYNC.queueMutation({
-                        type: '8D_REPORT_SUBMISSION',
-                        entityType: '8d_report',
-                        entityId: reportId,
-                        data: payload,
-                        resolutionStrategy: 'LWW'
-                    });
+                    window.STEMOS_SYNC.queueMutation('8D_REPORT_SUBMISSION', payload, { strategy: 'LWW' });
                 }
             } catch (e) {}
 
             if (showToast) {
                 if (score >= 75) {
-                    globalXP += 150;
-                    if (statPoints) statPoints.textContent = globalXP;
-                    saveProgress();
+                    const rewardKey = `stemos_8d_awarded_${reportId}`;
+                    const alreadyAwarded = localStorage.getItem(rewardKey) === 'true';
+                    if (!alreadyAwarded) {
+                        localStorage.setItem(rewardKey, 'true');
+                        awardXP(150);
+                    }
                     if (typeof showSyncToast === 'function') {
-                        showSyncToast(`🎉 Reporte 8D Aprobado con ${score}% (+150 XP Acreditados)`, 'success');
+                        showSyncToast(
+                            alreadyAwarded
+                                ? `Reporte 8D validado (${score}%).`
+                                : `Reporte 8D Aprobado con ${score}% (+150 XP Acreditados)`,
+                            'success'
+                        );
                     }
                 } else {
                     if (typeof showSyncToast === 'function') {
-                        showSyncToast(`⚠️ Score: ${score}% — Revisa los criterios no conformes para alcanzar nivel de auditoría.`, 'info');
+                        showSyncToast(`Score: ${score}% — Revisa los criterios no conformes para alcanzar nivel de auditoría.`, 'info');
                     }
                 }
             }
@@ -5336,7 +5679,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 if (isCompleted || isInProgress) {
                     openCertificateModal(trackId);
                 } else {
-                    showTrackDetail(trackId);
+                    openUnitDetail(trackId);
                 }
             });
 
@@ -5406,11 +5749,67 @@ Nearshoring Center of Excellence • stemOS Certified`;
         return new Set();
     }
 
+    function isRawMcerItemCompleted(itemId) {
+        if (!itemId) return false;
+        if ((localStorage.getItem('stemos_mcer_unit_' + itemId) === 'passed') ||
+            (localStorage.getItem('stemos_crucible_' + itemId) === 'completed') ||
+            (localStorage.getItem('stemos_unit_completed_' + itemId) === 'true')) {
+            return true;
+        }
+        const duoProg = (typeof getDuoProgress === 'function') ? getDuoProgress() : {};
+        const totalSteps = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META)) ? DUO_STEPS_META.length : 7;
+        let doneSteps = 0;
+        for (let s = 1; s <= totalSteps; s++) {
+            const rec = duoProg[`${itemId}-step${s}`];
+            if (rec && rec.completed) doneSteps++;
+        }
+        return doneSteps >= totalSteps;
+    }
+
+    function getMcerUnitProgressSummary(unitId) {
+        const empty = { totalClasses: 0, completedClasses: 0, isAggregateComplete: false, nextClassId: null };
+        if (!unitId) return empty;
+        const classesApi = window.STEMOS_MCER_CLASSES;
+        if (!classesApi || typeof classesApi.getClassesByUnit !== 'function') return empty;
+        const classes = classesApi.getClassesByUnit(unitId) || [];
+        if (!classes.length) return empty;
+        let completedClasses = 0;
+        let nextClassId = null;
+        classes.forEach(c => {
+            if (isRawMcerItemCompleted(c.id)) {
+                completedClasses++;
+            } else if (!nextClassId) {
+                nextClassId = c.id;
+            }
+        });
+        return {
+            totalClasses: classes.length,
+            completedClasses,
+            isAggregateComplete: completedClasses >= classes.length,
+            nextClassId: nextClassId || classes[0].id
+        };
+    }
+    window.getMcerUnitProgressSummary = getMcerUnitProgressSummary;
+
+    function getNextIncompleteDuoStep(unitId) {
+        if (!unitId) return 1;
+        const duoProg = (typeof getDuoProgress === 'function') ? getDuoProgress() : {};
+        const totalSteps = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META)) ? DUO_STEPS_META.length : 7;
+        for (let s = 1; s <= totalSteps; s++) {
+            const rec = duoProg[`${unitId}-step${s}`];
+            if (!rec || !rec.completed) return s;
+        }
+        return 1;
+    }
+    window.getNextIncompleteDuoStep = getNextIncompleteDuoStep;
+
     function isMcerUnitCompleted(unitId) {
         if (!unitId) return false;
-        return (localStorage.getItem('stemos_mcer_unit_' + unitId) === 'passed') ||
-               (localStorage.getItem('stemos_crucible_' + unitId) === 'completed') ||
-               (localStorage.getItem('stemos_unit_completed_' + unitId) === 'true');
+        if (isRawMcerItemCompleted(unitId)) return true;
+        if (CANONICAL_MCER_UNIT_IDS.includes(unitId)) {
+            return getMcerUnitProgressSummary(unitId).isAggregateComplete;
+        }
+        return false;
     }
     window.isMcerUnitCompleted = isMcerUnitCompleted;
 
@@ -5421,11 +5820,17 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const unlocks = getTeacherCohortUnlocks();
         if (unlocks.has(String(unitId).toUpperCase())) return true;
 
+        const placed = typeof hasCompletedPlacement === 'function' && hasCompletedPlacement();
+        const rawPlacementLvl = placed ? getEffectivePlacementLevel() : '';
+        const normPlacementLvl = (rawPlacementLvl === 'C1' || rawPlacementLvl === 'C2') ? 'C1-C2' : rawPlacementLvl;
+        const cefrLevels = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
+        const userLevelIdx = normPlacementLvl ? cefrLevels.indexOf(normPlacementLvl) : -1;
+
         // Modular 50-minute class unlocking following active cohort sequence
         const cls = (window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getClassById === 'function')
             ? window.STEMOS_MCER_CLASSES.getClassById(unitId) : null;
         if (cls) {
-            if (cls.unitId && isMcerUnitCompleted(cls.unitId)) return true;
+            if (cls.unitId && isRawMcerItemCompleted(cls.unitId)) return true;
             const cfgApi = window.STEMOS_CURRICULUM_CONFIG;
             const classId = cfgApi ? cfgApi.getActiveStudentClassId() : 'DEFAULT';
             const trackKey = cfgApi ? cfgApi.getTrackKey('mcer', cls.level) : `mcer_${cls.level}`;
@@ -5433,12 +5838,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 ? cfgApi.getEffectiveSequence(classId, trackKey, { includeHidden: false })
                 : window.STEMOS_MCER_CLASSES.getClassesByLevel(cls.level);
 
-            const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
-            if (isConvalidated) {
-                const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
-                const levels = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
-                const userLevelIdx = levels.indexOf(placementLvl === 'C1' || placementLvl === 'C2' ? 'C1-C2' : placementLvl);
-                const clsLevelIdx = levels.indexOf(cls.level);
+            if (placed && userLevelIdx >= 0) {
+                const clsLevelIdx = cefrLevels.indexOf(cls.level);
                 if (clsLevelIdx >= 0 && clsLevelIdx < userLevelIdx) return true;
                 if (clsLevelIdx === userLevelIdx && ordered.length && ordered[0].id === unitId) return true;
             }
@@ -5446,16 +5847,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (cls.level === 'A1' && ordered.length && ordered[0].id === unitId) return true;
 
             if (cfgApi) {
-                const doneIds = ordered.filter(c => isMcerUnitCompleted(c.id) || (c.unitId && isMcerUnitCompleted(c.unitId))).map(c => c.id);
+                const doneIds = ordered.filter(c => isMcerUnitCompleted(c.id) || (c.unitId && isRawMcerItemCompleted(c.unitId))).map(c => c.id);
                 const visibleIdx = ordered.findIndex(c => c.id === unitId);
                 if (visibleIdx === 0 && cls.level !== 'A1') {
                     // Check if previous canonical level's last item is done
-                    const lvlOrder = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
-                    const prevLvl = lvlOrder[lvlOrder.indexOf(cls.level) - 1];
+                    const prevLvl = cefrLevels[cefrLevels.indexOf(cls.level) - 1];
                     if (prevLvl) {
                         const prevSeq = cfgApi.getEffectiveSequence(classId, cfgApi.getTrackKey('mcer', prevLvl), { includeHidden: false });
                         const lastPrev = prevSeq[prevSeq.length - 1];
-                        if (lastPrev && (isMcerUnitCompleted(lastPrev.id) || (lastPrev.unitId && isMcerUnitCompleted(lastPrev.unitId)))) return true;
+                        if (lastPrev && (isMcerUnitCompleted(lastPrev.id) || (lastPrev.unitId && isRawMcerItemCompleted(lastPrev.unitId)))) return true;
                     }
                     return cls.level === 'A1';
                 }
@@ -5470,14 +5870,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // Non-canonical or unknown unit allows access
         if (cIdx === -1) return true;
 
-        // Fast-track convalidation from diagnostic placement
-        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
-        if (isConvalidated) {
-            const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
-            const levels = ['A1', 'A2', 'B1', 'B2'];
-            const userLevelIdx = levels.indexOf(placementLvl);
-            const unitLevel = unitId.split('-')[0].toUpperCase();
-            const unitLevelIdx = levels.indexOf(unitLevel);
+        // Placement-based progression unlock for canonical units
+        if (placed && userLevelIdx >= 0) {
+            const unitRawLvl = unitId.split('-')[0].toUpperCase();
+            const normUnitLvl = (unitRawLvl === 'C1' || unitRawLvl === 'C2') ? 'C1-C2' : unitRawLvl;
+            const unitLevelIdx = cefrLevels.indexOf(normUnitLvl);
 
             if (unitLevelIdx >= 0 && unitLevelIdx < userLevelIdx) return true;
             if (unitLevelIdx === userLevelIdx && unitId.endsWith('-u1')) return true;
@@ -6123,6 +6520,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (typeof renderDuoLearningPath === 'function') {
                 renderDuoLearningPath(activeMcerLevelFilter, 'mcer');
             }
+            if (typeof window.updateActivePathCardUI === 'function') window.updateActivePathCardUI();
+            if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
         });
 
         btnWorldEsp.addEventListener('click', () => {
@@ -6144,6 +6543,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (typeof renderDuoLearningPath === 'function') {
                 renderDuoLearningPath(null, localStorage.getItem('stemos_active_career') || 'it-mecatronica');
             }
+            if (typeof window.updateActivePathCardUI === 'function') window.updateActivePathCardUI();
+            if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
         });
     }
 
@@ -6154,9 +6555,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
             mcerLevelChips.forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             activeMcerLevelFilter = chip.dataset.mcerLevel || 'all';
+            window.activeMcerLevelFilter = activeMcerLevelFilter;
             renderMcerUnitsGrid(activeMcerLevelFilter);
             if (typeof renderDuoLearningPath === 'function') {
                 renderDuoLearningPath(activeMcerLevelFilter, 'mcer');
+            }
+            if (typeof updateKPIMetrics === 'function') {
+                updateKPIMetrics();
             }
             updateMcerOfflineBannerUI();
         });
@@ -6278,7 +6683,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const avgUnitScore = unitScores.length > 0
                 ? Math.round(unitScores.reduce((a, b) => a + b, 0) / unitScores.length)
                 : null;
-            const isCompleted = isMcerUnitCompleted(unit.id) || doneStepsCount >= totalSteps;
+            const unitSummary = getMcerUnitProgressSummary(unit.id);
+            const isCompleted = isMcerUnitCompleted(unit.id) || doneStepsCount >= totalSteps || unitSummary.isAggregateComplete;
             const isUnlocked = isMcerUnitUnlocked(unit.id);
             const isActiveLevel = userLevel && unit.cefr === userLevel;
             const offlineRecord = offlineUnits[unit.id];
@@ -6303,9 +6709,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 ? '<span style="position:absolute; top:8px; right:8px; background:#64748b; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-lock"></i> Locked</span>'
                 : isCompleted
                     ? `<span style="position:absolute; top:8px; right:8px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3);"><i class="fa-solid fa-circle-check"></i> Completed${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
-                    : (doneStepsCount > 0
-                        ? `<span style="position:absolute; top:8px; right:8px; background:#0284c7; color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(2,132,199,0.28);"><i class="fa-solid fa-circle-check"></i> ${doneStepsCount}/${totalSteps} Sections${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
-                        : (isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> In Progress</span>` : ''));
+                    : (unitSummary.totalClasses > 0 && unitSummary.completedClasses > 0)
+                        ? `<span style="position:absolute; top:8px; right:8px; background:#0284c7; color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(2,132,199,0.28);"><i class="fa-solid fa-layer-group"></i> ${unitSummary.completedClasses}/${unitSummary.totalClasses} Clases${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
+                        : (doneStepsCount > 0
+                            ? `<span style="position:absolute; top:8px; right:8px; background:#0284c7; color:#fff; font-size:0.68rem; font-weight:800; padding:3px 9px; border-radius:6px; box-shadow:0 2px 6px rgba(2,132,199,0.28);"><i class="fa-solid fa-circle-check"></i> ${doneStepsCount}/${totalSteps} Sections${avgUnitScore !== null ? ' · ' + avgUnitScore + '%' : ''}</span>`
+                            : (isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> In Progress</span>` : ''));
 
             card.innerHTML = `
                 <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center; position:relative;">
@@ -6313,12 +6721,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${isUnlocked ? meta.color : '#94a3b8'}; color:${isUnlocked ? meta.color : '#64748b'};">CEFR ${unit.cefr} · ${meta.label}</span>
                     ${topStatusBadge}
                     ${isOffline ? `<span class="ed-unit-offline-badge active" title="Disponible offline · Expira en 3 días"><i class="fa-solid fa-cloud-arrow-down"></i> Offline (3d)</span>` : ''}
-                    ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
+                    ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol</span>' : ''}
                 </div>
                 <div class="ed-unit-card-body">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <div class="ed-unit-number">Unit ${String(unit.unitNumber).padStart(2, '0')}</div>
-                        <span style="font-size:0.7rem; font-weight:700; color:#64748b; background:#f1f5f9; padding:2px 6px; border-radius:4px;">15.0h Acreditadas</span>
+                        <span style="font-size:0.7rem; font-weight:700; color:#64748b; background:#f1f5f9; padding:2px 6px; border-radius:4px;">${unitSummary.totalClasses > 0 ? `${unitSummary.totalClasses} Clases · ` : ''}15.0h Acreditadas</span>
                     </div>
                     <div class="ed-unit-title">${unit.title}</div>
                     <div style="font-size:0.8rem; color:#64748b; margin-top:4px; line-height:1.4;">${unit.canDo}</div>
@@ -7618,6 +8026,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
                     const pct = Math.round((correctCount / quizList.length) * 100);
                     const passedQuiz = pct >= 70;
+                    const wasAlreadyPassed = localStorage.getItem(`stemos_mcer_unit_${unit.id}`) === 'passed';
+                    const earnedXp = (passedQuiz && !wasAlreadyPassed) ? 300 : 0;
+
                     recordActivityScore({
                         unitId: unit.id,
                         sectionKey: 'quiz',
@@ -7626,7 +8037,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         totalCount: quizList.length,
                         scorePct: pct,
                         passed: passedQuiz,
-                        xpAwarded: passedQuiz ? 300 : 25
+                        xpAwarded: earnedXp
                     });
 
                     if (quizResultsBox) {
@@ -7637,7 +8048,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         const msgEl = quizResultsBox.querySelector('div:last-child');
                         if (passedQuiz) {
                             if (window.DuoSound) window.DuoSound.playVictory();
-                            if (msgEl) msgEl.innerHTML = `🎉 ¡Unidad MCER Aprobada! ${pct}% guardado · +300 XP Acreditados · Micro-credencial verificada.`;
+                            if (msgEl) {
+                                msgEl.innerHTML = earnedXp > 0
+                                    ? `<i class="fa-solid fa-circle-check"></i> ¡Unidad MCER Aprobada! ${pct}% guardado · +${earnedXp} XP Acreditados · Micro-credencial verificada.`
+                                    : `<i class="fa-solid fa-circle-check"></i> Calificación actualizada: ${pct}% · Unidad acreditada.`;
+                            }
                             localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
                             localStorage.setItem(`stemos_mcer_${unit.id}_score`, String(pct));
 
@@ -7648,14 +8063,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                                     cefr: unit.cefr,
                                     score: pct,
                                     passed: true,
-                                    xpEarned: 300,
+                                    xpEarned: earnedXp,
                                     completedAt: new Date().toISOString()
                                 }, { strategy: 'XP_ACCUMULATIVE' });
 
                                 if (navigator.onLine) {
                                     window.STEMOS_SYNC.flushQueue().then(res => {
                                         if (res && res.synced > 0) {
-                                            showSyncToast(`✓ Progreso sincronizado con Firebase Firestore (+300 XP)`, 'success');
+                                            showSyncToast(earnedXp > 0 ? `✓ Progreso sincronizado (+${earnedXp} XP)` : '✓ Progreso sincronizado con Firebase', 'success');
                                         }
                                     });
                                 } else {
@@ -7665,9 +8080,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
                             if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
                             if (window.renderDuoLearningPath) window.renderDuoLearningPath(window.activeMcerLevelFilter || 'all');
+                            if (typeof window.updateActivePathCardUI === 'function') window.updateActivePathCardUI();
+                            if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
                         } else {
                             if (window.DuoSound) window.DuoSound.playIncorrect();
-                            if (msgEl) msgEl.innerHTML = `✓ Calificación guardada: <strong>${pct}%</strong> (Mínimo para aprobar: 70%). +25 XP por intento registrados; revisa las pistas socráticas y vuelve a intentar.`;
+                            if (msgEl) msgEl.innerHTML = `Resultado: <strong>${pct}%</strong> (Mínimo para aprobar: 70%). Revisa los fundamentos y vuelve a intentar para acreditar XP.`;
                         }
                     }
                 });
@@ -8189,6 +8606,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
                     const totalScore = Math.min(100, grammarScore + lexiconScore + pragmaticsScore);
                     const passedCrucible = totalScore >= 70;
+                    const wasAlreadyDone = localStorage.getItem(`stemos_crucible_${unit.id}`) === 'completed';
+                    const earnedCrucibleXp = (passedCrucible && !wasAlreadyDone) ? 500 : 0;
 
                     recordActivityScore({
                         unitId: unit.id,
@@ -8198,7 +8617,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         totalCount: Math.max(1, keywords.length),
                         scorePct: totalScore,
                         passed: passedCrucible,
-                        xpAwarded: passedCrucible ? 500 : 25
+                        xpAwarded: earnedCrucibleXp
                     });
 
                     // Display in Rubric Card
@@ -8221,13 +8640,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         } else if (totalScore >= 70) {
                             feedback = `<strong>Despacho funcional aprobado (${totalScore}%).</strong> Tu mensaje es claro para supervisores de turno. Para alcanzar nivel senior, incorpora más términos específicos (${keywords.slice(0, 3).join(', ')}) y expande la descripción.`;
                         } else {
-                            feedback = `<strong>Score guardado (${totalScore}% · +25 XP por intento).</strong> Se recomienda escuchar el modelo de referencia del ingeniero líder e incluir al menos ${minWords} palabras técnicas.`;
+                            feedback = `<strong>Score registrado (${totalScore}% · Mínimo 70%).</strong> Escucha el modelo de referencia del ingeniero líder e incluye al menos ${minWords} palabras técnicas para acreditar el Crisol.`;
                         }
                         document.getElementById('mcer-crucible-feedback-text').innerHTML = feedback;
 
                         if (passedCrucible) {
                             if (window.DuoSound) window.DuoSound.playCorrect();
                             localStorage.setItem(`stemos_crucible_${unit.id}`, 'completed');
+                            if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
                         } else {
                             if (window.DuoSound) window.DuoSound.playIncorrect();
                         }
@@ -8258,8 +8678,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
             sepCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-flex';
         }
 
-        // Reset to first tab: Fundamentos & Gramática (UPFRONT)
-        switchMcerModalTab('fundamentals');
+        // Restore saved active tab when valid, otherwise open Fundamentos
+        const toolsDisc = modal.querySelector('.mcer-mobile-tools-disclosure');
+        if (toolsDisc) {
+            if (window.innerWidth <= 768) toolsDisc.removeAttribute('open');
+            else toolsDisc.setAttribute('open', '');
+        }
+        const savedTab = localStorage.getItem(`stemos_active_step_${unit.id}`);
+        const validTabs = getActiveMcerSteps().map(s => s.key);
+        const initialTab = (savedTab && validTabs.includes(savedTab)) ? savedTab : 'fundamentals';
+        switchMcerModalTab(initialTab);
         if (typeof modal.showModal === 'function') modal.showModal();
         else modal.setAttribute('open', '');
     }
@@ -8383,12 +8811,40 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (btnNext) {
             const isMobile = window.innerWidth <= 640;
             if (currentIndex === steps.length - 1) {
-                btnNext.innerHTML = '<span>Finalizar Unidad</span> <i class="fa-solid fa-circle-check"></i>';
-                btnNext.onclick = () => {
-                    if (window.speechSynthesis) window.speechSynthesis.cancel();
-                    const modal = document.getElementById('modal-mcer-unit');
-                    if (modal && typeof modal.close === 'function') modal.close();
-                };
+                let nextTargetId = null;
+                if (activeMcerUnit) {
+                    const isDone = typeof isMcerUnitCompleted === 'function' && isMcerUnitCompleted(activeMcerUnit.id);
+                    if (isDone) {
+                        if (window.STEMOS_MCER_CLASSES && activeMcerUnit.isModularClass && typeof window.STEMOS_MCER_CLASSES.getAllClasses === 'function') {
+                            const allClasses = window.STEMOS_MCER_CLASSES.getAllClasses();
+                            const idx = allClasses.findIndex(c => c.id === activeMcerUnit.id);
+                            if (idx >= 0 && idx + 1 < allClasses.length) {
+                                nextTargetId = allClasses[idx + 1].id;
+                            }
+                        } else if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
+                            const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(activeMcerUnit.id);
+                            if (cIdx >= 0 && cIdx + 1 < CANONICAL_MCER_UNIT_IDS.length) {
+                                nextTargetId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
+                            }
+                        }
+                    }
+                }
+                if (nextTargetId && (typeof isMcerUnitUnlocked !== 'function' || isMcerUnitUnlocked(nextTargetId))) {
+                    btnNext.innerHTML = '<span>Siguiente Unidad</span> <i class="fa-solid fa-arrow-right"></i>';
+                    btnNext.onclick = () => {
+                        if (window.speechSynthesis) window.speechSynthesis.cancel();
+                        const modal = document.getElementById('modal-mcer-unit');
+                        if (modal && typeof modal.close === 'function') modal.close();
+                        setTimeout(() => openMcerUnitModal(nextTargetId), 80);
+                    };
+                } else {
+                    btnNext.innerHTML = '<span>Finalizar Unidad</span> <i class="fa-solid fa-circle-check"></i>';
+                    btnNext.onclick = () => {
+                        if (window.speechSynthesis) window.speechSynthesis.cancel();
+                        const modal = document.getElementById('modal-mcer-unit');
+                        if (modal && typeof modal.close === 'function') modal.close();
+                    };
+                }
             } else {
                 const nextStep = steps[currentIndex + 1];
                 const label = isMobile ? nextStep.title : `Continuar: ${nextStep.title}`;
@@ -8402,65 +8858,146 @@ Nearshoring Center of Excellence • stemOS Certified`;
     window.switchMcerModalTab = switchMcerModalTab;
 
     /* --- 6b. MCER COURSE SYLLABUS & ACTIVE LEARNING PATH ENGINE --- */
+    function resolveActiveLearningTarget() {
+        const scope = localStorage.getItem('stemos_active_path_scope') || 'mcer';
+        const duoProgress = (typeof getDuoProgress === 'function') ? getDuoProgress() : {};
+        const totalSteps = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META)) ? DUO_STEPS_META.length : 7;
+
+        const countDoneSteps = (itemId) => {
+            let done = 0;
+            for (let s = 1; s <= totalSteps; s++) {
+                if (duoProgress[`${itemId}-step${s}`] && duoProgress[`${itemId}-step${s}`].completed) done++;
+            }
+            return done;
+        };
+
+        if (scope === 'esp') {
+            const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+            const careerPath = (window.STEMOS_CAREER_PATHS && typeof window.STEMOS_CAREER_PATHS.getPathForCareer === 'function')
+                ? window.STEMOS_CAREER_PATHS.getPathForCareer(activeCareerId)
+                : null;
+            const pathModules = (careerPath && Array.isArray(careerPath.modules) && careerPath.modules.length)
+                ? careerPath.modules
+                : ((window.LXP_COURSES && window.LXP_COURSES[activeCareerId] && Array.isArray(window.LXP_COURSES[activeCareerId].modules))
+                    ? window.LXP_COURSES[activeCareerId].modules
+                    : []);
+
+            if (pathModules.length > 0) {
+                const savedId = localStorage.getItem('stemos_active_unit_id');
+                let target = savedId ? pathModules.find(m => m.id === savedId) : null;
+                if (target && countDoneSteps(target.id) >= totalSteps) target = null;
+                if (!target) {
+                    target = pathModules.find(m => countDoneSteps(m.id) < totalSteps && localStorage.getItem(`stemos_unit_completed_${m.id}`) !== 'true') || pathModules[0];
+                }
+                if (target) {
+                    return {
+                        id: target.id,
+                        scope: 'esp',
+                        levelLabel: (careerPath && careerPath.shortTitle) ? careerPath.shortTitle : 'ESP Career',
+                        title: target.title || target.name || 'Módulo Técnico',
+                        description: target.canDo || target.desc || target.objective || 'Práctica técnica interactiva',
+                        doneSteps: countDoneSteps(target.id),
+                        totalSteps,
+                        nextStep: getNextIncompleteDuoStep(target.id),
+                        isClass: false
+                    };
+                }
+            }
+        }
+
+        const effectiveLvl = (typeof window.getEffectivePlacementLevel === 'function') ? window.getEffectivePlacementLevel() : 'A1';
+        const normLvl = (effectiveLvl === 'C1' || effectiveLvl === 'C2') ? 'C1-C2' : effectiveLvl;
+        const savedActiveId = localStorage.getItem('stemos_active_unit_id');
+
+        let activeEntity = savedActiveId ? resolveMcerEntityById(savedActiveId) : null;
+        if (activeEntity && isMcerUnitCompleted(activeEntity.id)) {
+            activeEntity = null;
+        }
+        if (activeEntity && typeof isMcerUnitUnlocked === 'function' && !isMcerUnitUnlocked(activeEntity.id)) {
+            activeEntity = null;
+        }
+
+        if (!activeEntity && window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getClassesByLevel === 'function') {
+            const cfgApi = window.STEMOS_CURRICULUM_CONFIG;
+            const classId = cfgApi ? cfgApi.getActiveStudentClassId() : 'DEFAULT';
+            const trackKey = cfgApi ? cfgApi.getTrackKey('mcer', normLvl) : `mcer_${normLvl}`;
+            const rawClasses = cfgApi
+                ? cfgApi.getEffectiveSequence(classId, trackKey, { includeHidden: false })
+                : window.STEMOS_MCER_CLASSES.getClassesByLevel(normLvl);
+            const nextCls = (rawClasses || []).find(c => !isMcerUnitCompleted(c.id) && (typeof isMcerUnitUnlocked !== 'function' || isMcerUnitUnlocked(c.id)))
+                || (rawClasses && rawClasses[0])
+                || (window.STEMOS_MCER_CLASSES.getAllClasses ? window.STEMOS_MCER_CLASSES.getAllClasses().find(c => !isMcerUnitCompleted(c.id)) : null);
+            if (nextCls) {
+                activeEntity = window.STEMOS_MCER_CLASSES.toRunnableUnit
+                    ? window.STEMOS_MCER_CLASSES.toRunnableUnit(nextCls)
+                    : nextCls;
+            }
+        }
+
+        if (!activeEntity && window.STEMOS_MCER_TRACKS) {
+            const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
+            const lvlUnits = allUnits.filter(u => u.cefr.toUpperCase() === normLvl.toUpperCase());
+            const pool = lvlUnits.length ? lvlUnits : allUnits;
+            activeEntity = pool.find(u => !isMcerUnitCompleted(u.id) && (typeof isMcerUnitUnlocked !== 'function' || isMcerUnitUnlocked(u.id)))
+                || pool[0];
+        }
+
+        if (!activeEntity) return null;
+
+        const doneSteps = countDoneSteps(activeEntity.id);
+        return {
+            id: activeEntity.id,
+            scope: 'mcer',
+            levelLabel: `CEFR ${activeEntity.cefr || normLvl}`,
+            title: `${activeEntity.modulo || (activeEntity.isModularClass ? `Clase ${activeEntity.classNum || ''}` : `Unidad ${String(activeEntity.unitNumber || 1).padStart(2, '0')}`)} · ${activeEntity.title}`,
+            description: activeEntity.communicativeGoal || activeEntity.canDo || activeEntity.titleES || '',
+            doneSteps,
+            totalSteps,
+            nextStep: getNextIncompleteDuoStep(activeEntity.id),
+            isClass: Boolean(activeEntity.isModularClass)
+        };
+    }
+
     window.updateActivePathCardUI = function() {
         const card = document.getElementById('stemos-active-path-card');
-        if (!card || !window.STEMOS_MCER_TRACKS) return;
+        if (!card) return;
 
-        const userLevel = (hasCompletedPlacement() ? (localStorage.getItem('stemos_placement_cefr') || 'A1') : 'A1');
-        const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
-        const levelUnits = allUnits.filter(u => u.cefr.toUpperCase() === userLevel.toUpperCase());
-        if (!levelUnits || levelUnits.length === 0) return;
+        const target = resolveActiveLearningTarget();
+        if (!target) return;
 
-        // Find active unit: first uncompleted unit or last saved
-        const savedActiveUnitId = localStorage.getItem('stemos_active_unit_id');
-        let activeUnit = null;
-        if (savedActiveUnitId) {
-            activeUnit = window.STEMOS_MCER_TRACKS.getUnitById(savedActiveUnitId);
-        }
-        if (!activeUnit) {
-            activeUnit = levelUnits.find(u => localStorage.getItem(`stemos_mcer_unit_${u.id}`) !== 'passed') || levelUnits[0];
-        }
-        if (!activeUnit) return;
-
-        window._currentActiveUnitId = activeUnit.id;
+        window._currentActiveUnitId = target.id;
+        window._currentActiveLearningTarget = target;
 
         const levelPill = document.getElementById('active-path-level-pill');
-        if (levelPill) levelPill.textContent = `CEFR ${activeUnit.cefr}`;
+        if (levelPill) levelPill.textContent = target.levelLabel;
 
         const titleEl = document.getElementById('active-path-title');
-        if (titleEl) titleEl.textContent = `${activeUnit.modulo || ('Módulo 0' + activeUnit.unitNumber)} · ${activeUnit.title}`;
+        if (titleEl) titleEl.textContent = target.title;
 
-        const savedStep = localStorage.getItem(`stemos_active_step_${activeUnit.id}`) || 'fundamentals';
-        const stepMetadata = {
-            fundamentals: { num: 1, name: 'Fundamentos & Objetivos' },
-            dialogue: { num: 2, name: 'Diálogo con Audio Nativo' },
-            vocab: { num: 3, name: 'Vocabulario Técnico & Collocations' },
-            grammar: { num: 4, name: 'Grammar Drills Aplicados' },
-            listening: { num: 5, name: 'Listening Lab en Planta' },
-            reading: { num: 6, name: 'Lectura de Normas Técnicas' },
-            writing: { num: 7, name: 'Laboratorio de Escritura IA' },
-            crucible: { num: 7, name: 'Crisol IA' },
-            quiz: { num: 8, name: 'Mastery Quiz de Acreditación' }
-        };
-        const sInfo = stepMetadata[savedStep] || { num: 1, name: 'Fundamentos & Objetivos' };
-        const pct = Math.round((sInfo.num / 8) * 100);
+        const stepMeta = (typeof DUO_STEPS_META !== 'undefined' && Array.isArray(DUO_STEPS_META))
+            ? DUO_STEPS_META.find(s => s.step === target.nextStep)
+            : null;
+        const stepTitle = (stepMeta && stepMeta.title) ? stepMeta.title : `Paso ${target.nextStep}`;
+        const pct = Math.min(100, Math.round((target.doneSteps / Math.max(1, target.totalSteps)) * 100));
 
         const stepLabel = document.getElementById('active-path-step-label');
         if (stepLabel) {
-            stepLabel.innerHTML = `Siguiente tema: <strong>Paso ${sInfo.num} · ${sInfo.name}</strong> — ${activeUnit.communicativeGoal || activeUnit.canDo || ''}`;
+            stepLabel.innerHTML = `Siguiente tema: <strong>Paso ${target.nextStep} · ${stepTitle}</strong>${target.description ? ' — ' + target.description : ''}`;
         }
 
         const pctLabel = document.getElementById('active-path-pct-label');
-        if (pctLabel) pctLabel.textContent = `Paso ${sInfo.num} de 8 (${pct}%)`;
+        if (pctLabel) pctLabel.textContent = `Paso ${target.nextStep} de ${target.totalSteps} (${pct}%)`;
 
         const fillEl = document.getElementById('active-path-fill');
         if (fillEl) fillEl.style.width = `${pct}%`;
     };
 
     window.resumeActiveLearningUnit = function() {
-        const unitId = window._currentActiveUnitId || localStorage.getItem('stemos_active_unit_id') || 'a1-u1';
+        const target = resolveActiveLearningTarget();
+        const unitId = (target && target.id) || window._currentActiveUnitId || localStorage.getItem('stemos_active_unit_id') || 'a1-u1';
+        const nextStep = (target && target.nextStep) ? target.nextStep : getNextIncompleteDuoStep(unitId);
         if (typeof window.startDuoLessonForUnit === 'function') {
-            window.startDuoLessonForUnit(unitId, 1);
+            window.startDuoLessonForUnit(unitId, nextStep);
         } else {
             openMcerUnitModal(unitId);
         }
@@ -8471,7 +9008,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const modal = document.getElementById('modal-course-syllabus');
         if (!modal) return;
 
-        const userLevel = targetLevel || (hasCompletedPlacement() ? (localStorage.getItem('stemos_placement_cefr') || 'A1') : 'A1');
+        const effectiveLvl = (typeof window.getEffectivePlacementLevel === 'function') ? window.getEffectivePlacementLevel() : 'A1';
+        const userLevel = targetLevel || (hasCompletedPlacement() ? effectiveLvl : 'A1');
         const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
         const levelUnits = allUnits.filter(u => u.cefr.toUpperCase() === userLevel.toUpperCase());
 
@@ -8481,10 +9019,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const courseTitle = document.getElementById('syllabus-course-title');
         if (courseTitle) courseTitle.textContent = `Tronco Común Canónico · Nivel ${userLevel.toUpperCase()}`;
 
-        // Calculate progress
+        // Calculate real unit & child-class progress
         let passedCount = 0;
         levelUnits.forEach(u => {
-            if (localStorage.getItem(`stemos_mcer_unit_${u.id}`) === 'passed') {
+            if (isMcerUnitCompleted(u.id)) {
                 passedCount++;
             }
         });
@@ -8500,79 +9038,85 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (container) {
             container.innerHTML = '';
             levelUnits.forEach((u, idx) => {
-                const isPassed = localStorage.getItem(`stemos_mcer_unit_${u.id}`) === 'passed';
-                const isActive = (!isPassed && (idx === 0 || localStorage.getItem(`stemos_mcer_unit_${levelUnits[idx - 1].id}`) === 'passed'));
+                const isPassed = isMcerUnitCompleted(u.id);
+                const isUnlocked = isMcerUnitUnlocked(u.id);
+                const unitSummary = getMcerUnitProgressSummary(u.id);
+                const isActive = (!isPassed && isUnlocked);
 
                 const unitCard = document.createElement('div');
-                unitCard.style.cssText = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; margin-bottom:14px; overflow:hidden; box-shadow:0 2px 8px rgba(15,23,42,0.04);';
+                unitCard.style.cssText = `background:#ffffff; border:1px solid ${isUnlocked ? '#e2e8f0' : '#f1f5f9'}; border-radius:16px; margin-bottom:14px; overflow:hidden; box-shadow:0 2px 8px rgba(15,23,42,0.04);${!isUnlocked ? ' opacity:0.72;' : ''}`;
+
+                const actionHtml = !isUnlocked
+                    ? `<span style="padding:7px 14px; border-radius:8px; font-size:0.8rem; font-weight:800; background:#f1f5f9; color:#64748b; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-lock"></i> Bloqueada</span>`
+                    : `<button type="button" class="btn-launch-syllabus-unit" data-unit-id="${u.id}" style="padding:7px 16px; border-radius:8px; font-size:0.82rem; font-weight:800; cursor:pointer; border:none; ${isPassed ? 'background:#dcfce7; color:#15803d;' : 'background:#0284c7; color:#ffffff;'}">
+                            ${isPassed ? 'Repasar Unidad' : (unitSummary.completedClasses > 0 ? `Continuar (${unitSummary.completedClasses}/${unitSummary.totalClasses} clases) ›` : 'Continuar Unidad ›')}
+                        </button>`;
 
                 unitCard.innerHTML = `
                     <div style="padding:14px 18px; background:${isPassed ? '#f0fdf4' : (isActive ? '#f0f9ff' : '#f8fafc')}; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                         <div style="display:flex; align-items:center; gap:10px;">
                             <div style="width:34px; height:34px; border-radius:10px; background:${isPassed ? '#10b981' : (isActive ? '#0284c7' : '#94a3b8')}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem;">
-                                ${isPassed ? '<i class="fa-solid fa-check"></i>' : (idx + 1)}
+                                ${isPassed ? '<i class="fa-solid fa-check"></i>' : (!isUnlocked ? '<i class="fa-solid fa-lock"></i>' : (idx + 1))}
                             </div>
                             <div>
-                                <div style="display:flex; align-items:center; gap:8px;">
+                                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                                     <strong style="font-size:0.95rem; color:#0f172a;">${u.modulo || ('Módulo 0' + (idx + 1))} · ${u.title}</strong>
                                     <span style="font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:999px; ${isPassed ? 'background:#dcfce7; color:#15803d;' : (isActive ? 'background:#e0f2fe; color:#0284c7;' : 'background:#f1f5f9; color:#64748b;')}">
-                                        ${isPassed ? 'Completado' : (isActive ? 'En Curso' : 'Pendiente')}
+                                        ${isPassed ? 'Completado' : (isActive ? 'En Curso' : 'Bloqueado')}
                                     </span>
                                 </div>
-                                <div style="font-size:0.78rem; color:#64748b; margin-top:2px;">${u.titleES || ''} · 15.0h Curriculares</div>
+                                <div style="font-size:0.78rem; color:#64748b; margin-top:2px;">${u.titleES || ''} · ${unitSummary.totalClasses > 0 ? `${unitSummary.completedClasses}/${unitSummary.totalClasses} clases · ` : ''}15.0h Curriculares</div>
                             </div>
                         </div>
-                        <button type="button" class="btn-launch-syllabus-unit" data-unit-id="${u.id}" style="padding:7px 16px; border-radius:8px; font-size:0.82rem; font-weight:800; cursor:pointer; border:none; ${isPassed ? 'background:#dcfce7; color:#15803d;' : 'background:#0284c7; color:#ffffff;'}">
-                            ${isPassed ? 'Repasar Unidad' : (isActive ? 'Continuar Unidad ›' : 'Iniciar Unidad')}
-                        </button>
+                        ${actionHtml}
                     </div>
 
                     <!-- 8 Pedagogical Steps List -->
-                    <div style="padding:12px 18px;">
+                    <div style="padding:12px 18px;${!isUnlocked ? ' pointer-events:none; opacity:0.65;' : ''}">
                         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="fundamentals" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="fundamentals" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-book-open" style="color:#0284c7;"></i> 1. Fundamentos & Objetivos
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">0.5h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="dialogue" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="dialogue" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-comments" style="color:#0284c7;"></i> 2. Diálogo con Audio Nativo
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="vocab" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="vocab" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-spell-check" style="color:#0284c7;"></i> 3. Vocabulario & Collocations
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.5h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="grammar" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="grammar" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-wand-magic-sparkles" style="color:#0284c7;"></i> 4. Grammar Drills Aplicados
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.5h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="listening" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="listening" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-headphones" style="color:#0284c7;"></i> 5. Listening Lab en Planta
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="reading" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="reading" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-file-lines" style="color:#0284c7;"></i> 6. Lectura de Normas Técnicas
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="writing" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="writing" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-pen-to-square" style="color:#0284c7;"></i> 7. Laboratorio de Escritura IA
                                 </span>
                                 <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
                             </div>
-                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="quiz" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="quiz" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; font-size:0.82rem;">
                                 <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
                                     <i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> 8. Mastery Quiz de Acreditación
                                 </span>
@@ -8582,28 +9126,28 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     </div>
                 `;
 
-                // Wire launch unit
-                const launchBtn = unitCard.querySelector('.btn-launch-syllabus-unit');
-                if (launchBtn) {
-                    launchBtn.onclick = () => {
-                        modal.close();
-                        openMcerUnitModal(u.id);
-                    };
-                }
+                if (isUnlocked) {
+                    const launchBtn = unitCard.querySelector('.btn-launch-syllabus-unit');
+                    if (launchBtn) {
+                        launchBtn.onclick = () => {
+                            modal.close();
+                            openMcerUnitModal(u.id);
+                        };
+                    }
 
-                // Wire specific step chips
-                unitCard.querySelectorAll('.syllabus-step-chip').forEach(chip => {
-                    chip.onclick = () => {
-                        const stepKey = chip.dataset.step;
-                        modal.close();
-                        openMcerUnitModal(u.id);
-                        setTimeout(() => {
-                            if (typeof switchMcerModalTab === 'function') {
-                                switchMcerModalTab(stepKey);
-                            }
-                        }, 120);
-                    };
-                });
+                    unitCard.querySelectorAll('.syllabus-step-chip').forEach(chip => {
+                        chip.onclick = () => {
+                            const stepKey = chip.dataset.step;
+                            modal.close();
+                            openMcerUnitModal(u.id);
+                            setTimeout(() => {
+                                if (typeof switchMcerModalTab === 'function') {
+                                    switchMcerModalTab(stepKey);
+                                }
+                            }, 120);
+                        };
+                    });
+                }
 
                 container.appendChild(unitCard);
             });
@@ -9273,35 +9817,23 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     // 5. Sync Placement Result & Curricular Interleaving Status
     function syncUserPlacementBadge() {
-        let userLevel = localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || '';
-        if (!userLevel) {
-            const passportStr = localStorage.getItem('stemos_diagnostic_passport');
-            if (passportStr) {
-                try {
-                    const p = JSON.parse(passportStr);
-                    if (p.level) userLevel = p.level;
-                } catch(e) {}
-            }
-        }
-        if (!userLevel) {
-            const stored = localStorage.getItem('stemos_placement_test') || localStorage.getItem('stemos_placement_result');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    if (parsed.result && (parsed.result.assignedLevel || parsed.result.level)) {
-                        userLevel = parsed.result.assignedLevel || parsed.result.level;
-                    } else if (parsed.assignedLevel || parsed.level) {
-                        userLevel = parsed.assignedLevel || parsed.level;
-                    }
-                } catch(e) {}
-            }
-        }
+        const isPlacementDone = typeof hasCompletedPlacement === 'function' && hasCompletedPlacement();
+        const userLevel = isPlacementDone
+            ? (typeof window.getEffectivePlacementLevel === 'function' ? window.getEffectivePlacementLevel() : 'A1')
+            : '';
 
+        const headerPassportText = document.getElementById('header-cefr-passport-text');
         const badgePill = document.getElementById('user-placement-badge-pill');
         const badgeText = document.getElementById('user-placement-badge-text');
         const pendingBanner = document.getElementById('panel-placement-pending-banner');
 
-        const isPlacementDone = hasCompletedPlacement() || !!userLevel;
+        if (headerPassportText) {
+            if (isPlacementDone && userLevel) {
+                headerPassportText.innerHTML = `<span class="hide-on-mobile">Nivel ${userLevel} · Diagnóstico</span><span class="show-on-mobile">MCER ${userLevel}</span>`;
+            } else {
+                headerPassportText.innerHTML = `<span class="hide-on-mobile">Diagnóstico Pendiente</span><span class="show-on-mobile">Diagnóstico</span>`;
+            }
+        }
 
         if (pendingBanner) {
             if (!isPlacementDone) {
@@ -9333,29 +9865,29 @@ Nearshoring Center of Excellence • stemOS Certified`;
             return;
         }
 
-        if (!userLevel) userLevel = 'B1';
+        const effectiveLvl = userLevel || 'A1';
 
         // Student has a calibrated level: A1, A2, B1, B2, C1
         if (badgePill && badgeText) {
             badgePill.style.display = 'inline-flex';
-            if (userLevel === 'A1') {
+            if (effectiveLvl === 'A1') {
                 const isWaived = localStorage.getItem('stemos_placement_waived') === 'true';
                 badgeText.textContent = isWaived ? 'Nivel A1 Asignado (Waiver Nivel 0)' : 'Nivel MCER A1 Asignado (Base)';
                 badgePill.style.background = '#fef3c7';
                 badgePill.style.color = '#b45309';
                 badgePill.style.borderColor = '#fde68a';
-            } else if (userLevel === 'A2') {
+            } else if (effectiveLvl === 'A2') {
                 badgeText.textContent = 'Nivel MCER A2 Asignado (Interleaving)';
                 badgePill.style.background = '#e0f2fe';
                 badgePill.style.color = '#0369a1';
                 badgePill.style.borderColor = '#bae6fd';
-            } else if (userLevel === 'B1') {
+            } else if (effectiveLvl === 'B1') {
                 badgeText.textContent = 'Nivel MCER B1 Asignado (Carrera 60h)';
                 badgePill.style.background = '#ecfdf5';
                 badgePill.style.color = '#047857';
                 badgePill.style.borderColor = '#a7f3d0';
             } else {
-                badgeText.textContent = `Nivel MCER ${userLevel} Asignado (Senior)`;
+                badgeText.textContent = `Nivel MCER ${effectiveLvl} Asignado (Senior)`;
                 badgePill.style.background = '#f3e8ff';
                 badgePill.style.color = '#7e22ce';
                 badgePill.style.borderColor = '#e9d5ff';
@@ -9367,9 +9899,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const bannerTitle = document.getElementById('mcer-banner-title');
         const bannerDesc = document.getElementById('mcer-banner-desc');
         if (bannerPill && bannerTitle) {
-            const troncoMap = { 'A1': 'Inglés I', 'A2': 'Inglés II', 'B1': 'Inglés III', 'B2': 'Inglés IV' };
-            bannerPill.textContent = `CEFR ${userLevel}`;
-            bannerTitle.textContent = `${troncoMap[userLevel] || 'Tronco Común'} · 60.0 Horas Acreditadas`;
+            const troncoMap = { 'A1': 'Inglés I', 'A2': 'Inglés II', 'B1': 'Inglés III', 'B2': 'Inglés IV', 'C1': 'Inglés V' };
+            bannerPill.textContent = `CEFR ${effectiveLvl}`;
+            bannerTitle.textContent = `${troncoMap[effectiveLvl] || 'Tronco Común'} · 60.0 Horas Acreditadas`;
             if (bannerDesc) {
                 bannerDesc.textContent = `Nivel calibrado según tu evaluación diagnóstica. Tu plan semestral contiene 4 unidades de 15.0h de trabajo activo (60h total), con diálogos técnicos, lectura de normas y simulación de despacho industrial.`;
             }
@@ -9408,30 +9940,35 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
         const authUser = JSON.parse(localStorage.getItem('stemos_auth_user') || '{}');
+        const isPlacedNow = typeof hasCompletedPlacement === 'function' && hasCompletedPlacement();
+        const isWaivedFlag = localStorage.getItem('stemos_placement_waived') === 'true';
 
         if (!passport) {
-            const isWaivedFlag = localStorage.getItem('stemos_placement_waived') === 'true';
             passport = {
                 student: profile || {},
-                level: localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'A1',
-                score: isWaivedFlag ? 0 : 25,
-                percentage: isWaivedFlag ? 0 : 78,
+                level: (isPlacedNow && typeof window.getEffectivePlacementLevel === 'function') ? window.getEffectivePlacementLevel() : 'A1',
+                score: null,
+                percentage: null,
                 waived: isWaivedFlag,
-                folio: isWaivedFlag ? (localStorage.getItem('stemos_diag_folio') || 'WAIVER-A1-OFFICIAL') : 'STEMOS-MCER-VALID',
+                unplaced: !isPlacedNow && !isWaivedFlag,
+                folio: isWaivedFlag ? (localStorage.getItem('stemos_diag_folio') || 'WAIVER-A1-OFFICIAL') : (isPlacedNow ? 'STEMOS-MCER-VALID' : 'PENDIENTE'),
                 issuedAt: new Date().toISOString(),
-                fastTrackEligible: !isWaivedFlag
+                fastTrackEligible: false
             };
         }
 
-        const isWaived = passport.waived === true || 
-                         (typeof passport.folio === 'string' && passport.folio.startsWith('WAIVER-')) || 
-                         localStorage.getItem('stemos_placement_waived') === 'true';
+        const isUnplaced = Boolean(passport.unplaced) || (!isPlacedNow && !isWaivedFlag && passport.percentage === null);
+        const isWaived = !isUnplaced && (
+            passport.waived === true ||
+            (typeof passport.folio === 'string' && passport.folio.startsWith('WAIVER-')) ||
+            isWaivedFlag
+        );
 
         // Student Info
         const student = passport.student || {};
         const studentName = student.name || (student.firstName ? `${student.firstName} ${student.lastName || ''}`.trim() : null) || profile.name || profile.fullName || (authUser && authUser.displayName) || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
-        const studentMatricula = student.matricula || profile.matricula || '20264171';
-        const studentCareer = student.career || student.careerName || profile.careerName || 'Ingeniería Mecatrónica';
+        const studentMatricula = student.matricula || profile.matricula || 'Sin matrícula';
+        const studentCareer = student.career || student.careerName || profile.careerName || 'Tronco Común';
 
         const elName = document.getElementById('passport-student-name');
         if (elName) elName.textContent = studentName;
@@ -9440,13 +9977,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elMatricula) elMatricula.textContent = `Matrícula: ${studentMatricula} · ${studentCareer}`;
 
         const elFolio = document.getElementById('passport-folio-code');
-        if (elFolio) elFolio.textContent = passport.folio || (isWaived ? 'WAIVER-A1-VALID' : 'STEMOS-MCER-VALID');
+        if (elFolio) elFolio.textContent = passport.folio || (isUnplaced ? 'PENDIENTE' : (isWaived ? 'WAIVER-A1-VALID' : 'STEMOS-MCER-VALID'));
 
         const elFolioStatus = document.getElementById('passport-folio-status');
         if (elFolioStatus) {
-            elFolioStatus.innerHTML = isWaived 
-                ? '<i class="fa-solid fa-handshake"></i> Exención Aceptada' 
-                : '<i class="fa-solid fa-circle-check"></i> Diagnóstico Orientativo';
+            elFolioStatus.innerHTML = isUnplaced
+                ? '<i class="fa-solid fa-clock"></i> Diagnóstico Pendiente'
+                : (isWaived
+                    ? '<i class="fa-solid fa-handshake"></i> Exención Aceptada'
+                    : '<i class="fa-solid fa-circle-check"></i> Diagnóstico Verificado');
         }
 
         const lvl = isWaived ? 'A1' : (passport.level || 'A1').toUpperCase();
@@ -9454,28 +9993,32 @@ Nearshoring Center of Excellence • stemOS Certified`;
             'A1': 'Foundations / Inicio',
             'A2': 'Waystage / Operativo',
             'B1': 'Threshold / Competente',
-            'B2': 'Vantage / Avanzado'
+            'B2': 'Vantage / Avanzado',
+            'C1': 'Effective Mastery / Senior'
         };
 
         const colors = {
             'A1': '#10b981',
             'A2': '#0284c7',
             'B1': '#f59e0b',
-            'B2': '#8b5cf6'
+            'B2': '#8b5cf6',
+            'C1': '#ec4899'
         };
 
         const elBadge = document.getElementById('passport-level-badge');
         if (elBadge) {
-            elBadge.textContent = `CEFR ${lvl}`;
-            elBadge.style.background = colors[lvl] || '#10b981';
+            elBadge.textContent = isUnplaced ? 'SIN UBICAR' : `CEFR ${lvl}`;
+            elBadge.style.background = isUnplaced ? '#64748b' : (colors[lvl] || '#10b981');
         }
 
         const elTitle = document.getElementById('passport-level-title');
-        if (elTitle) elTitle.textContent = levelTitles[lvl] || 'Foundations / Inicio';
+        if (elTitle) elTitle.textContent = isUnplaced ? 'Evaluación Diagnóstica Pendiente' : (levelTitles[lvl] || 'Foundations / Inicio');
 
         const elSummary = document.getElementById('passport-summary-text');
         if (elSummary) {
-            if (isWaived) {
+            if (isUnplaced) {
+                elSummary.textContent = 'Aún no has completado tu evaluación diagnóstica inicial. Puedes comenzar gratis en Nivel A1 o tomar el examen diagnóstico de 15 minutos para calibrar tu ruta.';
+            } else if (isWaived) {
                 elSummary.textContent = 'Has ingresado voluntariamente a Nivel 0 (Principiante). Comenzarás desde la Unidad 01 para dominar todas las bases del inglés técnico paso a paso.';
             } else if (lvl === 'A1') {
                 elSummary.textContent = 'Tu evaluación diagnóstica te sitúa en Nivel A1. Desarrollarás las bases comunicativas fundamentales para planta y entornos técnicos.';
@@ -9493,7 +10036,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const elScoreVal = document.getElementById('passport-score-val');
         const elScoreSub = document.getElementById('passport-score-sub');
 
-        if (isWaived) {
+        if (isUnplaced) {
+            if (elScoreLabel) elScoreLabel.textContent = 'Diagnóstico';
+            if (elScoreVal) {
+                elScoreVal.textContent = 'Pendiente';
+                elScoreVal.style.color = '#64748b';
+                elScoreVal.style.fontSize = '1.25rem';
+            }
+            if (elScoreSub) elScoreSub.textContent = 'A1 Base Disponible';
+        } else if (isWaived) {
             if (elScoreLabel) elScoreLabel.textContent = 'Modalidad';
             if (elScoreVal) {
                 elScoreVal.textContent = 'Waiver';
@@ -9502,44 +10053,57 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             if (elScoreSub) elScoreSub.textContent = 'Ingreso Directo';
         } else {
-            const actualPct = (typeof passport.percentage === 'number') ? passport.percentage : (passport.score ? Math.round(passport.score / (passport.total || 32) * 100) : 75);
+            const hasNumericPct = typeof passport.percentage === 'number';
+            const actualPct = hasNumericPct
+                ? passport.percentage
+                : (typeof passport.score === 'number' ? Math.round((passport.score / (passport.total || 32)) * 100) : null);
             if (elScoreLabel) elScoreLabel.textContent = 'Puntaje Global';
             if (elScoreVal) {
-                elScoreVal.textContent = `${actualPct}%`;
+                elScoreVal.textContent = actualPct !== null ? `${actualPct}%` : '—';
                 elScoreVal.style.color = colors[lvl] || '#0284c7';
                 elScoreVal.style.fontSize = '1.6rem';
             }
-            if (elScoreSub) elScoreSub.textContent = `(${passport.score !== undefined ? passport.score : Math.round(actualPct * 32 / 100)}/32 reactivos)`;
+            if (elScoreSub) {
+                elScoreSub.textContent = (typeof passport.score === 'number')
+                    ? `(${passport.score}/${passport.total || 32} reactivos)`
+                    : (actualPct !== null ? `${actualPct}% calificado` : 'Evaluación registrada');
+            }
         }
 
         // Subscores section (Grammar / Listening / Reading)
         const subscoresSec = document.getElementById('passport-subscores-section');
-        if (isWaived) {
+        if (isUnplaced || isWaived) {
             if (subscoresSec) subscoresSec.style.display = 'none';
         } else {
-            if (subscoresSec) subscoresSec.style.display = 'block';
             const sScores = passport.sectionScores || {};
-            const gPct = (sScores.grammar && sScores.grammar.pct !== undefined) ? sScores.grammar.pct : Math.min(100, Math.max(20, passport.percentage || 70));
-            const lPct = (sScores.listening && sScores.listening.pct !== undefined) ? sScores.listening.pct : Math.min(100, Math.max(20, (passport.percentage || 70) - 5));
-            const rPct = (sScores.reading && sScores.reading.pct !== undefined) ? sScores.reading.pct : Math.min(100, Math.max(20, (passport.percentage || 70) + 5));
+            const hasSubscores = Boolean(sScores.grammar || sScores.listening || sScores.reading || typeof passport.percentage === 'number');
+            if (subscoresSec) subscoresSec.style.display = hasSubscores ? 'block' : 'none';
+            if (hasSubscores) {
+                const basePct = typeof passport.percentage === 'number' ? passport.percentage : 0;
+                const gPct = (sScores.grammar && sScores.grammar.pct !== undefined) ? sScores.grammar.pct : basePct;
+                const lPct = (sScores.listening && sScores.listening.pct !== undefined) ? sScores.listening.pct : basePct;
+                const rPct = (sScores.reading && sScores.reading.pct !== undefined) ? sScores.reading.pct : basePct;
 
-            const elGPct = document.getElementById('passport-grammar-pct');
-            const elGBar = document.getElementById('passport-grammar-bar');
-            if (elGPct && elGBar) { elGPct.textContent = `${gPct}%`; elGBar.style.width = `${gPct}%`; }
+                const elGPct = document.getElementById('passport-grammar-pct');
+                const elGBar = document.getElementById('passport-grammar-bar');
+                if (elGPct && elGBar) { elGPct.textContent = `${gPct}%`; elGBar.style.width = `${gPct}%`; }
 
-            const elLPct = document.getElementById('passport-listening-pct');
-            const elLBar = document.getElementById('passport-listening-bar');
-            if (elLPct && elLBar) { elLPct.textContent = `${lPct}%`; elLBar.style.width = `${lPct}%`; }
+                const elLPct = document.getElementById('passport-listening-pct');
+                const elLBar = document.getElementById('passport-listening-bar');
+                if (elLPct && elLBar) { elLPct.textContent = `${lPct}%`; elLBar.style.width = `${lPct}%`; }
 
-            const elRPct = document.getElementById('passport-reading-pct');
-            const elRBar = document.getElementById('passport-reading-bar');
-            if (elRPct && elRBar) { elRPct.textContent = `${rPct}%`; elRBar.style.width = `${rPct}%`; }
+                const elRPct = document.getElementById('passport-reading-pct');
+                const elRBar = document.getElementById('passport-reading-bar');
+                if (elRPct && elRBar) { elRPct.textContent = `${rPct}%`; elRBar.style.width = `${rPct}%`; }
+            }
         }
 
-        // Hours Accrued & 4-Level Stepper
+        // Real Hours Accrued & 4-Level Stepper
         const steps = ['a1', 'a2', 'b1', 'b2'];
-        const lvlIdx = isWaived ? 0 : Math.max(0, steps.indexOf(lvl.toLowerCase()));
-        const hoursAccrued = isWaived ? 0.0 : (lvlIdx * 60.0);
+        const lvlIdx = (isUnplaced || isWaived) ? 0 : Math.max(0, steps.indexOf(lvl.toLowerCase()));
+        const hoursAccrued = (typeof window.getRealPracticeHours === 'function')
+            ? window.getRealPracticeHours()
+            : parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0') || 0;
         const elHoursTag = document.getElementById('passport-hours-accrued-tag');
         if (elHoursTag) elHoursTag.textContent = `${hoursAccrued.toFixed(1)}h / 240.0h`;
 
@@ -9772,6 +10336,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const offset = lvl === 'a1' ? 0 : lvl === 'a2' ? 4 : lvl === 'b1' ? 8 : 12;
             return `mcer-${lvl}-u${String(n + offset).padStart(2, '0')}`;
         })(unit.id);
+        const unitKey = unit.id || legacyKey;
         const debriefData = MCER_SOCRATIC_DEBRIEFS[unit.id] || MCER_SOCRATIC_DEBRIEFS[legacyKey] || MCER_SOCRATIC_DEBRIEFS['mcer-a1-u01'];
 
         debriefSection.style.display = 'block';
@@ -9860,23 +10425,32 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 if (feedbackEl) {
                     feedbackEl.style.display = 'block';
                     if (totalScore >= 70) {
+                        const socraticStorageKey = `stemos_socratic_${unitKey}`;
+                        const wasAlreadyDone = localStorage.getItem(socraticStorageKey) === 'completed';
+
                         feedbackEl.style.background = '#f0fdf4';
                         feedbackEl.style.border = '1px solid #86efac';
                         feedbackEl.style.color = '#15803d';
                         feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Defensa Técnica Aprobada (${totalScore}% Asertividad).</strong><br>
                         Arthur Vance: &ldquo;Bien resuelto, Ingeniero(a). Tu criterio prioriza la contención de causa raíz y la seguridad bajo norma. Visto bueno otorgado para auditoría de planta.&rdquo; 
-                        <span style="font-weight:800; color:#059669;">+350 XP de Defensa Acreditados.</span>`;
+                        ${!wasAlreadyDone ? '<span style="font-weight:800; color:#059669;">+350 XP de Defensa Acreditados.</span>' : '<span style="font-weight:700; color:#059669;">Defensa registrada.</span>'}`;
 
-                        // Award XP
-                        try {
-                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-                            const newXP = prevXP + 350;
-                            localStorage.setItem('stemos_student_xp', String(newXP));
-                            localStorage.setItem(`stemos_socratic_${unitKey}`, 'completed');
-                            if (typeof window.updateStudentXPHUD === 'function') {
-                                window.updateStudentXPHUD(newXP);
+                        localStorage.setItem(socraticStorageKey, 'completed');
+                        if (!wasAlreadyDone) {
+                            if (typeof awardXP === 'function') {
+                                awardXP(350);
+                            } else {
+                                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+                                const newXP = (isNaN(prevXP) ? 0 : prevXP) + 350;
+                                localStorage.setItem('stemos_student_xp', String(newXP));
+                                if (typeof window.updateStudentXPHUD === 'function') {
+                                    window.updateStudentXPHUD(newXP);
+                                }
                             }
-                        } catch (e) {}
+                            if (typeof window.syncStudentProgressToFirestore === 'function') {
+                                window.syncStudentProgressToFirestore();
+                            }
+                        }
                     } else {
                         feedbackEl.style.background = '#fffbeb';
                         feedbackEl.style.border = '1px solid #fde68a';
@@ -10077,6 +10651,216 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elHours) elHours.textContent = `${hours.toFixed(1)} Horas de Práctica Guiada • Referencia MCER`;
 
         const elName = document.getElementById('vc-modal-student-name');
+        if (elName) elName.textContent = studentName;
+
+        const elFolio = document.getElementById('vc-modal-folio');
+        if (elFolio) elFolio.textContent = folio;
+
+        const elIssuer = document.getElementById('vc-modal-issuer');
+        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.name) ? cred.issuer.name : 'stemOS™ Technical English Platform';
+
+        const elDate = document.getElementById('vc-modal-date');
+        if (elDate) elDate.textContent = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        const qrContainer = document.getElementById('vc-modal-qr-container');
+        if (qrContainer) {
+            qrContainer.innerHTML = `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="1.8" aria-label="Sello Verificable W3C"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM18 18h3v3h-3z"/></svg>`;
+        }
+
+        const fingerprint = (cred && cred.proof && cred.proof.proofValue) ? cred.proof.proofValue : `sha256:${folio}`;
+        const elSha = document.getElementById('vc-modal-sha-fingerprint');
+        if (elSha) elSha.textContent = fingerprint;
+
+        const vcPayload = cred || {
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            type: ['VerifiableCredential', 'OpenBadgeCredential'],
+            issuer: 'stemOS™ Technical English Platform',
+            issuanceDate: new Date().toISOString(),
+            credentialSubject: { name: studentName, matricula, level, folio, hoursAccrued: hours }
+        };
+        const jsonLdStr = JSON.stringify(vcPayload, null, 2);
+        const elJson = document.getElementById('vc-modal-json-ld');
+        if (elJson) elJson.textContent = jsonLdStr;
+
+        const btnCopyJson = document.getElementById('btn-vc-copy-json');
+        if (btnCopyJson) {
+            btnCopyJson.onclick = () => {
+                if (navigator.clipboard) navigator.clipboard.writeText(jsonLdStr);
+                btnCopyJson.innerHTML = '<i class="fa-solid fa-check"></i> JSON Copiado';
+                setTimeout(() => { btnCopyJson.innerHTML = '<i class="fa-solid fa-code"></i> Copiar JSON-LD'; }, 2000);
+            };
+        }
+
+        const btnCopyLink = document.getElementById('btn-vc-copy-link');
+        if (btnCopyLink) {
+            btnCopyLink.onclick = () => {
+                const verifyUrl = `${window.location.origin}/app.html?verify=${encodeURIComponent(folio)}`;
+                if (navigator.clipboard) navigator.clipboard.writeText(verifyUrl);
+                btnCopyLink.innerHTML = '<i class="fa-solid fa-check"></i> Enlace Copiado';
+                setTimeout(() => { btnCopyLink.innerHTML = '<i class="fa-solid fa-link"></i> Copiar Enlace'; }, 2000);
+            };
+        }
+
+        if (typeof modal.showModal === 'function') modal.showModal();
+        else modal.setAttribute('open', '');
+    }
+    window.openVerifiableCredentialModal = openVerifiableCredentialModal;
+
+    function renderExamStepperPills() {
+        const container = document.getElementById('mcer-exam-stepper-pills');
+        const counter = document.getElementById('mcer-exam-answered-counter');
+        if (!activeMcerExam || !Array.isArray(activeMcerExam.questions)) return;
+
+        const total = activeMcerExam.questions.length;
+        const answeredCount = activeExamAnswers.filter(a => a !== null && a !== undefined).length;
+        if (counter) counter.textContent = `${answeredCount} / ${total} contestadas`;
+
+        if (!container) return;
+        container.innerHTML = '';
+        activeMcerExam.questions.forEach((_, idx) => {
+            const isCurrent = idx === activeExamQuestionIdx;
+            const isAnswered = activeExamAnswers[idx] !== null && activeExamAnswers[idx] !== undefined;
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            pill.textContent = String(idx + 1);
+            pill.style.cssText = `min-width:34px; min-height:34px; padding:0 8px; border-radius:8px; font-weight:800; font-size:0.78rem; cursor:pointer; border:1.5px solid ${isCurrent ? '#0284c7' : (isAnswered ? '#10b981' : '#cbd5e1')}; background:${isCurrent ? '#0284c7' : (isAnswered ? '#dcfce7' : '#ffffff')}; color:${isCurrent ? '#ffffff' : (isAnswered ? '#15803d' : '#475569')};`;
+            pill.onclick = () => renderExamQuestion(idx);
+            container.appendChild(pill);
+        });
+    }
+
+    function startExamCountdownTimer() {
+        if (mcerExamTimerInterval) {
+            clearInterval(mcerExamTimerInterval);
+            mcerExamTimerInterval = null;
+        }
+        const updateDisplay = () => {
+            const mins = Math.floor(Math.max(0, mcerExamRemainingSeconds) / 60);
+            const secs = Math.max(0, mcerExamRemainingSeconds) % 60;
+            const label = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            const disp = document.getElementById('mcer-exam-timer-display');
+            if (disp) disp.textContent = label;
+        };
+        updateDisplay();
+        mcerExamTimerInterval = setInterval(() => {
+            mcerExamRemainingSeconds--;
+            updateDisplay();
+            if (mcerExamRemainingSeconds <= 0) {
+                clearInterval(mcerExamTimerInterval);
+                mcerExamTimerInterval = null;
+                submitMcerLevelExam();
+            }
+        }, 1000);
+    }
+
+    function renderExamQuestion(idx) {
+        if (!activeMcerExam || !Array.isArray(activeMcerExam.questions) || !activeMcerExam.questions.length) return;
+        const total = activeMcerExam.questions.length;
+        activeExamQuestionIdx = Math.max(0, Math.min(total - 1, idx));
+        const q = activeMcerExam.questions[activeExamQuestionIdx];
+
+        const secBadge = document.getElementById('mcer-exam-section-badge');
+        if (secBadge) secBadge.textContent = `${q.category || 'MCER'} · Reactivo ${activeExamQuestionIdx + 1} de ${total}`;
+
+        const audioBox = document.getElementById('mcer-exam-audio-box');
+        if (audioBox) {
+            if (q.audioScript) {
+                audioBox.style.display = 'flex';
+                const playBtn = document.getElementById('btn-mcer-exam-audio-play');
+                const statusEl = document.getElementById('mcer-exam-audio-status');
+                if (statusEl) statusEl.textContent = 'Haz clic para escuchar el mensaje operativo';
+                if (playBtn) {
+                    playBtn.onclick = () => {
+                        if (statusEl) statusEl.textContent = 'Reproduciendo audio...';
+                        if (typeof window.speakEnglishText === 'function') {
+                            window.speakEnglishText(q.audioScript);
+                        } else if (window.STEMOS_TTS && typeof window.STEMOS_TTS.speak === 'function') {
+                            window.STEMOS_TTS.speak(q.audioScript);
+                        } else if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            const u = new SpeechSynthesisUtterance(q.audioScript);
+                            u.lang = 'en-US';
+                            window.speechSynthesis.speak(u);
+                        }
+                    };
+                }
+            } else {
+                audioBox.style.display = 'none';
+            }
+        }
+
+        const passageBox = document.getElementById('mcer-exam-passage-box');
+        if (passageBox) {
+            if (q.passage) {
+                passageBox.style.display = 'block';
+                passageBox.textContent = q.passage;
+            } else {
+                passageBox.style.display = 'none';
+            }
+        }
+
+        const promptEl = document.getElementById('mcer-exam-prompt-text');
+        if (promptEl) promptEl.textContent = q.q || q.prompt || '';
+
+        const optsContainer = document.getElementById('mcer-exam-options-container');
+        if (optsContainer && Array.isArray(q.options)) {
+            optsContainer.innerHTML = '';
+            q.options.forEach((optText, oIdx) => {
+                const isSelected = activeExamAnswers[activeExamQuestionIdx] === oIdx;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.style.cssText = `width:100%; min-height:46px; text-align:left; padding:12px 14px; border-radius:10px; font-size:0.92rem; font-weight:${isSelected ? '700' : '600'}; cursor:pointer; display:flex; align-items:center; gap:10px; border:1.5px solid ${isSelected ? '#0284c7' : '#cbd5e1'}; background:${isSelected ? '#e0f2fe' : '#ffffff'}; color:#0f172a;`;
+                const letter = String.fromCharCode(65 + oIdx);
+                btn.innerHTML = `<span style="width:26px; height:26px; border-radius:999px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:800; background:${isSelected ? '#0284c7' : '#f1f5f9'}; color:${isSelected ? '#ffffff' : '#334155'};">${letter}</span><span>${optText}</span>`;
+                btn.onclick = () => {
+                    activeExamAnswers[activeExamQuestionIdx] = oIdx;
+                    renderExamQuestion(activeExamQuestionIdx);
+                };
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        const btnPrev = document.getElementById('btn-mcer-exam-prev');
+        const btnNext = document.getElementById('btn-mcer-exam-next');
+        const btnFinish = document.getElementById('btn-mcer-exam-finish');
+        if (btnPrev) btnPrev.disabled = activeExamQuestionIdx === 0;
+        if (btnNext) btnNext.style.display = activeExamQuestionIdx < total - 1 ? 'inline-flex' : 'none';
+        if (btnFinish) btnFinish.style.display = activeExamQuestionIdx === total - 1 ? 'inline-flex' : 'none';
+
+        renderExamStepperPills();
+    }
+
+    function submitMcerLevelExam() {
+        if (mcerExamTimerInterval) {
+            clearInterval(mcerExamTimerInterval);
+            mcerExamTimerInterval = null;
+        }
+        if (!activeMcerExam || !Array.isArray(activeMcerExam.questions)) return;
+
+        const questions = activeMcerExam.questions;
+        const totalQ = questions.length;
+        let correct = 0;
+        let secListening = 0;
+        let secGrammar = 0;
+        let secReading = 0;
+        let secPragmatics = 0;
+
+        questions.forEach((q, idx) => {
+            const isCorrect = activeExamAnswers[idx] === q.answer;
+            if (isCorrect) {
+                correct++;
+                const cat = String(q.category || '').toLowerCase();
+                if (cat.includes('listen') || cat.includes('audio')) secListening++;
+                else if (cat.includes('gram') || cat.includes('use')) secGrammar++;
+                else if (cat.includes('read')) secReading++;
+                else secPragmatics++;
+            }
+        });
+
+        const scorePct = Math.round((correct / Math.max(1, totalQ)) * 100);
+        const isPassed = scorePct >= (activeMcerExam.passScorePct || 75);
+
+        const qView = document.getElementById('mcer-exam-question-view');
         const resView = document.getElementById('mcer-exam-results-view');
         if (qView) qView.style.display = 'none';
         if (resView) resView.style.display = 'block';
@@ -10127,19 +10911,30 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (elFolio) elFolio.textContent = folio;
             if (elName) elName.textContent = studentName;
             if (elBanner) {
-                elBanner.textContent = `CEFR LEVEL ${activeMcerExam.level} &bull; ${accHours}.0 HORAS DE PRÁCTICA GUIADA`;
+                elBanner.textContent = `CEFR LEVEL ${activeMcerExam.level} • ${accHours}.0 HORAS DE PRÁCTICA GUIADA`;
             }
 
-            // Persist Milestone certification in localStorage
+            // Persist Milestone certification in localStorage (dedup XP award)
             try {
-                localStorage.setItem(`stemos_mcer_level_${activeMcerExam.level.toLowerCase()}_certified`, 'true');
+                const certKey = `stemos_mcer_level_${activeMcerExam.level.toLowerCase()}_certified`;
+                const wasAlreadyCertified = localStorage.getItem(certKey) === 'true';
+                localStorage.setItem(certKey, 'true');
                 localStorage.setItem(`stemos_mcer_certified_hours`, String(accHours));
                 localStorage.setItem(`stemos_mcer_diploma_${activeMcerExam.level.toLowerCase()}_folio`, folio);
-                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
-                const newXP = prevXP + 2000;
-                localStorage.setItem('stemos_student_xp', String(newXP));
-                if (typeof window.updateStudentXPHUD === 'function') {
-                    window.updateStudentXPHUD(newXP);
+                if (!wasAlreadyCertified) {
+                    if (typeof awardXP === 'function') {
+                        awardXP(2000);
+                    } else {
+                        const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+                        const newXP = (isNaN(prevXP) ? 0 : prevXP) + 2000;
+                        localStorage.setItem('stemos_student_xp', String(newXP));
+                        if (typeof window.updateStudentXPHUD === 'function') {
+                            window.updateStudentXPHUD(newXP);
+                        }
+                    }
+                }
+                if (typeof window.syncStudentProgressToFirestore === 'function') {
+                    window.syncStudentProgressToFirestore();
                 }
             } catch (e) {}
 
@@ -10339,6 +11134,24 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 }
                 return parsed;
             }
+            const classId = (window.STEMOS_CURRICULUM_CONFIG && typeof window.STEMOS_CURRICULUM_CONFIG.getActiveStudentClassId === 'function')
+                ? (window.STEMOS_CURRICULUM_CONFIG.getActiveStudentClassId() || 'c1')
+                : 'c1';
+            const keysToTry = [
+                `stemos_cohort_assignments_${classId}`,
+                `stemos_class_assignments_${classId}`,
+                'stemos_cohort_assignments_c1',
+                'stemos_class_assignments_c1'
+            ];
+            for (const key of keysToTry) {
+                const listRaw = localStorage.getItem(key);
+                if (!listRaw) continue;
+                const list = JSON.parse(listRaw);
+                if (Array.isArray(list) && list.length > 0) {
+                    const active = list.find(a => a && a.status !== 'archived') || list[0];
+                    if (active) return active;
+                }
+            }
         } catch(e) {}
 
         return null;
@@ -10367,13 +11180,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (!asg || !asg.submissions) return null;
         let profile = null;
         try {
-            const raw = localStorage.getItem('stemos_user_profile');
+            const raw = localStorage.getItem('stemos_student_profile');
             if (raw) profile = JSON.parse(raw);
         } catch(e) {}
 
-        const studentId = (profile && profile.studentId) || 'st-3';
+        const studentId = (profile && (profile.uid || profile.studentId)) || 'st-3';
         const matricula = (profile && profile.matricula) || '20260403';
-        return asg.submissions[studentId] || asg.submissions[matricula] || null;
+        return asg.submissions[studentId] || asg.submissions[matricula] || asg.submissions['st-3'] || null;
     }
 
     function initStudentAssignmentHUD() {
@@ -10389,8 +11202,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const sub = getStudentSubmissionRecord(asg) || { status: 'pending' };
         const timeLimitText = asg.timeLimitMinutes > 0
-            ? `<span class="badge badge-amber" style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.35); padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-stopwatch"></i> ${asg.timeLimitMinutes} min para resolver</span>`
-            : `<span class="badge badge-teal" style="background:rgba(14,165,233,0.18); color:#38bdf8; border:1px solid rgba(14,165,233,0.35); padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-infinity"></i> Sin límite de tiempo</span>`;
+            ? `<span class="badge badge-amber" style="background:#fef3c7; color:#b45309; border:1px solid #fcd34d; padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-stopwatch"></i> ${asg.timeLimitMinutes} min para resolver</span>`
+            : `<span class="badge badge-teal" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-infinity"></i> Sin límite de tiempo</span>`;
 
         const formattedDue = formatAmericasTzDate(asg.deadline, asg.dueTime, asg.timezone);
 
@@ -10399,15 +11212,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const passed = (sub.score || 0) >= (asg.threshold || 75);
             actionAreaHtml = `
                 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                    <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:6px 14px; border-radius:10px;">
-                        <span style="font-size:0.75rem; color:#10b981; font-weight:700; display:block;">
-                            <i class="fa-solid fa-circle-check"></i> ${passed ? '✓ Tarea Entregada y Aprobada' : 'Tarea Entregada'}
+                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:6px 14px; border-radius:10px;">
+                        <span style="font-size:0.75rem; color:#15803d; font-weight:700; display:block;">
+                            <i class="fa-solid fa-circle-check"></i> ${passed ? 'Tarea Entregada y Aprobada' : 'Tarea Entregada'}
                         </span>
-                        <div style="font-size:0.85rem; font-weight:800; color:#ffffff;">
-                            Calificación: <span style="color:#34d399;">${sub.score}%</span> &bull; ${sub.timeSpentMinutes || 25} min empleados
+                        <div style="font-size:0.85rem; font-weight:800; color:#0f172a;">
+                            Calificación: <span style="color:#059669;">${sub.score}%</span> &bull; ${sub.timeSpentMinutes || 25} min empleados
                         </div>
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="reviewStudentAssignmentResults()" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="reviewStudentAssignmentResults()" style="background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:8px 16px; min-height:44px; border-radius:8px; font-weight:700; cursor:pointer;">
                         <i class="fa-solid fa-eye"></i> Revisar Entrega
                     </button>
                 </div>
@@ -10418,7 +11231,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     <div class="asg-timer-pulse-badge" id="hud-timer-badge">
                         <i class="fa-solid fa-hourglass-half"></i> <span id="hud-timer-countdown">Resolviendo...</span>
                     </div>
-                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:#0ea5e9; color:#fff; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(14,165,233,0.4);">
+                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:#0284c7; color:#fff; border:none; padding:10px 18px; min-height:44px; border-radius:8px; font-weight:800; cursor:pointer;">
                         <i class="fa-solid fa-arrow-right-to-bracket"></i> Continuar Resolución
                     </button>
                 </div>
@@ -10426,7 +11239,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         } else {
             actionAreaHtml = `
                 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color:#fff; border:none; padding:10px 20px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 15px rgba(14,165,233,0.35); display:inline-flex; align-items:center; gap:8px;">
+                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color:#fff; border:none; padding:10px 20px; min-height:44px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 12px rgba(2,132,199,0.28); display:inline-flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-stopwatch"></i> Iniciar Resolución (${asg.timeLimitMinutes > 0 ? asg.timeLimitMinutes + 'm' : 'Sin Límite'})
                     </button>
                 </div>
@@ -10436,32 +11249,32 @@ Nearshoring Center of Excellence • stemOS Certified`;
         mount.innerHTML = `
             <div class="stemos-asg-banner-card">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;">
-                    <div style="flex:1; min-width:280px;">
+                    <div style="flex:1; min-width:0; width:100%;">
                         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
-                            <span style="font-size:0.7rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#38bdf8; background:rgba(14,165,233,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(14,165,233,0.3);">
+                            <span style="font-size:0.7rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#0369a1; background:#e0f2fe; padding:2px 8px; border-radius:6px; border:1px solid #bae6fd;">
                                 <i class="fa-solid fa-chalkboard-user"></i> Tarea Asignada por tu Profesor
                             </span>
-                            <span style="font-size:0.75rem; font-weight:700; color:#f8fafc; background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:6px;">
+                            <span style="font-size:0.75rem; font-weight:700; color:#0f172a; background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 8px; border-radius:6px;">
                                 ${asg.level || 'B1'}
                             </span>
                             ${timeLimitText}
-                            <span style="font-size:0.75rem; font-weight:700; color:#7dd3fc; background:rgba(14,165,233,0.1); border:1px solid rgba(14,165,233,0.25); padding:2px 8px; border-radius:6px;" title="Zona Horaria Oficial: Solo América (México, USA, LATAM)">
+                            <span style="font-size:0.75rem; font-weight:700; color:#0369a1; background:#f0f9ff; border:1px solid #bae6fd; padding:2px 8px; border-radius:6px;" title="Zona Horaria Oficial: Solo América (México, USA, LATAM)">
                                 <i class="fa-solid fa-earth-americas"></i> ${asg.timezone || 'America/Mexico_City'}
                             </span>
                         </div>
-                        <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0 0 6px 0;">
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#0f172a; margin:0 0 6px 0;">
                             ${asg.title}
                         </h3>
-                        <p style="font-size:0.82rem; color:#94a3b8; margin:0 0 8px 0; line-height:1.4;">
+                        <p style="font-size:0.84rem; color:#334155; margin:0 0 8px 0; line-height:1.45;">
                             ${asg.instructions || 'Resuelve los retos técnicos industriales en el tiempo asignado bajo el marco MCER B1.'}
                         </p>
-                        <div style="font-size:0.76rem; color:#cbd5e1; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <div style="font-size:0.78rem; color:#334155; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                             <span>
-                                <i class="fa-solid fa-calendar-check" style="color:#38bdf8; margin-right:4px;"></i>
-                                Fecha Límite Oficial: <strong style="color:#ffffff;">${formattedDue}</strong>
+                                <i class="fa-solid fa-calendar-check" style="color:#0284c7; margin-right:4px;"></i>
+                                Fecha Límite Oficial: <strong style="color:#0f172a;">${formattedDue}</strong>
                             </span>
                             <span>&bull;</span>
-                            <span style="color:#34d399; font-weight:700;">
+                            <span style="color:#059669; font-weight:700;">
                                 Calificación mínima aprobatoria: ${asg.threshold || 75}%
                             </span>
                         </div>
@@ -10538,11 +11351,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         let profile = null;
         try {
-            const raw = localStorage.getItem('stemos_user_profile');
+            const raw = localStorage.getItem('stemos_student_profile');
             if (raw) profile = JSON.parse(raw);
         } catch(e) {}
-        const studentId = (profile && profile.studentId) || 'st-3';
-        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
+        const studentId = (profile && (profile.uid || profile.studentId)) || 'st-3';
+        const studentName = (profile && (profile.fullName || profile.name)) || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
 
         asg.submissions = asg.submissions || {};
         if (!asg.submissions[studentId] || asg.submissions[studentId].status === 'pending') {
@@ -10658,14 +11471,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
                     ${timeLimitBadge}
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:transparent; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;" title="Pausar y Cerrar">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#e2e8f0; font-size:1.1rem; min-width:44px; min-height:44px; border-radius:10px; cursor:pointer;" aria-label="Pausar y Cerrar" title="Pausar y Cerrar">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
             </div>
 
             <!-- Instructions Box -->
-            <div style="background:rgba(14,165,233,0.08); border-left:3px solid #0ea5e9; padding:10px 14px; border-radius:6px; margin-bottom:20px; font-size:0.8rem; color:#cbd5e1;">
+            <div style="background:rgba(14,165,233,0.12); border-left:3px solid #38bdf8; padding:10px 14px; border-radius:6px; margin-bottom:20px; font-size:0.84rem; color:#e2e8f0;">
                 <strong>Instrucciones:</strong> ${asg.instructions || 'Lee detenidamente cada caso técnico de ingeniería y selecciona la respuesta técnica adecuada.'}
             </div>
 
@@ -10674,7 +11487,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 ${ASG_QUESTIONS.map((q, idx) => {
                     const selectedIdx = userAssignmentAnswers[q.id];
                     return `
-                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; margin-bottom:18px;">
+                        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; margin-bottom:18px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                                 <span style="font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.05em;">
                                     Pregunta ${idx + 1} de ${ASG_QUESTIONS.length} &bull; ${q.title}
@@ -10683,16 +11496,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             <div style="font-size:0.85rem; color:#e2e8f0; line-height:1.45; margin-bottom:8px; background:rgba(0,0,0,0.25); padding:10px; border-radius:8px; border-left:2px solid #38bdf8;">
                                 <i class="fa-solid fa-industry" style="color:#38bdf8; margin-right:4px;"></i> ${q.scenario}
                             </div>
-                            <div style="font-size:0.85rem; font-weight:700; color:#ffffff; margin-bottom:12px;">
+                            <div style="font-size:0.88rem; font-weight:700; color:#ffffff; margin-bottom:12px;">
                                 ${q.prompt}
                             </div>
                             <div>
                                 ${q.options.map((opt, oIdx) => {
                                     const isSelected = selectedIdx === oIdx;
                                     return `
-                                        <div class="asg-opt-radio ${isSelected ? 'selected' : ''}" onclick="selectAssignmentOption('${q.id}', ${oIdx})">
-                                            <input type="radio" name="opt-${q.id}" id="opt-${q.id}-${oIdx}" ${isSelected ? 'checked' : ''} style="margin-top:2px;">
-                                            <label for="opt-${q.id}-${oIdx}" style="font-size:0.82rem; color:${isSelected ? '#ffffff' : '#cbd5e1'}; cursor:pointer; flex:1;">
+                                        <div class="asg-opt-radio ${isSelected ? 'selected' : ''}" onclick="selectAssignmentOption('${q.id}', ${oIdx})" style="min-height:44px;">
+                                            <input type="radio" name="opt-${q.id}" id="opt-${q.id}-${oIdx}" ${isSelected ? 'checked' : ''} style="margin-top:3px;">
+                                            <label for="opt-${q.id}-${oIdx}" style="font-size:0.85rem; font-weight:${isSelected ? '700' : '600'}; color:#0f172a; cursor:pointer; flex:1;">
                                                 ${opt}
                                             </label>
                                         </div>
@@ -10709,11 +11522,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 <div style="font-size:0.78rem; color:#94a3b8;">
                     <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Registro de práctica formativa MCER activa
                 </div>
-                <div style="display:flex; gap:10px;">
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:8px; cursor:pointer;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:rgba(255,255,255,0.08); color:#e2e8f0; border:1px solid rgba(255,255,255,0.2); padding:10px 16px; min-height:44px; border-radius:8px; cursor:pointer;">
                         Pausar
                     </button>
-                    <button type="button" class="btn btn-teal btn-sm" onclick="submitStudentAssignment(false)" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(16,185,129,0.35);">
+                    <button type="button" class="btn btn-teal btn-sm" onclick="submitStudentAssignment(false)" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; padding:10px 22px; min-height:44px; border-radius:8px; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(16,185,129,0.35);">
                         <i class="fa-solid fa-paper-plane"></i> Entregar Tarea al Profesor
                     </button>
                 </div>
@@ -10727,15 +11540,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (asg) {
             let profile = null;
             try {
-                const raw = localStorage.getItem('stemos_user_profile');
+                const raw = localStorage.getItem('stemos_student_profile');
                 if (raw) profile = JSON.parse(raw);
             } catch(e) {}
-            const studentId = (profile && profile.studentId) || 'st-3';
-            if (asg.submissions && asg.submissions[studentId]) {
+            const studentId = (profile && (profile.uid || profile.studentId)) || 'st-3';
+            asg.submissions = asg.submissions || {};
+            if (asg.submissions[studentId]) {
                 asg.submissions[studentId].answers = userAssignmentAnswers;
                 saveActiveAssignmentSync(asg);
             }
-            renderAssignmentRunnerModal(asg, asg.submissions[studentId], (profile && profile.name) || 'Diego Ramírez');
+            renderAssignmentRunnerModal(asg, asg.submissions[studentId], (profile && (profile.fullName || profile.name)) || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS');
         }
     }
 
@@ -10747,11 +11561,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         let profile = null;
         try {
-            const raw = localStorage.getItem('stemos_user_profile');
+            const raw = localStorage.getItem('stemos_student_profile');
             if (raw) profile = JSON.parse(raw);
         } catch(e) {}
-        const studentId = (profile && profile.studentId) || 'st-3';
-        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
+        const studentId = (profile && (profile.uid || profile.studentId)) || 'st-3';
+        const studentName = (profile && (profile.fullName || profile.name)) || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
 
         let correctCount = 0;
         ASG_QUESTIONS.forEach(q => {
@@ -10767,6 +11581,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const usedSecs = assignmentTimeLimitTotal - remaining;
             timeSpentMinutes = Math.max(1, Math.round(usedSecs / 60));
         }
+
+        const prevSubmission = asg.submissions && asg.submissions[studentId];
+        const wasAlreadySubmitted = Boolean(prevSubmission && prevSubmission.status === 'completed');
 
         const submission = {
             status: 'completed',
@@ -10784,8 +11601,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
         asg.submissions[studentId] = submission;
         saveActiveAssignmentSync(asg);
 
-        if (typeof updateStudentXPHUD === 'function') {
-            updateStudentXPHUD(submission.xp);
+        if (!wasAlreadySubmitted) {
+            if (typeof awardXP === 'function') {
+                awardXP(submission.xp);
+            }
+            if (typeof window.syncStudentProgressToFirestore === 'function') {
+                window.syncStudentProgressToFirestore();
+            }
         }
 
         const container = document.getElementById('asg-runner-content');
@@ -10802,7 +11624,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         ${isAuto ? 'El tiempo límite de resolución ha concluido. Tu reporte se sincronizó automáticamente con el panel del docente.' : 'Tu reporte técnico ha sido registrado y sincronizado en tiempo real con el panel del profesor.'}
                     </p>
 
-                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:24px; text-align:left;">
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:12px; margin-bottom:24px; text-align:left;">
                         <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
                             <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Calificación</div>
                             <div style="font-size:1.3rem; font-weight:800; color:${passed ? '#34d399' : '#fbbf24'};">${score}%</div>
@@ -10815,12 +11637,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         </div>
                         <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
                             <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Curricular XP</div>
-                            <div style="font-size:1.3rem; font-weight:800; color:#f59e0b;">+${submission.xp} XP</div>
+                            <div style="font-size:1.3rem; font-weight:800; color:#f59e0b;">+${wasAlreadySubmitted ? 0 : submission.xp} XP</div>
                             <div style="font-size:0.7rem; color:#cbd5e1;">Práctica MCER</div>
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-teal" onclick="closeStudentAssignmentRunner()" style="background:#0ea5e9; color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:800; cursor:pointer;">
+                    <button type="button" class="btn btn-teal" onclick="closeStudentAssignmentRunner()" style="background:#0ea5e9; color:#fff; border:none; padding:12px 24px; min-height:44px; border-radius:8px; font-weight:800; cursor:pointer;">
                         Cerrar y Volver al Dashboard
                     </button>
                 </div>
@@ -10835,16 +11657,21 @@ Nearshoring Center of Excellence • stemOS Certified`;
             localStorage.setItem('stemos_active_student_assignment', JSON.stringify(asg));
 
             const classId = asg.classId || 'c1';
-            const cohortKey = `stemos_cohort_assignments_${classId}`;
-            const existingRaw = localStorage.getItem(cohortKey);
-            let list = existingRaw ? JSON.parse(existingRaw) : [];
-            const idx = list.findIndex(a => a.id === asg.id);
-            if (idx >= 0) {
-                list[idx] = asg;
-            } else {
-                list.unshift(asg);
-            }
-            localStorage.setItem(cohortKey, JSON.stringify(list));
+            const keysToSync = [
+                `stemos_cohort_assignments_${classId}`,
+                `stemos_class_assignments_${classId}`
+            ];
+            keysToSync.forEach(storageKey => {
+                const existingRaw = localStorage.getItem(storageKey);
+                let list = existingRaw ? JSON.parse(existingRaw) : [];
+                const idx = list.findIndex(a => a.id === asg.id);
+                if (idx >= 0) {
+                    list[idx] = asg;
+                } else {
+                    list.unshift(asg);
+                }
+                localStorage.setItem(storageKey, JSON.stringify(list));
+            });
         } catch(e) {
             console.warn('Assignment sync error:', e);
         }
@@ -11083,7 +11910,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (runnerHeartsIconsEl) renderHeartsIconsInto(runnerHeartsIconsEl, sessionHearts, 5);
 
         const hoursCountEl = document.getElementById('duo-hours-count');
-        const caceiHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
+        const caceiHours = (typeof window.getRealPracticeHours === 'function')
+            ? window.getRealPracticeHours()
+            : parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0.0');
         if (hoursCountEl) hoursCountEl.textContent = caceiHours.toFixed(1);
 
         const speedLabelEl = document.getElementById('duo-audio-speed-label');
@@ -11347,10 +12176,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         localStorage.setItem(storageKey, JSON.stringify(prog));
 
-        // Sync XP
-        if (isNowCompleted) {
-            let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
-            currentXP += xpReward;
+        // Sync XP (additive, never reset to 3450)
+        if (isNowCompleted && typeof awardXP === 'function') {
+            awardXP(xpReward || 300);
+            DuoSound.playVictory();
+        } else if (isNowCompleted) {
+            let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+            currentXP = (isNaN(currentXP) ? 0 : currentXP) + (xpReward || 300);
             localStorage.setItem('stemos_student_xp', String(currentXP));
             DuoSound.playVictory();
             if (typeof window.updateStudentXPHUD === 'function') {
@@ -11368,9 +12200,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     studentUser.uid,
                     {
                         careerId: careerId,
-                        completedStations: completedCount,
-                        progressPercent: calcProgress,
-                        xp: parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10),
+                        modulesCompleted: completedCount,
+                        progress: calcProgress,
+                        xp: isNowCompleted ? (xpReward || 300) : 0,
                         lastActiveModule: moduleId,
                         lastActiveAt: new Date().toISOString()
                     }
@@ -11845,9 +12677,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             let statusPill = `<span class="plc-status-pill" style="background:${mod.color}22; color:${mod.color};"><i class="fa-solid fa-play"></i> Ready to Start</span>`;
             if (isCompleted) {
-                statusPill = `<span class="plc-status-pill completed-pill"><i class="fa-solid fa-circle-check"></i> ✓ Section Completed${avgModScore !== null ? ' · ' + avgModScore + '%' : ''}</span>`;
+                statusPill = `<span class="plc-status-pill completed-pill"><i class="fa-solid fa-circle-check"></i> Section Completed${avgModScore !== null ? ' · ' + avgModScore + '%' : ''}</span>`;
             } else if (doneStepsCount > 0 || avgModScore !== null) {
-                statusPill = `<span class="plc-status-pill partial-complete-pill"><i class="fa-solid fa-circle-check"></i> ✓ ${doneStepsCount}/${DUO_STEPS_META.length} Done${avgModScore !== null ? ' · Score: ' + avgModScore + '%' : ''}</span>`;
+                statusPill = `<span class="plc-status-pill partial-complete-pill"><i class="fa-solid fa-circle-check"></i> ${doneStepsCount}/${DUO_STEPS_META.length} Done${avgModScore !== null ? ' · Score: ' + avgModScore + '%' : ''}</span>`;
             } else if (!isUnlocked) {
                 statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
             }
@@ -11869,16 +12701,24 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 ? `powersheet.html?lesson=${encodeURIComponent(mod.id)}`
                 : `powersheet.html?esp=${encodeURIComponent(`${mod.trackId || 'it-mecatronica'}:${mod.id}`)}`;
 
+            const allPreBossDone = DUO_STEPS_META.slice(0, -1).every((_, preIdx) => {
+                const preRec = duoProgress[`${mod.id}-step${preIdx + 1}`];
+                return !!(preRec && preRec.completed);
+            });
+
             const duoStepsStripHtml = DUO_STEPS_META.map((st, stIdx) => {
                 const sNum = stIdx + 1;
                 const rec = duoProgress[`${mod.id}-step${sNum}`];
                 const isStepDone = !!(rec && rec.completed);
+                const isBossLocked = Boolean(st.isBoss && !isStepDone && !allPreBossDone);
                 const hasScore = rec && typeof rec.score === 'number';
-                const extraCls = `${st.isBoss ? ' boss-step' : ''}${isStepDone ? ' completed' : ''}`;
-                const tip = `Section ${sNum}: ${st.title}${isStepDone ? ' — Completed' : ''}${hasScore ? ` (${rec.score}%)` : ''}`;
+                const extraCls = `${st.isBoss ? ' boss-step' : ''}${isStepDone ? ' completed' : ''}${isBossLocked ? ' locked-step' : ''}`;
+                const tip = isBossLocked
+                    ? `Section ${sNum}: ${st.title} — Completa las 6 secciones previas para desbloquear`
+                    : `Section ${sNum}: ${st.title}${isStepDone ? ' — Completed' : ''}${hasScore ? ` (${rec.score}%)` : ''}`;
                 const scoreSuffix = hasScore ? ` ${rec.score}%` : '';
-                return `<button type="button" class="duo-sub-step-btn${extraCls}" title="${tip}" data-step="${sNum}">
-                            <i class="fa-solid ${isStepDone ? 'fa-circle-check' : st.icon}"></i> ${st.shortLabel}${scoreSuffix}
+                return `<button type="button" class="duo-sub-step-btn${extraCls}" title="${tip}" data-step="${sNum}"${isBossLocked ? ' disabled aria-disabled="true"' : ''}>
+                            <i class="fa-solid ${isBossLocked ? 'fa-lock' : (isStepDone ? 'fa-circle-check' : st.icon)}"></i> ${st.shortLabel}${scoreSuffix}
                         </button>`;
             }).join('\n                        ');
 
@@ -11948,7 +12788,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 }
                 DuoSound.playPop();
                 if (mod.isMcerUnit) {
-                    startDuoLessonForUnit(mod.id, 1);
+                    const nextStep = typeof window.getNextIncompleteDuoStep === 'function' ? window.getNextIncompleteDuoStep(mod.id) : 1;
+                    startDuoLessonForUnit(mod.id, nextStep);
                 } else {
                     openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
                 }
@@ -11966,7 +12807,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
                         return;
                     }
-                    startDuoLessonForUnit(mod.id, 1);
+                    const nextStep = typeof window.getNextIncompleteDuoStep === 'function' ? window.getNextIncompleteDuoStep(mod.id) : 1;
+                    startDuoLessonForUnit(mod.id, nextStep);
                 });
             }
 
@@ -11976,6 +12818,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     if (!isUnlocked) {
                         DuoSound.playIncorrect();
                         showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
+                        return;
+                    }
+                    if (btn.disabled || btn.classList.contains('locked-step')) {
+                        DuoSound.playIncorrect();
+                        showSyncToast('Completa las 6 secciones anteriores para desbloquear el Reto Final.', 'info');
                         return;
                     }
                     const sNum = parseInt(btn.dataset.step, 10) || 1;
@@ -12941,7 +13788,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const v0Sent = (vocabList[0] && vocabList[0].example) || 'We must inspect the cleanroom pressure differential every hour.';
             pushEx({
                 type: 'voice_crucible',
-                category: '👑 Voice Crucible · Pronunciation 1',
+                category: 'Voice Crucible · Pronunciation 1',
                 heading: 'Pronounce the primary technical instruction aloud',
                 subtext: 'Tap the microphone (or Practice Without Mic) to calibrate Standard American stress & clarity:',
                 targetText: v0Sent,
@@ -12953,7 +13800,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 || 'All telemetry readings are documented according to quality protocols.';
             pushEx({
                 type: 'voice_crucible',
-                category: '👑 Voice Crucible · Shift Handoff 2',
+                category: 'Voice Crucible · Shift Handoff 2',
                 heading: 'Deliver the operational update aloud',
                 subtext: 'Follow the Thought Group dividers | and Connected Speech links ‿ shown below:',
                 targetText: secondVoiceSent,
@@ -12966,7 +13813,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 || 'Always check in with quality engineering before starting line two.';
             pushEx({
                 type: 'voice_crucible',
-                category: '👑 Voice Crucible · Connected Rhythm 3',
+                category: 'Voice Crucible · Connected Rhythm 3',
                 heading: 'Speak the complete Thought-Group flow without mid-chunk pauses',
                 subtext: 'Tap "Escuchar Pulso Rítmico" first to internalize the Stress-Timed beats ● and pitch contour:',
                 targetText: thirdVoiceSent,
@@ -13084,10 +13931,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     function saveLiveDuoAttemptScore(session, isCompletedFinal) {
         if (!session) return 0;
+        const DUO_PASS_THRESHOLD = 70;
         const stats = computeSessionScoreStats(session);
         const duoProgress = getDuoProgress();
         const prev = duoProgress[session.stepKey] || {};
-        const finalCompleted = Boolean(isCompletedFinal || prev.completed);
+        const passedNow = Boolean(isCompletedFinal && stats.scorePct >= DUO_PASS_THRESHOLD);
+        const finalCompleted = Boolean(passedNow || prev.completed);
         const bestScore = Math.max(prev.bestScore || 0, stats.scorePct);
         const stars = stats.scorePct >= 90 ? 3 : (stats.scorePct >= 70 ? 2 : 1);
 
@@ -13117,8 +13966,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             correctCount: stats.correctCount,
             totalCount: Math.max(1, stats.answeredCount),
             scorePct: stats.scorePct,
-            passed: finalCompleted && stats.scorePct >= 60,
-            xpAwarded: 0
+            passed: finalCompleted,
+            xpAwarded: 0,
+            syncToCloud: Boolean(isCompletedFinal)
         });
 
         return stats.scorePct;
@@ -13204,19 +14054,50 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         let unit = resolveMcerEntityById(unitId);
         if (!unit) {
-            // Check active ESP track or career module
+            // Check active ESP track / career module
             const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
             const careerPath = window.STEMOS_CAREER_PATHS && window.STEMOS_CAREER_PATHS.getPathForCareer
                 ? window.STEMOS_CAREER_PATHS.getPathForCareer(activeCareerId) : null;
-            const matchedMod = careerPath && Array.isArray(careerPath.modules)
+            let matchedMod = careerPath && Array.isArray(careerPath.modules)
                 ? careerPath.modules.find(m => m.id === unitId) : null;
+            let matchedCourseId = activeCareerId;
+            let matchedCourseMods = careerPath && careerPath.modules ? careerPath.modules : [];
+
+            // Also search LXP_COURSES across all 34 tracks (e.g., cyber-m1, semi-m2, etc.)
+            if (!matchedMod && window.LXP_COURSES) {
+                for (const cid of Object.keys(window.LXP_COURSES)) {
+                    const crs = window.LXP_COURSES[cid];
+                    if (crs && Array.isArray(crs.modules)) {
+                        const hit = crs.modules.find(m => m.id === unitId);
+                        if (hit) {
+                            matchedMod = hit;
+                            matchedCourseId = cid;
+                            matchedCourseMods = crs.modules;
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (matchedMod && window.STEMOS_ESP_DESIGNS) {
-                const espObj = window.STEMOS_ESP_DESIGNS.buildEspClassPayload(activeCareerId, matchedMod, { id: activeCareerId, modules: careerPath.modules });
+                const espObj = window.STEMOS_ESP_DESIGNS.buildEspClassPayload(matchedCourseId, matchedMod, { id: matchedCourseId, modules: matchedCourseMods });
                 unit = Object.assign({}, espObj, {
+                    isEsp: true,
+                    trackId: matchedCourseId,
+                    modId: matchedMod.id,
                     vocabulary: espObj.vocab,
                     grammarDrills: espObj.drills,
                     unitQuiz: espObj.drills,
-                    dialogue: { context: espObj.industryContext, lines: espObj.dialogue.map(l => Object.assign({}, l, { text: l.en })) }
+                    dialogue: { context: espObj.industryContext, lines: (espObj.dialogue || []).map(l => Object.assign({}, l, { text: l.en })) }
+                });
+            } else if (matchedMod) {
+                unit = Object.assign({}, matchedMod, {
+                    id: matchedMod.id,
+                    isEsp: true,
+                    trackId: matchedCourseId,
+                    modId: matchedMod.id,
+                    title: matchedMod.title || matchedMod.name || unitId,
+                    titleES: matchedMod.desc || matchedMod.objective || 'Módulo Técnico'
                 });
             } else {
                 const allUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function')
@@ -13485,9 +14366,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             speedBar.setAttribute('aria-label', 'Velocidad de reproducción de audio');
 
             const speeds = [
-                { val: 0.8, label: '🐢 0.8x Lento' },
+                { val: 0.8, label: '0.8x Lento' },
                 { val: 1.0, label: '1.0x Normal' },
-                { val: 1.2, label: '⚡ 1.2x Rápido' }
+                { val: 1.2, label: '1.2x Rápido' }
             ];
 
             speeds.forEach(s => {
@@ -13724,7 +14605,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         recognition.onstart = () => {
                             isRecording = true;
                             micBtn.classList.add('recording');
-                            statusLabel.textContent = '🎙️ Escuchando... habla con claridad hacia el micrófono.';
+                            statusLabel.innerHTML = '<i class="fa-solid fa-microphone-lines"></i> Escuchando... habla con claridad hacia el micrófono.';
                             statusLabel.style.color = '#ef4444';
                         };
 
@@ -14080,31 +14961,91 @@ Nearshoring Center of Excellence • stemOS Certified`;
     function showDuoLessonVictory() {
         if (!activeDuoSession) return;
         const session = activeDuoSession;
-        DuoSound.playVictory();
+        const DUO_PASS_THRESHOLD = 70;
 
-        // Increment daily streak
-        const newStreak = recordDailyStudyCompleted();
+        const preDuoProgress = getDuoProgress();
+        const wasStepCompletedBefore = Boolean(preDuoProgress[session.stepKey] && preDuoProgress[session.stepKey].completed);
 
-        // Award completion bonus XP safely
-        const bonusXP = session.stepMeta.xp || 30;
-        session.sessionXP = (session.sessionXP || 0) + bonusXP;
-        awardXP(bonusXP);
-
-        // Accumulate accredited practice hours
-        let currentCacei = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
-        currentCacei += 0.25;
-        localStorage.setItem('stemos_cacei_accredited_hours', currentCacei.toFixed(2));
-
-        // Persist completed step & final score
+        // Persist attempt score first (saveLiveDuoAttemptScore enforces DUO_PASS_THRESHOLD = 70 for completed flag)
         const finalScorePct = saveLiveDuoAttemptScore(session, true);
+        const passedStep = finalScorePct >= DUO_PASS_THRESHOLD;
         const duoProgress = getDuoProgress();
         const doneStepsCount = DUO_STEPS_META.filter((_, i) => {
             const r = duoProgress[`${session.unit.id}-step${i + 1}`];
             return r && r.completed;
         }).length;
 
-        // Update career ESP progress if applicable, or mark MCER unit complete when Boss/all sections done
-        const isUnitFullyFinished = doneStepsCount >= DUO_STEPS_META.length || session.stepNum >= DUO_STEPS_META.length || (session.stepMeta && session.stepMeta.isBoss);
+        const stage = document.getElementById('duo-exercise-stage');
+        const drawer = document.getElementById('duo-feedback-drawer');
+        const progressFill = document.getElementById('duo-runner-progress-fill');
+
+        if (progressFill) progressFill.style.width = '100%';
+        if (drawer) drawer.style.display = 'none';
+
+        if (!passedStep) {
+            DuoSound.playIncorrect();
+            window._lastFinishedDuoUnitId = session.unit.id;
+            window._lastFinishedDuoToast = `Sección "${session.stepMeta.title}" finalizada (${finalScorePct}% · mínimo ${DUO_PASS_THRESHOLD}% para acreditar).`;
+            updateDuoHudUI();
+            if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
+
+            if (stage) {
+                stage.innerHTML = `
+                    <div class="duo-victory-card">
+                        <div class="duo-victory-badge" style="background:#fef3c7; color:#b45309; border-color:#fcd34d;">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            REFORZAR PASO (${finalScorePct}% · MÍNIMO ${DUO_PASS_THRESHOLD}%)
+                        </div>
+                        <div class="duo-victory-trophy" style="background:#fffbeb; color:#d97706;">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <h2 class="duo-victory-title">Reforzar Paso</h2>
+                        <p class="duo-victory-subtitle">Obtuviste <strong>${finalScorePct}%</strong> en <strong>${session.stepMeta.title}</strong>. Alcanza al menos ${DUO_PASS_THRESHOLD}% para acreditar este paso y desbloquear el siguiente.</p>
+
+                        <div class="duo-victory-rewards">
+                            <div class="duo-reward-item">
+                                <span class="duo-reward-val" style="color:#d97706;">${finalScorePct}%</span>
+                                <span class="duo-reward-lbl">Score Actual</span>
+                            </div>
+                            <div class="duo-reward-item">
+                                <span class="duo-reward-val" style="color:#0284c7;">${DUO_PASS_THRESHOLD}%</span>
+                                <span class="duo-reward-lbl">Mínimo Requerido</span>
+                            </div>
+                            <div class="duo-reward-item">
+                                <span class="duo-reward-val" style="color:#e11d48;"><i class="fa-solid fa-heart"></i> ${session.hearts}/5</span>
+                                <span class="duo-reward-lbl">Hearts Left</span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="window.startDuoLessonForUnit('${session.unit.id}', ${session.stepNum})" style="width:100%; min-height:48px; padding:14px 28px; font-size:1rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(2,132,199,0.3); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                            <i class="fa-solid fa-rotate-right"></i> Reintentar Paso
+                        </button>
+                        <button type="button" onclick="window.finishAndCloseDuoLesson()" style="width:100%; min-height:46px; margin-top:10px; padding:12px 24px; font-size:0.92rem; font-weight:800; border-radius:14px; background:#f8fafc; color:#475569; border:1.5px solid #cbd5e1; cursor:pointer;">
+                            Volver al Camino
+                        </button>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        DuoSound.playVictory();
+
+        if (!wasStepCompletedBefore) {
+            // Increment daily streak and award one-time completion bonus XP + hours
+            recordDailyStudyCompleted();
+            const bonusXP = session.stepMeta.xp || 30;
+            session.sessionXP = (session.sessionXP || 0) + bonusXP;
+            awardXP(bonusXP);
+
+            let currentCacei = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '0.0');
+            if (isNaN(currentCacei)) currentCacei = 0.0;
+            currentCacei += 0.25;
+            localStorage.setItem('stemos_cacei_accredited_hours', currentCacei.toFixed(2));
+        }
+
+        // Update unit/class completion strictly when ALL 7 sections are completed
+        const isUnitFullyFinished = doneStepsCount >= DUO_STEPS_META.length;
         if (isUnitFullyFinished) {
             localStorage.setItem('stemos_crucible_' + session.unit.id, 'completed');
             localStorage.setItem('stemos_unit_completed_' + session.unit.id, 'true');
@@ -14125,33 +15066,38 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     };
                     localStorage.setItem(progKey, JSON.stringify(cProg));
                 } catch (_) {}
-            }
-
-            // Advance active unit ID if in MCER
-            if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
-                const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(session.unit.id);
-                if (cIdx >= 0 && cIdx < CANONICAL_MCER_UNIT_IDS.length - 1) {
-                    const nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
-                    localStorage.setItem('stemos_active_unit_id', nextUnitId);
-                    window._currentActiveUnitId = nextUnitId;
+            } else {
+                // Advance active unit/class pointer cleanly
+                if (window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getAllClasses === 'function') {
+                    const allCls = window.STEMOS_MCER_CLASSES.getAllClasses();
+                    const clsIdx = allCls.findIndex(c => c.id === session.unit.id);
+                    if (clsIdx >= 0 && clsIdx + 1 < allCls.length) {
+                        localStorage.setItem('stemos_active_unit_id', allCls[clsIdx + 1].id);
+                        window._currentActiveUnitId = allCls[clsIdx + 1].id;
+                    }
+                } else if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
+                    const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(session.unit.id);
+                    if (cIdx >= 0 && cIdx < CANONICAL_MCER_UNIT_IDS.length - 1) {
+                        const nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
+                        localStorage.setItem('stemos_active_unit_id', nextUnitId);
+                        window._currentActiveUnitId = nextUnitId;
+                    }
                 }
             }
         }
 
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
+        }
+
         // Remember last completed unit so outside map highlights & scrolls cleanly
         window._lastFinishedDuoUnitId = session.unit.id;
-        window._lastFinishedDuoToast = `✓ Section "${session.stepMeta.title}" finished & saved (${finalScorePct}% · +${session.sessionXP} XP)!`;
+        window._lastFinishedDuoToast = `Sección "${session.stepMeta.title}" acreditada (${finalScorePct}% · +${session.sessionXP} XP)`;
 
         // Update UI outside & inside
         updateDuoHudUI();
         if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
-
-        const stage = document.getElementById('duo-exercise-stage');
-        const drawer = document.getElementById('duo-feedback-drawer');
-        const progressFill = document.getElementById('duo-runner-progress-fill');
-
-        if (progressFill) progressFill.style.width = '100%';
-        if (drawer) drawer.style.display = 'none';
+        if (typeof window.updateActivePathCardUI === 'function') window.updateActivePathCardUI();
 
         if (stage) {
             const psUrl = session.unit && session.unit.isEsp
@@ -14192,15 +15138,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             <span class="duo-reward-lbl">XP Earned</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:${finalScorePct >= 70 ? '#16a34a' : '#d97706'};">${finalScorePct}%</span>
+                            <span class="duo-reward-val" style="color:#16a34a;">${finalScorePct}%</span>
                             <span class="duo-reward-lbl">Saved Score</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#e11d48;">❤️ ${session.hearts}/5</span>
+                            <span class="duo-reward-val" style="color:#e11d48;"><i class="fa-solid fa-heart"></i> ${session.hearts}/5</span>
                             <span class="duo-reward-lbl">Hearts Left</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#0284c7;">${doneStepsCount}/${DUO_STEPS_META.length} ✓</span>
+                            <span class="duo-reward-val" style="color:#0284c7;">${doneStepsCount}/${DUO_STEPS_META.length}</span>
                             <span class="duo-reward-lbl">Unit Progress</span>
                         </div>
                     </div>
@@ -14209,13 +15155,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         ${checklistHtml}
                     </div>
 
-                    <button type="button" class="btn btn-primary" onclick="window.finishAndCloseDuoLesson()" style="width:100%; padding:14px 28px; font-size:1rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                    <button type="button" class="btn btn-primary" onclick="window.finishAndCloseDuoLesson()" style="width:100%; min-height:48px; padding:14px 28px; font-size:1rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
                         <i class="fa-solid fa-circle-check"></i> FINISH &amp; SEE PROGRESS ON PATH
                     </button>
-                    <button type="button" onclick="window.advanceToNextDuoLesson()" style="width:100%; margin-top:10px; padding:12px 24px; font-size:0.92rem; font-weight:800; border-radius:14px; background:#f0f9ff; color:#0284c7; border:1.5px solid #7dd3fc; cursor:pointer;">
+                    <button type="button" onclick="window.advanceToNextDuoLesson()" style="width:100%; min-height:46px; margin-top:10px; padding:12px 24px; font-size:0.92rem; font-weight:800; border-radius:14px; background:#f0f9ff; color:#0284c7; border:1.5px solid #7dd3fc; cursor:pointer;">
                         ${nextBtnLabel}
                     </button>
-                    <a href="${psUrl}" target="_blank" rel="noopener" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; width:100%; margin-top:10px; padding:10px 20px; font-size:0.86rem; font-weight:800; border-radius:14px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; text-decoration:none;">
+                    <a href="${psUrl}" target="_blank" rel="noopener" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; width:100%; min-height:44px; margin-top:10px; padding:10px 20px; font-size:0.86rem; font-weight:800; border-radius:14px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; text-decoration:none;">
                         <i class="fa-solid fa-print"></i> Printable Power Sheet (1 Page)
                     </a>
                 </div>
@@ -14231,6 +15177,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const session = activeDuoSession;
         const currentUnitId = session.unit.id;
         const currentStep = session.stepNum;
+        const isEspSession = Boolean(session.unit && session.unit.isEsp);
+        const espTrackId = (session.unit && session.unit.trackId) || localStorage.getItem('stemos_active_career') || 'it-mecatronica';
 
         window.closeDuoLessonRunner();
 
@@ -14238,8 +15186,22 @@ Nearshoring Center of Excellence • stemOS Certified`;
             setTimeout(() => {
                 startDuoLessonForUnit(currentUnitId, currentStep + 1);
             }, 300);
+            return;
+        }
+
+        let nextUnitId = null;
+        if (isEspSession) {
+            const cPath = window.STEMOS_CAREER_PATHS && window.STEMOS_CAREER_PATHS.getPathForCareer
+                ? window.STEMOS_CAREER_PATHS.getPathForCareer(espTrackId) : null;
+            const modList = (cPath && Array.isArray(cPath.modules) && cPath.modules.length)
+                ? cPath.modules
+                : ((window.LXP_COURSES && window.LXP_COURSES[espTrackId] && window.LXP_COURSES[espTrackId].modules) || []);
+            const curModId = (session.unit && session.unit.modId) || currentUnitId;
+            const mIdx = modList.findIndex(m => m.id === curModId || m.id === currentUnitId);
+            if (mIdx >= 0 && mIdx + 1 < modList.length) {
+                nextUnitId = modList[mIdx + 1].id;
+            }
         } else {
-            let nextUnitId = null;
             if (window.STEMOS_MCER_CLASSES && window.STEMOS_CURRICULUM_CONFIG) {
                 const cls = window.STEMOS_MCER_CLASSES.getClassById(currentUnitId);
                 if (cls) {
@@ -14249,7 +15211,28 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         { includeHidden: false }
                     );
                     const nextObj = window.STEMOS_CURRICULUM_CONFIG.getNextItemInSequence(currentUnitId, eff);
-                    if (nextObj) nextUnitId = nextObj.id;
+                    if (nextObj) {
+                        nextUnitId = nextObj.id;
+                    } else {
+                        // Cross CEFR level boundary cleanly
+                        const levelChain = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
+                        const nxtLvlIdx = levelChain.indexOf(cls.level) + 1;
+                        if (nxtLvlIdx > 0 && nxtLvlIdx < levelChain.length) {
+                            const nextSeq = window.STEMOS_CURRICULUM_CONFIG.getEffectiveSequence(
+                                window.STEMOS_CURRICULUM_CONFIG.getActiveStudentClassId(),
+                                window.STEMOS_CURRICULUM_CONFIG.getTrackKey('mcer', levelChain[nxtLvlIdx]),
+                                { includeHidden: false }
+                            );
+                            if (nextSeq && nextSeq[0]) nextUnitId = nextSeq[0].id;
+                        }
+                    }
+                }
+            }
+            if (!nextUnitId && window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getAllClasses === 'function') {
+                const allCls = window.STEMOS_MCER_CLASSES.getAllClasses();
+                const idx = allCls.findIndex(c => c.id === currentUnitId);
+                if (idx >= 0 && idx + 1 < allCls.length) {
+                    nextUnitId = allCls[idx + 1].id;
                 }
             }
             if (!nextUnitId && Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
@@ -14258,14 +15241,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
                 }
             }
-            if (nextUnitId) {
-                setTimeout(() => {
-                    if (typeof showSyncToast === 'function') {
-                        showSyncToast(`¡Lección completada! Desbloqueaste ${nextUnitId.toUpperCase()}`, 'success');
-                    }
-                    startDuoLessonForUnit(nextUnitId, 1);
-                }, 400);
-            }
+        }
+
+        if (nextUnitId) {
+            const targetStep = typeof window.getNextIncompleteDuoStep === 'function' ? window.getNextIncompleteDuoStep(nextUnitId) : 1;
+            setTimeout(() => {
+                if (typeof showSyncToast === 'function') {
+                    showSyncToast(`¡Lección completada! Desbloqueaste ${nextUnitId.toUpperCase()}`, 'success');
+                }
+                startDuoLessonForUnit(nextUnitId, targetStep);
+            }, 400);
         }
     };
 
@@ -14297,7 +15282,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             return {
                 type: 'mcq_gap',
-                category: `👑 Maratón de Certificación (${idx + 1}/${currentExamQuestions.length})`,
+                category: `Maratón de Certificación (${idx + 1}/${currentExamQuestions.length})`,
                 heading: q.q,
                 subtext: `Reactivo técnico de especialidad · ${q.readTitle || tagText}`,
                 prompt: q.q,
@@ -14309,7 +15294,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         exercises.push({
             type: 'sentence_builder',
-            category: '👑 Desafío Final de Certificación',
+            category: 'Desafío Final de Certificación',
             heading: 'Ensambla la orden técnica final',
             subtext: 'Demuestra precisión sintáctica en procedimientos operativos:',
             targetSentence: 'All safety protocols must be verified before signing off',
@@ -14361,15 +15346,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
     // Default to Interactive Path view unless explicitly set to grid
     const savedViewMode = localStorage.getItem('stemos_duo_view_mode') || 'path';
     window.switchDuoViewMode(savedViewMode);
-
-    // Re-render path on level filter chip clicks
-    const duoLevelFilterChips = document.querySelectorAll('#mcer-level-filter-bar .ed-filter-chip');
-    duoLevelFilterChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const lvl = chip.dataset.mcerLevel || 'all';
-            renderDuoLearningPath(lvl, 'mcer');
-        });
-    });
 
     // Live refresh when teacher reorders or unlocks sequence
     window.addEventListener('stemos:curriculum-config-updated', () => {
