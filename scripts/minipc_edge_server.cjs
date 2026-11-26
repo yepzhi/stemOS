@@ -58,6 +58,19 @@ let totalRequestsServed = 0;
 let peakConcurrentConnections = 0;
 const serverStartTime = Date.now();
 
+function getAllowedCorsOrigin(req) {
+    const origin = (req && req.headers && req.headers.origin) || '';
+    if (
+        origin === 'https://stemos.org' ||
+        origin === 'https://www.stemos.org' ||
+        origin === 'https://stemos.dev' ||
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)
+    ) {
+        return origin;
+    }
+    return 'https://stemos.org';
+}
+
 /**
  * Get Local Network IPv4 Addresses
  */
@@ -176,15 +189,19 @@ function fallbackGeminiChat(res, bodyData) {
                     done: true
                 });
 
+                const corsOrigin = (res.getHeader && res.getHeader('Access-Control-Allow-Origin')) || 'https://stemos.org';
                 res.writeHead(200, {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': corsOrigin,
+                    'Vary': 'Origin'
                 });
                 res.end(ollamaResponse);
             } catch (err) {
+                const corsOrigin = (res.getHeader && res.getHeader('Access-Control-Allow-Origin')) || 'https://stemos.org';
                 res.writeHead(200, {
                     'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Access-Control-Allow-Origin': corsOrigin,
+                    'Vary': 'Origin'
                 });
                 res.end(JSON.stringify({
                     model: 'stemos-heuristic-fallback',
@@ -199,9 +216,11 @@ function fallbackGeminiChat(res, bodyData) {
     });
 
     gReq.on('error', () => {
+        const corsOrigin = (res.getHeader && res.getHeader('Access-Control-Allow-Origin')) || 'https://stemos.org';
         res.writeHead(200, {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': corsOrigin,
+            'Vary': 'Origin'
         });
         res.end(JSON.stringify({
             model: 'stemos-heuristic-fallback',
@@ -352,8 +371,9 @@ const server = http.createServer((req, res) => {
         activeConnections = Math.max(0, activeConnections - 1);
     });
 
-    // CORS Headers for campus LAN
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // Validated CORS Headers
+    res.setHeader('Access-Control-Allow-Origin', getAllowedCorsOrigin(req));
+    res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
